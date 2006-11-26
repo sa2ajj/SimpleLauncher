@@ -1,0 +1,42 @@
+static void
+set_hints (GtkWidget *widget)
+{
+        ZvtTerm *term;
+  GdkGeometry hints;
+  GtkWidget *app;
+
+  g_assert (widget != NULL);
+  term = ZVT_TERM (widget);
+
+  app = gtk_widget_get_toplevel(widget);
+  g_assert (app != NULL);
+
+#define PADDING 2
+  hints.base_width = (GTK_WIDGET (term)->style->klass->xthickness * 2) + PADDING;
+  hints.base_height =  (GTK_WIDGET (term)->style->klass->ythickness * 2);
+
+  hints.width_inc = term->charwidth;
+  hints.height_inc = term->charheight;
+
+  hints.min_width = hints.base_width + hints.width_inc;
+  hints.min_height = hints.base_height + hints.height_inc;
+
+  gtk_window_set_geometry_hints(GTK_WINDOW(app),
+              GTK_WIDGET(term),
+              &hints,
+              GDK_HINT_RESIZE_INC|GDK_HINT_MIN_SIZE|GDK_HINT_BASE_SIZE);
+}
+  
+
+The example above sets the window hints so that the window manager will force resizes to the nearest character, and report the character dimensions if it provides that functionality.
+
+It should be attached to the terminal instance using gtk_signal_connect_after() so that the hints are set after the window is realized.
+
+Example 3. Attaching the realize handler to the terminal
+
+  gtk_signal_connect_after (
+      GTK_OBJECT (term),
+      "realize",
+      GTK_SIGNAL_FUNC (set_hints),
+      term);
+        
