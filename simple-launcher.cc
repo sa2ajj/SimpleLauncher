@@ -35,6 +35,9 @@ public:
 
   GtkWidget *getWidget() { return myWidget; }
 
+private:
+  bool initWidget();
+
   bool startApplication(const std::string& application);
 
 private:
@@ -100,8 +103,7 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
     return false;
   }
 
-  // myWidget = mis_widget_new_with_engines_and_history();
-  if (myWidget == 0) {
+  if (!initWidget()) {
     return false;
   }
 
@@ -141,6 +143,10 @@ SimpleLauncherApplet::~SimpleLauncherApplet() {
     osso_deinitialize(myContext);
     myContext = 0;
   }
+}
+
+bool SimpleLauncherApplet::initWidget() {
+  return false;
 }
 
 int SimpleLauncherApplet::saveState(void **state_data, int *state_size) {
