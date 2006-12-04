@@ -17,7 +17,7 @@ $(TARGET): simple-launcher.o launcher-item.o
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 test: test.o launcher-item.o
-	g++ -o $@ $^ $(LIBS) $(GTKLIBS) $(DBUSLIBS)
+	g++ -o $@ $^ $(GTKLIBS) $(DBUSLIBS)  $(LIBS) -losso
 
 clean:
 	rm -f *.d *.o $(TARGET) test
