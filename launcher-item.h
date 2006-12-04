@@ -5,10 +5,14 @@
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
+#include <libosso.h>
+
 class LauncherItem {
 public:
   LauncherItem();
  ~LauncherItem();
+
+  bool activate(osso_context_t *);
 
   bool load(const std::string&);
 

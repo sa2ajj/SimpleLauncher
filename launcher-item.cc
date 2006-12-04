@@ -101,3 +101,7 @@ GdkPixbuf *LauncherItem::getIcon(int icon_size) const {
 
   return pixbuf;
 }
+
+bool LauncherItem::activate(osso_context_t *context) {
+  return osso_application_top(context, myService.c_str(), 0) == OSSO_OK;
+}
