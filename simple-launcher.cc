@@ -51,7 +51,7 @@ private:
 
 // Hildon home applet interface functions
 
-void *hildon_home_applet_lib_initialize (void *state_data, int *state_size, GtkWidget **widget) {
+void *hildon_home_applet_lib_initialize(void *state_data, int *state_size, GtkWidget **widget) {
   SimpleLauncherApplet *applet = new SimpleLauncherApplet();
 
   if (applet != 0) {
