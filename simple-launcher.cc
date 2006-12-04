@@ -38,8 +38,6 @@ public:
 private:
   bool initWidget();
 
-  bool startApplication(const std::string& application);
-
 private:
   osso_context_t *myContext;
   GtkWidget *myWidget;
@@ -167,8 +165,4 @@ GtkWidget *SimpleLauncherApplet::settings(GtkWindow *parent) {
   // menu.  Method should make sure that when we activate that item, a
   // corresponding dialog appears.
   return 0;
-}
-
-bool SimpleLauncherApplet::startApplication(const std::string& application) {
-  return osso_application_top(myContext, application.c_str(), 0) == OSSO_OK;
 }
