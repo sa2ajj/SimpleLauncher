@@ -1,3 +1,9 @@
+simple-launcher (0.2) unstable; urgency=low
+
+  * Updated Section: of the package
+
+ -- Mikhail Sobolev <mss@mawhrin.net>  Tue, 05 Dec 2006 23:03:45 +0200
+
 simple-launcher (0.1) unstable; urgency=low
 
   * Initial release

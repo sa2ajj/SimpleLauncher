@@ -1,5 +1,5 @@
 Source: simple-launcher
-Section: unknown
+Section: user/home-applet
 Priority: extra
 Maintainer: Mikhail Sobolev <mss@mawhrin.net>
 Build-Depends: debhelper (>= 4)
