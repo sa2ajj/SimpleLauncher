@@ -8,5 +8,5 @@ Standards-Version: 3.7.2
 Package: simple-launcher
 Architecture: any
 Depends: ${shlibs:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Description: Application launcher for maemo-af-desktop
+ I'll put a longer description as soon as it becomes necessary
