@@ -11,7 +11,7 @@ LIBS = -lstdc++
 
 TARGET=libsimple-launcher.so
 
-all: $(TARGET) test
+all: $(TARGET)
 
 $(TARGET): simple-launcher.o launcher-item.o
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
