@@ -1,0 +1,12 @@
+Source: simple-launcher
+Section: unknown
+Priority: extra
+Maintainer: Mikhail Sobolev <mss@mawhrin.net>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: simple-launcher
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
