@@ -35,8 +35,12 @@ public:
 
   GtkWidget *getWidget() { return myWidget; }
 
+  static void _button_clicked(GtkToolButton *, void *);
+
 private:
   bool initWidget();
+
+  void buttonClicked(GtkToolButton *);
 
 private:
   osso_context_t *myContext;
@@ -89,6 +93,12 @@ int hildon_home_applet_lib_save_state (void *applet_data, void **state_data, int
 // SimpleLauncherApplet implementation
 
 char *SimpleLauncherApplet::ourFiles[] = {
+  "/usr/share/applications/hildon/FBReader.desktop",
+  "/usr/share/applications/hildon/filemanager.desktop",
+  "/usr/share/applications/hildon/hildon-control-panel.desktop",
+  "/usr/share/applications/hildon/osso-application-installer.desktop",
+  "/usr/share/applications/hildon/osso-music-player.desktop",
+  "/usr/share/applications/hildon/osso-xterm.desktop",
   0
 };
 
@@ -98,10 +108,6 @@ SimpleLauncherApplet::SimpleLauncherApplet(): myContext(0), myWidget(0) {
 bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
   if ((myContext = osso_initialize(SLA_APPLET_DBUS_NAME, SLA_APPLET_VERSION, FALSE, NULL)) == 0) {
     g_debug("sla-applet: failed to initialize the osso layer");
-    return false;
-  }
-
-  if (!initWidget()) {
     return false;
   }
 
@@ -115,7 +121,9 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
     }
   }
 
-  // g_signal_connect (applet->myWidget, "do_search", G_CALLBACK (mis_applet_do_search), (gpointer)applet);
+  if (!initWidget()) {
+    return false;
+  }
 
   gtk_widget_show_all(myWidget);
 
@@ -144,7 +152,41 @@ SimpleLauncherApplet::~SimpleLauncherApplet() {
 }
 
 bool SimpleLauncherApplet::initWidget() {
-  return false;
+  bool have_buttons = false;
+
+  myWidget = gtk_toolbar_new();
+
+  for (std::vector<LauncherItem *>::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
+    GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf((*it)->getIcon(26)), 0);
+
+    gtk_object_set_user_data(GTK_OBJECT(button), *it);
+    g_signal_connect(button, "clicked", G_CALLBACK(_button_clicked), this);
+
+    gtk_toolbar_insert(GTK_TOOLBAR(myWidget), button, -1);
+
+    have_buttons = true;
+  }
+
+  if (!have_buttons) {
+    gtk_widget_destroy(myWidget);
+    myWidget = 0;
+  }
+
+  return true;
+}
+
+void SimpleLauncherApplet::_button_clicked(GtkToolButton *button, void *self) {
+  ((SimpleLauncherApplet *)self)->buttonClicked(button);
+}
+
+void SimpleLauncherApplet::buttonClicked(GtkToolButton *button) {
+  if (button != 0) {
+    LauncherItem *item = (LauncherItem *)gtk_object_get_user_data(GTK_OBJECT(button));
+
+    if (item != 0) {
+      item->activate(myContext);
+    }
+  }
 }
 
 int SimpleLauncherApplet::saveState(void **state_data, int *state_size) {
