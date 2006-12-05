@@ -1,3 +1,9 @@
+simple-launcher (0.3) unstable; urgency=low
+
+  * Enclose the widget into GtkFrame
+
+ -- Mikhail Sobolev <mss@mawhrin.net>  Tue,  5 Dec 2006 23:31:18 +0200
+
 simple-launcher (0.2) unstable; urgency=low
 
   * Updated Section: of the package

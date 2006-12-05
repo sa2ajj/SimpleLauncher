@@ -154,7 +154,7 @@ SimpleLauncherApplet::~SimpleLauncherApplet() {
 bool SimpleLauncherApplet::initWidget() {
   bool have_buttons = false;
 
-  myWidget = gtk_toolbar_new();
+  GtkToolbar *toolbar = GTK_TOOLBAR(gtk_toolbar_new());
 
   for (std::vector<LauncherItem *>::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
     GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf((*it)->getIcon(26)), 0);
@@ -167,12 +167,15 @@ bool SimpleLauncherApplet::initWidget() {
     have_buttons = true;
   }
 
-  if (!have_buttons) {
-    gtk_widget_destroy(myWidget);
-    myWidget = 0;
+  if (have_buttons) {
+    myWidget = gtk_frame_new("Simple Launcher");
+
+    gtk_container_add(GTK_CONTAINER(myWidget), GTK_WIDGET(toolbar));
+  } else {
+    gtk_widget_destroy(GTK_WIDGET(toolbar));
   }
 
-  return true;
+  return myWidget != 0;
 }
 
 void SimpleLauncherApplet::_button_clicked(GtkToolButton *button, void *self) {
