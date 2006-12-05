@@ -25,5 +25,7 @@ clean:
 install: $(TARGET)
 	install -d $(DESTDIR)/usr/share/applications/hildon-home
 	install -m 0644 simple-launcher.desktop $(DESTDIR)/usr/share/applications/hildon-home
+	install -d $(DESTDIR)/usr/lib/hildon-home
+	install -m 0644 libsimple-launcher.so $(DESTDIR)/usr/lib/hildon-home
 
 -include *.d
