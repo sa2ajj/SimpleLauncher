@@ -20,6 +20,9 @@ extern "C" {
 
 #define SLA_APPLET_DBUS_NAME  "simple-launcher"
 #define SLA_APPLET_VERSION    "0.0"
+#define SLA_APPLET_ICON_SIZE  26
+#define SLA_APPLET_BORDER_SIZE  4
+#define SLA_APPLET_CANVAS_SIZE  (SLA_APPLET_BORDER_SIZE+SLA_APPLET_BORDER_SIZE)
 
 class SimpleLauncherApplet {
 public:
@@ -152,24 +155,30 @@ SimpleLauncherApplet::~SimpleLauncherApplet() {
 }
 
 bool SimpleLauncherApplet::initWidget() {
-  bool have_buttons = false;
+  int button_no = 0;
 
   GtkToolbar *toolbar = GTK_TOOLBAR(gtk_toolbar_new());
 
   for (std::vector<LauncherItem *>::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
-    GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf((*it)->getIcon(26)), 0);
+    GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf((*it)->getIcon(SLA_APPLET_ICON_SIZE)), 0);
 
     gtk_object_set_user_data(GTK_OBJECT(button), *it);
     g_signal_connect(button, "clicked", G_CALLBACK(_button_clicked), this);
 
     gtk_toolbar_insert(toolbar, button, -1);
 
-    have_buttons = true;
+    ++button_no;
   }
 
-  if (have_buttons) {
+  if (button_no) {
     myWidget = gtk_frame_new(0);
-
+#if 0
+    gtk_container_set_border_width(GTK_CONTAINER(myWidget), 0);
+    gtk_widget_set_name(myWidget, "osso-speeddial");
+#else
+    gtk_frame_set_shadow_type(GTK_FRAME(myWidget), GTK_SHADOW_ETCHED_IN);
+#endif
+    gtk_widget_set_size_request(myWidget, button_no*(SLA_APPLET_ICON_SIZE+SLA_APPLET_CANVAS_SIZE), SLA_APPLET_ICON_SIZE+SLA_APPLET_CANVAS_SIZE);
     gtk_container_add(GTK_CONTAINER(myWidget), GTK_WIDGET(toolbar));
   } else {
     gtk_widget_destroy(GTK_WIDGET(toolbar));
