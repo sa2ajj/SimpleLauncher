@@ -1,3 +1,10 @@
+simple-launcher (0.5) unstable; urgency=low
+
+  * fix (??) button size calculation
+  * try to use theming for putting some border around the applet
+
+ -- Mikhail Sobolev <mss@mawhrin.net>  Wed,  6 Dec 2006 12:00:10 +0200
+
 simple-launcher (0.4) unstable; urgency=low
 
   * applet sets it size based on the number of buttons added to the widget
