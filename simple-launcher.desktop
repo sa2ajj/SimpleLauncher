@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Simple Launcher Applet
+Name=Simple Launcher
 Comment=A simple list of icons to click
 Type=HildonHomeApplet
 X-home-applet=simple-launcher.so
