@@ -94,11 +94,11 @@ int hildon_home_applet_lib_save_state (void *applet_data, void **state_data, int
 
 char *SimpleLauncherApplet::ourFiles[] = {
   "/usr/share/applications/hildon/FBReader.desktop",
-  "/usr/share/applications/hildon/filemanager.desktop",
-  "/usr/share/applications/hildon/hildon-control-panel.desktop",
-  "/usr/share/applications/hildon/osso-application-installer.desktop",
-  "/usr/share/applications/hildon/osso-music-player.desktop",
+  "/usr/share/applications/hildon/mp_ui.desktop",
   "/usr/share/applications/hildon/osso-xterm.desktop",
+  "/usr/share/applications/hildon/filemanager.desktop",
+  "/usr/share/applications/hildon/osso-application-installer.desktop",
+  "/usr/share/applications/hildon/hildon-control-panel.desktop",
   0
 };
 
