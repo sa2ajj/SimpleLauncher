@@ -19,7 +19,7 @@ inline std::string getStringWrapper(GKeyFile *keyFile, const gchar *group, const
   std::string result;
 
   if (tempo != 0) {
-    result = tempo;
+    result.assign(tempo);
 
     g_free(tempo);
   }
@@ -32,7 +32,7 @@ inline std::string getLocaleStringWrapper(GKeyFile *keyFile, const gchar *group,
   std::string result;
 
   if (tempo != 0) {
-    result = tempo;
+    result.assign(tempo);
 
     g_free(tempo);
   }
