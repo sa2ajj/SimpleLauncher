@@ -1,22 +1,20 @@
-This package was debianized by Mikhail Sobolev <mss@mawhrin.net> on
-Tue,  5 Dec 2006 00:46:24 +0200.
+Author: Mikhail Sobolev <mss@mawhrin.net>
 
-It was downloaded from <fill in http/ftp site>
-
-Upstream Author: <put author(s) name and email here>
-
-Copyright: <put the year(s) of the copyright, and the names of the
-            copyright holder(s) here>
+Copyright: 2006, Mikhail Sobolev
 
 License:
 
-<Put the license of the package here>
+   Simple Launcher is free software; you can redistribute it and/or modify it
+   under the terms of the GNU General Public License version 2 as published by
+   the Free Software Foundation.
+  
+   This program is distributed in the hope that it will be useful, but WITHOUT
+   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+   more details.
+  
+   You should have received a copy of the GNU General Public License along with
+   this program; if not, write to the Free Software Foundation, Inc., 51
+   Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
-The Debian packaging is (C) 2006, Mikhail Sobolev <mss@mawhrin.net> and
-is licensed under the GPL, see `/usr/share/common-licenses/GPL'.
-
-
-# Please also look if there are files or directories which have a
-# different copyright/license attached and list them here.
-
+See /usr/share/common-licenses/GPL for a complete text of the license.
