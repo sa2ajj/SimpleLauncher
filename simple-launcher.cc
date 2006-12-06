@@ -106,7 +106,7 @@ SimpleLauncherApplet::SimpleLauncherApplet(): myContext(0), myWidget(0) {
 }
 
 bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
-  if ((myContext = osso_initialize(SLA_APPLET_DBUS_NAME, SLA_APPLET_VERSION, FALSE, NULL)) == 0) {
+  if ((myContext = osso_initialize(SLA_APPLET_DBUS_NAME, SLA_APPLET_VERSION, FALSE, 0)) == 0) {
     g_debug("sla-applet: failed to initialize the osso layer");
     return false;
   }
