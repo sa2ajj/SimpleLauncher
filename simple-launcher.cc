@@ -25,11 +25,11 @@
 
 #include "launcher-item.h"
 
-#define SLA_APPLET_DBUS_NAME  "simple-launcher"
-#define SLA_APPLET_VERSION    "0.0"
-#define SLA_APPLET_ICON_SIZE  26
-#define SLA_APPLET_BORDER_SIZE  14
-#define SLA_APPLET_CANVAS_SIZE  (SLA_APPLET_BORDER_SIZE+SLA_APPLET_BORDER_SIZE)
+#define SL_APPLET_DBUS_NAME  "simple-launcher"
+#define SL_APPLET_VERSION    "0.0"
+#define SL_APPLET_ICON_SIZE  26
+#define SL_APPLET_BORDER_SIZE  14
+#define SL_APPLET_CANVAS_SIZE  (SL_APPLET_BORDER_SIZE+SL_APPLET_BORDER_SIZE)
 
 class SimpleLauncherApplet {
 public:
@@ -119,7 +119,7 @@ SimpleLauncherApplet::SimpleLauncherApplet(): myContext(0), myWidget(0), myParen
 }
 
 bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
-  if ((myContext = osso_initialize(SLA_APPLET_DBUS_NAME, SLA_APPLET_VERSION, FALSE, 0)) == 0) {
+  if ((myContext = osso_initialize(SL_APPLET_DBUS_NAME, SL_APPLET_VERSION, FALSE, 0)) == 0) {
     g_debug("sla-applet: failed to initialize the osso layer");
     return false;
   }
@@ -170,7 +170,7 @@ bool SimpleLauncherApplet::initWidget() {
   GtkToolbar *toolbar = GTK_TOOLBAR(gtk_toolbar_new());
 
   for (std::vector<LauncherItem *>::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
-    GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf((*it)->getIcon(SLA_APPLET_ICON_SIZE)), 0);
+    GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf((*it)->getIcon(SL_APPLET_ICON_SIZE)), 0);
 
     gtk_object_set_user_data(GTK_OBJECT(button), *it);
     g_signal_connect(button, "clicked", G_CALLBACK(_button_clicked), this);
@@ -183,7 +183,7 @@ bool SimpleLauncherApplet::initWidget() {
   if (button_no) {
     myWidget = gtk_frame_new(0);
     gtk_frame_set_shadow_type(GTK_FRAME(myWidget), GTK_SHADOW_ETCHED_IN);
-    gtk_widget_set_size_request(myWidget, button_no*(SLA_APPLET_ICON_SIZE+SLA_APPLET_CANVAS_SIZE), SLA_APPLET_ICON_SIZE+SLA_APPLET_CANVAS_SIZE);
+    gtk_widget_set_size_request(myWidget, button_no*(SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE), SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
     gtk_container_add(GTK_CONTAINER(myWidget), GTK_WIDGET(toolbar));
   } else {
     gtk_widget_destroy(GTK_WIDGET(toolbar));
