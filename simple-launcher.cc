@@ -162,13 +162,13 @@ bool SimpleLauncherApplet::initWidget() {
     gtk_object_set_user_data(GTK_OBJECT(button), *it);
     g_signal_connect(button, "clicked", G_CALLBACK(_button_clicked), this);
 
-    gtk_toolbar_insert(GTK_TOOLBAR(myWidget), button, -1);
+    gtk_toolbar_insert(toolbar, button, -1);
 
     have_buttons = true;
   }
 
   if (have_buttons) {
-    myWidget = gtk_frame_new("Simple Launcher");
+    myWidget = gtk_frame_new(0);
 
     gtk_container_add(GTK_CONTAINER(myWidget), GTK_WIDGET(toolbar));
   } else {
