@@ -173,7 +173,7 @@ bool SimpleLauncherApplet::initWidget() {
   if (button_no) {
     myWidget = gtk_frame_new(0);
 #if 1
-    gtk_container_set_border_width(GTK_CONTAINER(myWidget), 0);
+    // gtk_container_set_border_width(GTK_CONTAINER(myWidget), 0);
     gtk_widget_set_name(myWidget, "osso-speeddial");
 #else
     gtk_frame_set_shadow_type(GTK_FRAME(myWidget), GTK_SHADOW_ETCHED_IN);
