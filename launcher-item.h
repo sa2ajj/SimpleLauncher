@@ -21,6 +21,7 @@
 #include <string>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gtk/gtkicontheme.h>
 
 #include <libosso.h>
 
@@ -40,6 +41,8 @@ public:
   const std::string& getService() const { return myService; }
 private:
   std::string myName, myComment, myIcon, myService;
+
+  static GtkIconTheme *ourTheme;
 };
 
 #endif

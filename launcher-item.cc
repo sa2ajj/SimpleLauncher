@@ -20,9 +20,9 @@
 #include <glib/gmem.h>
 #include <glib/gkeyfile.h>
 
-#include <gtk/gtkicontheme.h>
-
 #include "launcher-item.h"
+
+GtkIconTheme *LauncherItem::ourTheme = 0;
 
 static const char *DESKTOP_ENTRY_GROUP = "Desktop Entry",
                   *DESKTOP_ENTRY_TYPE_FIELD = "Type",
@@ -104,11 +104,13 @@ GdkPixbuf *LauncherItem::getIcon(int icon_size) const {
   GdkPixbuf *pixbuf = 0;
 
   if (!myIcon.empty()) {
-    GtkIconTheme *theme;
+    if (ourTheme == 0) {
+      ourTheme = gtk_icon_theme_get_default();
+    }
+
     GError *error = 0;
 
-    theme = gtk_icon_theme_get_default();
-    pixbuf = gtk_icon_theme_load_icon(theme, myIcon.c_str(), icon_size, GTK_ICON_LOOKUP_NO_SVG, &error);
+    pixbuf = gtk_icon_theme_load_icon(ourTheme, myIcon.c_str(), icon_size, GTK_ICON_LOOKUP_NO_SVG, &error);
 
     if (error != 0) {
       g_error_free(error);
