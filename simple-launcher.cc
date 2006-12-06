@@ -21,7 +21,7 @@ extern "C" {
 #define SLA_APPLET_DBUS_NAME  "simple-launcher"
 #define SLA_APPLET_VERSION    "0.0"
 #define SLA_APPLET_ICON_SIZE  26
-#define SLA_APPLET_BORDER_SIZE  4
+#define SLA_APPLET_BORDER_SIZE  14
 #define SLA_APPLET_CANVAS_SIZE  (SLA_APPLET_BORDER_SIZE+SLA_APPLET_BORDER_SIZE)
 
 class SimpleLauncherApplet {
@@ -172,7 +172,7 @@ bool SimpleLauncherApplet::initWidget() {
 
   if (button_no) {
     myWidget = gtk_frame_new(0);
-#if 0
+#if 1
     gtk_container_set_border_width(GTK_CONTAINER(myWidget), 0);
     gtk_widget_set_name(myWidget, "osso-speeddial");
 #else
