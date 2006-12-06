@@ -1,10 +1,13 @@
 simple-launcher (0.6) unstable; urgency=low
 
-  * do not remove border from frame, it seems to aaffect theming
+  * do not use theming for borders, some other way should be used
   * removed few operations from debian/rules
   * removed few unnecessary files from debian/: docs, dirs
+  * fixed debian/copyright
+  * updated build dependencies
+  * implemented empty settings dialog for the applet
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Wed,  6 Dec 2006 13:59:15 +0200
+ -- Mikhail Sobolev <mss@mawhrin.net>  Wed,  6 Dec 2006 22:24:14 +0200
 
 simple-launcher (0.5) unstable; urgency=low
 
