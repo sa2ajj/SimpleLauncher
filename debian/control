@@ -2,7 +2,7 @@ Source: simple-launcher
 Section: user/home-applet
 Priority: extra
 Maintainer: Mikhail Sobolev <mss@mawhrin.net>
-Build-Depends: debhelper (>= 4)
+Build-Depends: debhelper (>= 4), hildon-home-dev, libosso-dev, libstdc++6-dev
 Standards-Version: 3.7.2
 
 Package: simple-launcher
