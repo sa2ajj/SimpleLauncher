@@ -225,7 +225,7 @@ GtkWidget *SimpleLauncherApplet::settings(GtkWindow *parent) {
   // corresponding dialog appears.
   myParent = parent;  // FIXME: Ugly piece of code :(
 
-  GtkWidget *menuItem = gtk_menu_item_new_with_label("Launcher Settings...");
+  GtkWidget *menuItem = gtk_menu_item_new_with_label("Launcher settings...");
 
   g_signal_connect(menuItem, "activate", G_CALLBACK(_run_dialog), this);
 
