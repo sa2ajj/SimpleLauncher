@@ -13,7 +13,7 @@ TARGET=simple-launcher.so
 
 all: $(TARGET)
 
-$(TARGET): simple-launcher.o launcher-item.o
+$(TARGET): simple-launcher.o launcher-item.o sla-list.o
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 test: test.o launcher-item.o

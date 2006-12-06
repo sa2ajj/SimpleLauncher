@@ -24,6 +24,7 @@
 #include <libosso.h>
 
 #include "launcher-item.h"
+#include "sla-list.h"
 
 #define SL_APPLET_DBUS_NAME  "simple-launcher"
 #define SL_APPLET_VERSION    "0.0"
@@ -237,7 +238,13 @@ void SimpleLauncherApplet::_run_dialog(GtkMenuItem *, void *self) {
 }
 
 void SimpleLauncherApplet::runDialog() {
+  SLAList list(SL_APPLET_ICON_SIZE);
+
   GtkDialog *dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Launcher Settings", myParent, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), "OK", GTK_RESPONSE_OK, "Cancel", GTK_RESPONSE_CANCEL, 0));
+
+  gtk_container_add(GTK_CONTAINER(dialog->vbox), list.getWidget());
+
+  gtk_widget_set_size_request(GTK_WIDGET(dialog), 540, 257);
 
   int response = gtk_dialog_run(dialog);
 
