@@ -45,16 +45,19 @@ public:
 
   GtkWidget *getWidget() { return myWidget; }
 
-  static void _button_clicked(GtkToolButton *, void *);
-
 private:
   bool initWidget();
 
   void buttonClicked(GtkToolButton *);
+  void runDialog();
+
+  static void _button_clicked(GtkToolButton *, void *);
+  static void _run_dialog(GtkMenuItem *, void *);
 
 private:
   osso_context_t *myContext;
   GtkWidget *myWidget;
+  GtkWindow *myParent;
 
   std::vector<LauncherItem *> myItems;
 
@@ -112,7 +115,7 @@ char *SimpleLauncherApplet::ourFiles[] = {
   0
 };
 
-SimpleLauncherApplet::SimpleLauncherApplet(): myContext(0), myWidget(0) {
+SimpleLauncherApplet::SimpleLauncherApplet(): myContext(0), myWidget(0), myParent(0) {
 }
 
 bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
@@ -220,7 +223,36 @@ GtkWidget *SimpleLauncherApplet::settings(GtkWindow *parent) {
   // should return a gtk_menu_item that would be included in home settings
   // menu.  Method should make sure that when we activate that item, a
   // corresponding dialog appears.
-  return 0;
+  myParent = parent;  // FIXME: Ugly piece of code :(
+
+  GtkWidget *menuItem = gtk_menu_item_new_with_label("Launcher Settings...");
+
+  g_signal_connect(menuItem, "activate", G_CALLBACK(_run_dialog), this);
+
+  return menuItem;
+}
+
+void SimpleLauncherApplet::_run_dialog(GtkMenuItem *, void *self) {
+  ((SimpleLauncherApplet *)self)->runDialog();
+}
+
+void SimpleLauncherApplet::runDialog() {
+  GtkDialog *dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Launcher Settings", myParent, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), "OK", GTK_RESPONSE_OK, "Cancel", GTK_RESPONSE_CANCEL, 0));
+
+  int response = gtk_dialog_run(dialog);
+
+  gtk_widget_destroy(GTK_WIDGET(dialog));
+
+  switch (response) {
+    case GTK_RESPONSE_OK:
+      break;
+
+    case GTK_RESPONSE_CANCEL:
+      break;
+
+    default:
+      ;     // FIXME: do I want to do anything in here?
+  }
 }
 
 // vim:ts=2:sw=2:et
