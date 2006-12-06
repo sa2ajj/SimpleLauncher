@@ -1,3 +1,10 @@
+simple-launcher (0.4) unstable; urgency=low
+
+  * applet sets it size based on the number of buttons added to the widget
+  * decorated the view (added some border, let's see how it looks)
+
+ -- Mikhail Sobolev <mss@mawhrin.net>  Wed,  6 Dec 2006 11:49:44 +0200
+
 simple-launcher (0.3) unstable; urgency=low
 
   * Enclose the widget into GtkFrame
