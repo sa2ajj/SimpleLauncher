@@ -25,15 +25,6 @@
 
 #include "launcher-item.h"
 
-extern "C" {
-  void *hildon_home_applet_lib_initialize (void *state_data, int *state_size, GtkWidget **widget);
-  void hildon_home_applet_lib_deinitialize (void *applet_data);
-  void hildon_home_applet_lib_background (void *applet_data);
-  void hildon_home_applet_lib_foreground(void *applet_data);
-  int hildon_home_applet_lib_save_state(void *applet_data, void **state_data, int *state_size);
-  GtkWidget *hildon_home_applet_lib_settings(void *applet_data, GtkWindow *parent);
-};
-
 #define SLA_APPLET_DBUS_NAME  "simple-launcher"
 #define SLA_APPLET_VERSION    "0.0"
 #define SLA_APPLET_ICON_SIZE  26
