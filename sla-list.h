@@ -18,22 +18,39 @@
 #ifndef __SLA_LIST_H__
 #define __SLA_LIST_H__
 
+#include <vector>
+#include <string>
+
 #include <gtk/gtkliststore.h>
 #include <gtk/gtktreeview.h>
+#include <gtk/gtkbutton.h>
+#include <gtk/gtkcellrenderertoggle.h>
 
 class SLAList {
 public:
   SLAList(int);
  ~SLAList();
 
-  void addItem(GdkPixbuf *pixbuf, const char *name, bool active);
+  void addItem(const char *filename, GdkPixbuf *pixbuf, const char *name, bool active);
 
   GtkWidget *getWidget() { return myWidget; }
+
+  void collectItems(std::vector<std::pair<std::string, bool> >&);
+
+private:
+  static void _moveUp(GtkButton *, void *);
+  static void _moveDown(GtkButton *, void *);
+  static void _toggleBool(GtkCellRendererToggle *, const gchar *, void *);
+
+  void moveUp(GtkButton *);
+  void moveDown(GtkButton *);
+  void toggleBool(GtkCellRendererToggle *, const gchar *);
 
 private:
   GtkWidget *myWidget;
   GtkListStore *myStore;
   GtkTreeView *myView;
+  GtkTreeSelection *mySelection;
 };
 
 #endif
