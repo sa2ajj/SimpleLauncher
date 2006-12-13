@@ -3,7 +3,6 @@ Name=Simple Launcher
 Comment=A simple list of icons to click
 Type=HildonHomeApplet
 X-home-applet=simple-launcher.so
-X-home-applet-resizable=XY
+X-home-applet-resizable=X
 X-home-applet-minwidth=270
-X-home-applet-minheight=45
-
+X-home-applet-minheight=54
