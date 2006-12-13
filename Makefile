@@ -25,7 +25,7 @@ test1: test1.o sla-list.o launcher-item.o
 	g++ -g -o $@ $^ $(GTKLIBS) $(DBUSLIBS) $(LIBS)
 
 clean:
-	rm -f *.d *.o $(TARGET) test
+	rm -f *.d *.o $(TARGET) test test1
 
 install: $(TARGET)
 	install -d $(DESTDIR)/usr/share/applications/hildon-home
