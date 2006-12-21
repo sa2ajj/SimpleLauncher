@@ -18,30 +18,29 @@
 #ifndef __SLA_LIST_H__
 #define __SLA_LIST_H__
 
-#include <vector>
-#include <string>
-
 #include <gtk/gtkliststore.h>
 #include <gtk/gtktreeview.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtkcellrenderertoggle.h>
 
+#include "launchable-item.h"
+
 class SLAList {
 public:
-  SLAList(int);
+  SLAList(int, LaunchableItems&);
  ~SLAList();
-
-  void addItem(const char *filename, GdkPixbuf *pixbuf, const char *name, bool active);
 
   GtkWidget *getWidget() { return myWidget; }
 
-  void collectItems(std::vector<std::pair<std::string, bool> >&);
-
 private:
+  static void _renderText(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter, gpointer self);
+  static void _renderBool(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter, gpointer self);
   static void _moveUp(GtkButton *, void *);
   static void _moveDown(GtkButton *, void *);
   static void _toggleBool(GtkCellRendererToggle *, const gchar *, void *);
 
+  void renderText(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter);
+  void renderBool(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter);
   void moveUp(GtkButton *);
   void moveDown(GtkButton *);
   void toggleBool(GtkCellRendererToggle *, const gchar *);
@@ -51,6 +50,8 @@ private:
   GtkListStore *myStore;
   GtkTreeView *myView;
   GtkTreeSelection *mySelection;
+
+  LaunchableItems& myItems;
 };
 
 #endif

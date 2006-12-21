@@ -27,11 +27,11 @@
 
 #include "sla-list.h"
 
-SLAList::SLAList(int icon_size): myWidget(0), myStore(0), myView(0), mySelection(0) {
+SLAList::SLAList(int icon_size, LaunchableItems& items): myWidget(0), myStore(0), myView(0), mySelection(0), myItems(items) {
   GtkTreeViewColumn *column;
   GtkCellRenderer *renderer;
 
-  myStore = gtk_list_store_new(4, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_STRING);
+  myStore = gtk_list_store_new(2, GDK_TYPE_PIXBUF, G_TYPE_INT);
 
   myView = GTK_TREE_VIEW(gtk_tree_view_new_with_model(GTK_TREE_MODEL(myStore)));
   gtk_tree_view_set_headers_visible(myView, FALSE);
@@ -48,7 +48,8 @@ SLAList::SLAList(int icon_size): myWidget(0), myStore(0), myView(0), mySelection
 
   renderer = gtk_cell_renderer_text_new();
   g_object_set(renderer, "yalign", 0.0, 0);
-  column = GTK_TREE_VIEW_COLUMN(gtk_tree_view_column_new_with_attributes("", renderer, "text", 1, 0));
+  column = gtk_tree_view_column_new();
+  gtk_tree_view_column_set_cell_data_func(column, renderer, _renderText, this, 0);
   gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
   gtk_tree_view_column_set_expand(column, TRUE);
 
@@ -57,7 +58,8 @@ SLAList::SLAList(int icon_size): myWidget(0), myStore(0), myView(0), mySelection
   renderer = gtk_cell_renderer_toggle_new();
   g_object_set(renderer, "activatable", TRUE, 0);
   g_signal_connect(renderer, "toggled", G_CALLBACK(_toggleBool), this);
-  column = GTK_TREE_VIEW_COLUMN(gtk_tree_view_column_new_with_attributes("", renderer, "active", 2, 0));
+  column = gtk_tree_view_column_new();
+  gtk_tree_view_column_set_cell_data_func(column, renderer, _renderBool, this, 0);
 
   gtk_tree_view_insert_column(myView, column, -1);
 
@@ -82,36 +84,25 @@ SLAList::SLAList(int icon_size): myWidget(0), myStore(0), myView(0), mySelection
   gtk_box_pack_start(GTK_BOX(myWidget), GTK_WIDGET(table), FALSE, FALSE, 0);
 
   gtk_widget_show_all(myWidget);
+
+  for (LaunchableItems::const_iterator item = myItems.begin(); item != myItems.end(); ++item) {
+    GtkTreeIter iter;
+    
+    gtk_list_store_append(myStore, &iter);
+    gtk_list_store_set(myStore, &iter, 0, item->second->getIcon(icon_size), 1, item-myItems.begin(), -1);
+  }
 }
 
 SLAList::~SLAList() {
   // FIXME: do something! :)
 }
 
-void SLAList::collectItems(std::vector<std::pair<std::string, bool> >& result) {
-  GtkTreeIter iter;
-
-  if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(myStore), &iter)) {
-    char *name;
-    gboolean active;
-
-    gtk_tree_model_get(GTK_TREE_MODEL(myStore), &iter, 3, &name, 2, &active, -1);
-
-    result.push_back(std::pair<std::string, bool>(name, active));
-
-    while (gtk_tree_model_iter_next(GTK_TREE_MODEL(myStore), &iter)) {
-      gtk_tree_model_get(GTK_TREE_MODEL(myStore), &iter, 3, &name, 2, &active, -1);
-
-      result.push_back(std::pair<std::string, bool>(name, active));
-    }
-  }
+void SLAList::_renderText(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter, gpointer self) {
+  ((SLAList *)self)->renderText(column, cell, model, iter);
 }
 
-void SLAList::addItem(const char *filename, GdkPixbuf *pixbuf, const char *name, bool active) {
-  GtkTreeIter iter;
-  
-  gtk_list_store_append(myStore, &iter);
-  gtk_list_store_set(myStore, &iter, 0, pixbuf, 1, name, 2, active, 3, filename, -1);
+void SLAList::_renderBool(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter, gpointer self) {
+  ((SLAList *)self)->renderBool(column, cell, model, iter);
 }
 
 void SLAList::_toggleBool(GtkCellRendererToggle *renderer, const gchar *path, void *self) {
@@ -126,6 +117,28 @@ void SLAList::_moveDown(GtkButton *button, void *self) {
   ((SLAList *)self)->moveDown(button);
 }
 
+void SLAList::renderText(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter) {
+  int index;
+
+  gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, 1, &index, -1);
+
+  if (gtk_tree_selection_iter_is_selected(mySelection, iter)) {
+    gchar *text = g_markup_printf_escaped("%s\n<small>%s</small>", myItems[index].second->getName().c_str(), myItems[index].second->getComment().c_str());
+    g_object_set(cell, "markup", text, 0);
+    g_free(text);
+  } else {
+    g_object_set(cell, "text", myItems[index].second->getName().c_str(), 0);
+  }
+}
+
+void SLAList::renderBool(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter) {
+  int index;
+
+  gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, 1, &index, -1);
+
+  g_object_set(cell, "active", myItems[index].second->isEnabled(), 0);
+}
+
 void SLAList::toggleBool(GtkCellRendererToggle *renderer, const gchar *spath) {
   GtkTreePath *path = gtk_tree_path_new_from_string(spath);
 
@@ -133,10 +146,10 @@ void SLAList::toggleBool(GtkCellRendererToggle *renderer, const gchar *spath) {
     GtkTreeIter iter;
 
     if (gtk_tree_model_get_iter(GTK_TREE_MODEL(myStore), &iter, path)) {
-      gboolean value;
+      int index;
 
-      gtk_tree_model_get(GTK_TREE_MODEL(myStore), &iter, 2, &value, -1);
-      gtk_list_store_set(myStore, &iter, 2, !value, -1);
+      gtk_tree_model_get(GTK_TREE_MODEL(myStore), &iter, 1, &index, -1);
+      myItems[index].second->toggle();
     }
   }
 }
@@ -153,6 +166,16 @@ void SLAList::moveUp(GtkButton *) {
       GtkTreeIter next;
 
       if (gtk_tree_model_get_iter(GTK_TREE_MODEL(myStore), &next, path)) {
+        int i1, i2;
+
+        gtk_tree_model_get(GTK_TREE_MODEL(myStore), &current, 1, &i1, -1);
+        gtk_tree_model_get(GTK_TREE_MODEL(myStore), &next, 1, &i2, -1);
+
+        std::swap(myItems[i1], myItems[i2]);
+
+        gtk_list_store_set(myStore, &current, 1, i2, -1);
+        gtk_list_store_set(myStore, &next, 1, i1, -1);
+
         gtk_list_store_swap(myStore, &current, &next);
       }
     }
@@ -173,6 +196,16 @@ void SLAList::moveDown(GtkButton *) {
     gtk_tree_path_next(path);
 
     if (gtk_tree_model_get_iter(GTK_TREE_MODEL(myStore), &next, path)) {
+      int i1, i2;
+
+      gtk_tree_model_get(GTK_TREE_MODEL(myStore), &current, 1, &i1, -1);
+      gtk_tree_model_get(GTK_TREE_MODEL(myStore), &next, 1, &i2, -1);
+
+      std::swap(myItems[i1], myItems[i2]);
+
+      gtk_list_store_set(myStore, &current, 1, i2, -1);
+      gtk_list_store_set(myStore, &next, 1, i1, -1);
+
       gtk_list_store_swap(myStore, &current, &next);
     }
 
