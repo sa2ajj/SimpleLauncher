@@ -30,8 +30,6 @@ public:
   LauncherItem();
  ~LauncherItem();
 
-  bool activate(osso_context_t *);
-
   bool load(const std::string&);
 
   GdkPixbuf *getIcon(int icon_size) const;

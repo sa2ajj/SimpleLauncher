@@ -32,6 +32,29 @@
 #define SL_APPLET_BORDER_SIZE  14
 #define SL_APPLET_CANVAS_SIZE  (SL_APPLET_BORDER_SIZE+SL_APPLET_BORDER_SIZE)
 
+class LaunchableItem {
+public:
+  LaunchableItem(LauncherItem *, bool);
+ ~LaunchableItem();
+
+  GdkPixbuf *getIcon(int icon_size) const { return myItem->getIcon(icon_size); }
+
+  const std::string& getName() const { return myItem->getName(); }
+  const std::string& getComment() const { return myItem->getComment(); }
+  const std::string& getService() const { return myItem->getService(); }
+
+  bool isEnabled(void) const { return myEnabled; }
+
+  void enable() { myEnabled = true; }
+  void disable() { myEnabled = false; }
+
+  bool activate(osso_context_t *);
+
+private:
+  LauncherItem *myItem;
+  bool myEnabled;
+};
+
 class SimpleLauncherApplet {
 public:
   SimpleLauncherApplet();
@@ -60,7 +83,8 @@ private:
   GtkWidget *myWidget;
   GtkWindow *myParent;
 
-  std::vector<LauncherItem *> myItems;
+  typedef std::vector<std::pair<std::string, LaunchableItem *> > ItemList;
+  ItemList myItems;
 
   static char *ourFiles[];
 };
@@ -129,7 +153,7 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
     LauncherItem *item = new LauncherItem();
 
     if (item->load(ourFiles[i])) {
-      myItems.push_back(item);
+      myItems.push_back(std::pair<std::string, LaunchableItem *>(ourFiles[i], new LaunchableItem(item, true)));
     } else {
       delete item;
     }
@@ -145,10 +169,10 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
 }
 
 SimpleLauncherApplet::~SimpleLauncherApplet() {
-  for (std::vector<LauncherItem *>::iterator it = myItems.begin(); it != myItems.end(); ++it) {
-    if (*it != 0) {
-      delete *it;
-      *it = 0;
+  for (ItemList::iterator it = myItems.begin(); it != myItems.end(); ++it) {
+    if (it->second != 0) {
+      delete it->second;
+      it->second = 0;
     }
   }
 
@@ -170,10 +194,10 @@ bool SimpleLauncherApplet::initWidget() {
 
   GtkToolbar *toolbar = GTK_TOOLBAR(gtk_toolbar_new());
 
-  for (std::vector<LauncherItem *>::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
-    GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf((*it)->getIcon(SL_APPLET_ICON_SIZE)), 0);
+  for (ItemList::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
+    GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf(it->second->getIcon(SL_APPLET_ICON_SIZE)), 0);
 
-    gtk_object_set_user_data(GTK_OBJECT(button), *it);
+    gtk_object_set_user_data(GTK_OBJECT(button), it->second);
     g_signal_connect(button, "clicked", G_CALLBACK(_button_clicked), this);
 
     gtk_toolbar_insert(toolbar, button, -1);
@@ -199,7 +223,7 @@ void SimpleLauncherApplet::_button_clicked(GtkToolButton *button, void *self) {
 
 void SimpleLauncherApplet::buttonClicked(GtkToolButton *button) {
   if (button != 0) {
-    LauncherItem *item = (LauncherItem *)gtk_object_get_user_data(GTK_OBJECT(button));
+    LaunchableItem *item = (LaunchableItem *)gtk_object_get_user_data(GTK_OBJECT(button));
 
     if (item != 0) {
       item->activate(myContext);
@@ -240,6 +264,10 @@ void SimpleLauncherApplet::_run_dialog(GtkMenuItem *, void *self) {
 void SimpleLauncherApplet::runDialog() {
   SLAList list(SL_APPLET_ICON_SIZE);
 
+  for (ItemList::const_iterator item = myItems.begin(); item != myItems.end(); ++item) {
+    list.addItem(item->first.c_str(), item->second->getIcon(SL_APPLET_ICON_SIZE), item->second->getComment().c_str(), item->second->isEnabled());
+  }
+
   GtkDialog *dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Launcher Settings", myParent, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), "OK", GTK_RESPONSE_OK, "Cancel", GTK_RESPONSE_CANCEL, 0));
 
   gtk_container_add(GTK_CONTAINER(dialog->vbox), list.getWidget());
@@ -260,6 +288,19 @@ void SimpleLauncherApplet::runDialog() {
     default:
       ;     // FIXME: do I want to do anything in here?
   }
+}
+
+LaunchableItem::LaunchableItem(LauncherItem *item, bool enabled): myItem(item), myEnabled(enabled) {
+}
+
+LaunchableItem::~LaunchableItem() {
+  if (myItem != 0) {
+    delete myItem;
+  }
+}
+
+bool LaunchableItem::activate(osso_context_t *context) {
+  return osso_application_top(context, myItem->getService().c_str(), 0) == OSSO_OK;
 }
 
 // vim:ts=2:sw=2:et
