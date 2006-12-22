@@ -1,8 +1,15 @@
-simple-launcher (0.7) UNRELEASED; urgency=low
+simple-launcher (0.7) unstable; urgency=low
 
-  * NOT RELEASED YET
+  * optimized code related to obtaining current icon theme
+  * item list dialog is implemented
+  * vertical resize is disabled
+  * re-factored code:
+    * created a wrapper over LauncherItem
+    * moved the wrapper into a separate file
+    * defined a list of LaunchableItems
+    * started to work with LaunchableItems all over the code
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Wed,  6 Dec 2006 22:26:28 +0200
+ -- Mikhail Sobolev <mss@mawhrin.net>  Fri, 22 Dec 2006 09:23:40 +0200
 
 simple-launcher (0.6) unstable; urgency=low
 
