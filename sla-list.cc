@@ -193,7 +193,7 @@ void SLAList::moveDown(GtkButton *) {
   }
 }
 
-void SLAList::swap(GtkTreeIter *a, GtkTreeIter *b) {
+void SLAList::swap(GtkTreeIter& a, GtkTreeIter& b) {
   int i1, i2;
 
   gtk_tree_model_get(GTK_TREE_MODEL(myStore), &a, 1, &i1, -1);
