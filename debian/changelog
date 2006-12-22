@@ -1,3 +1,9 @@
+simple-launcher (0.7.1) unstable; urgency=low
+
+  * Do add the renderer to the tree view column
+
+ -- Mikhail Sobolev <mss@mawhrin.net>  Fri, 22 Dec 2006 20:25:36 +0200
+
 simple-launcher (0.7) unstable; urgency=low
 
   * optimized code related to obtaining current icon theme

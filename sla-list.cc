@@ -49,6 +49,7 @@ SLAList::SLAList(int icon_size, LaunchableItems& items): myWidget(0), myStore(0)
   renderer = gtk_cell_renderer_text_new();
   g_object_set(renderer, "yalign", 0.0, 0);
   column = gtk_tree_view_column_new();
+  gtk_tree_view_column_pack_start(column, renderer, TRUE);
   gtk_tree_view_column_set_cell_data_func(column, renderer, _renderText, this, 0);
   gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
   gtk_tree_view_column_set_expand(column, TRUE);
@@ -59,6 +60,7 @@ SLAList::SLAList(int icon_size, LaunchableItems& items): myWidget(0), myStore(0)
   g_object_set(renderer, "activatable", TRUE, 0);
   g_signal_connect(renderer, "toggled", G_CALLBACK(_toggleBool), this);
   column = gtk_tree_view_column_new();
+  gtk_tree_view_column_pack_start(column, renderer, TRUE);
   gtk_tree_view_column_set_cell_data_func(column, renderer, _renderBool, this, 0);
 
   gtk_tree_view_insert_column(myView, column, -1);
