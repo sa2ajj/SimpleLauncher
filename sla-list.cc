@@ -166,17 +166,7 @@ void SLAList::moveUp(GtkButton *) {
       GtkTreeIter next;
 
       if (gtk_tree_model_get_iter(GTK_TREE_MODEL(myStore), &next, path)) {
-        int i1, i2;
-
-        gtk_tree_model_get(GTK_TREE_MODEL(myStore), &current, 1, &i1, -1);
-        gtk_tree_model_get(GTK_TREE_MODEL(myStore), &next, 1, &i2, -1);
-
-        std::swap(myItems[i1], myItems[i2]);
-
-        gtk_list_store_set(myStore, &current, 1, i2, -1);
-        gtk_list_store_set(myStore, &next, 1, i1, -1);
-
-        gtk_list_store_swap(myStore, &current, &next);
+        swap(current, next);
       }
     }
 
@@ -196,21 +186,25 @@ void SLAList::moveDown(GtkButton *) {
     gtk_tree_path_next(path);
 
     if (gtk_tree_model_get_iter(GTK_TREE_MODEL(myStore), &next, path)) {
-      int i1, i2;
-
-      gtk_tree_model_get(GTK_TREE_MODEL(myStore), &current, 1, &i1, -1);
-      gtk_tree_model_get(GTK_TREE_MODEL(myStore), &next, 1, &i2, -1);
-
-      std::swap(myItems[i1], myItems[i2]);
-
-      gtk_list_store_set(myStore, &current, 1, i2, -1);
-      gtk_list_store_set(myStore, &next, 1, i1, -1);
-
-      gtk_list_store_swap(myStore, &current, &next);
+      swap(current, next);
     }
 
     gtk_tree_path_free(path);
   }
+}
+
+void SLAList::swap(GtkTreeIter *a, GtkTreeIter *b) {
+  int i1, i2;
+
+  gtk_tree_model_get(GTK_TREE_MODEL(myStore), &a, 1, &i1, -1);
+  gtk_tree_model_get(GTK_TREE_MODEL(myStore), &b, 1, &i2, -1);
+
+  std::swap(myItems[i1], myItems[i2]);
+
+  gtk_list_store_set(myStore, &a, 1, i2, -1);
+  gtk_list_store_set(myStore, &b, 1, i1, -1);
+
+  gtk_list_store_swap(myStore, &a, &b);
 }
 
 // vim:ts=2:sw=2:et

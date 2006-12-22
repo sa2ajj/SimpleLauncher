@@ -45,6 +45,8 @@ private:
   void moveDown(GtkButton *);
   void toggleBool(GtkCellRendererToggle *, const gchar *);
 
+  void swap(GtkTreeIter *a, GtkTreeIter *b);
+
 private:
   GtkWidget *myWidget;
   GtkListStore *myStore;
