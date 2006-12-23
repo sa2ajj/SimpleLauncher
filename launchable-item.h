@@ -18,39 +18,14 @@
 #ifndef __LAUNCHABLE_ITEM_H__
 #define __LAUNCHABLE_ITEM_H__
 
-#include <vector>
-#include <string>
-
 #include <libosso.h>
 
 #include "launcher-item.h"
 
-// TODO: or better use inheritance?
-class LaunchableItem {
+class LaunchableItem : public LauncherItem {
 public:
-  LaunchableItem(LauncherItem *, bool);
- ~LaunchableItem();
-
-  GdkPixbuf *getIcon(int icon_size) const { return myItem->getIcon(icon_size); }
-
-  const std::string& getName() const { return myItem->getName(); }
-  const std::string& getComment() const { return myItem->getComment(); }
-  const std::string& getService() const { return myItem->getService(); }
-
-  bool isEnabled(void) const { return myEnabled; }
-
-  void enable() { myEnabled = true; }
-  void disable() { myEnabled = false; }
-  void toggle() { myEnabled = !myEnabled; }
-
   bool activate(osso_context_t *);
-
-private:
-  LauncherItem *myItem;
-  bool myEnabled;
 };
-
-typedef std::vector<std::pair<std::string, LaunchableItem *> > LaunchableItems;
 
 #endif
 

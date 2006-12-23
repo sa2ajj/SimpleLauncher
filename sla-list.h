@@ -23,11 +23,11 @@
 #include <gtk/gtkbutton.h>
 #include <gtk/gtkcellrenderertoggle.h>
 
-#include "launchable-item.h"
+#include "launcher-item.h"
 
 class SLAList {
 public:
-  SLAList(int, LaunchableItems&);
+  SLAList(int, LauncherItems&);
  ~SLAList();
 
   GtkWidget *getWidget() { return myWidget; }
@@ -53,7 +53,7 @@ private:
   GtkTreeView *myView;
   GtkTreeSelection *mySelection;
 
-  LaunchableItems& myItems;
+  LauncherItems& myItems;
 };
 
 #endif

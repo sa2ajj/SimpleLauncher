@@ -17,17 +17,8 @@
 
 #include "launchable-item.h"
 
-LaunchableItem::LaunchableItem(LauncherItem *item, bool enabled): myItem(item), myEnabled(enabled) {
-}
-
-LaunchableItem::~LaunchableItem() {
-  if (myItem != 0) {
-    delete myItem;
-  }
-}
-
 bool LaunchableItem::activate(osso_context_t *context) {
-  return osso_application_top(context, myItem->getService().c_str(), 0) == OSSO_OK;
+  return osso_application_top(context, getService().c_str(), 0) == OSSO_OK;
 }
 
 // vim:ts=2:sw=2:et

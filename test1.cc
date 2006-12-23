@@ -19,9 +19,7 @@ int main(int argc, char *argv[]) {
   DIR *handle = opendir(appdir.c_str());
 
   if (handle != 0) {
-    std::map<std::string, LauncherItem *> apps;
-
-    SLAList sla_list(26);
+    LauncherItems apps;
 
     struct dirent *entry;
 
@@ -34,30 +32,23 @@ int main(int argc, char *argv[]) {
 
       if (item->load(appdir + "/" + entry->d_name)) {
         std::cout << "Loaded " << entry->d_name << std::endl;
-
-        apps[entry->d_name] = item;
-
-        sla_list.addItem(entry->d_name, item->getIcon(26), item->getName().c_str(), false);
       } else {
         std::cout << "Failed to load " << entry->d_name << std::endl;
-
-        delete item;
       }
+
+      apps.push_back(std::pair<std::string, LauncherItem *>(entry->d_name, item));
     }
 
     if (!apps.empty()) {
-      GtkDialog *dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("My dialog", 0, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, 0));
+      SLAList sla_list(26, apps);
+
+      GtkDialog *dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Launcher settings", 0, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, 0));
 
       gtk_container_add(GTK_CONTAINER(dialog->vbox), sla_list.getWidget());
 
       if (gtk_dialog_run(dialog) == GTK_RESPONSE_ACCEPT) {
-        // print sla_list.items()
-        std::vector<std::pair<std::string, bool> > items;
-        
-        sla_list.collectItems(items);
-
-        for (std::vector<std::pair<std::string, bool> >::const_iterator it = items.begin(); it != items.end(); ++it) {
-          std::cout << it->first << (it->second ? " active" : " passive") << std::endl;
+        for (LauncherItems::const_iterator it = apps.begin(); it != apps.end(); ++it) {
+          std::cout << it->first << (it->second->isEnabled() ? " active" : " passive") << std::endl;
         }
       }
 

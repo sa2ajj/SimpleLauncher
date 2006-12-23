@@ -18,17 +18,16 @@
 #ifndef __LAUNCHER_ITEM_H__
 #define __LAUNCHER_ITEM_H__
 
+#include <vector>
 #include <string>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtkicontheme.h>
 
-#include <libosso.h>
-
 class LauncherItem {
 public:
   LauncherItem();
- ~LauncherItem();
+  virtual ~LauncherItem();
 
   bool load(const std::string&);
 
@@ -37,11 +36,21 @@ public:
   const std::string& getName() const { return myName; }
   const std::string& getComment() const { return myComment; }
   const std::string& getService() const { return myService; }
+
+  bool isEnabled(void) const { return myEnabled; }
+
+  void enable() { myEnabled = true; }
+  void disable() { myEnabled = false; }
+  void toggle() { myEnabled = !myEnabled; }
+
 private:
   std::string myName, myComment, myIcon, myService;
+  bool myEnabled;
 
   static GtkIconTheme *ourTheme;
 };
+
+typedef std::vector<std::pair<std::string, LauncherItem *> > LauncherItems;
 
 #endif
 

@@ -61,7 +61,7 @@ private:
   GtkWidget *myWidget;
   GtkWindow *myParent;
 
-  LaunchableItems myItems;
+  LauncherItems myItems;
 
   static char *ourFiles[];
 };
@@ -127,10 +127,10 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
   }
 
   for (int i = 0 ; ourFiles[i] != 0 ; ++i) {
-    LauncherItem *item = new LauncherItem();
+    LaunchableItem *item = new LaunchableItem();
 
     if (item->load(ourFiles[i])) {
-      myItems.push_back(std::pair<std::string, LaunchableItem *>(ourFiles[i], new LaunchableItem(item, true)));
+      myItems.push_back(std::pair<std::string, LauncherItem *>(ourFiles[i], item));
     } else {
       delete item;
     }
@@ -146,7 +146,7 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
 }
 
 SimpleLauncherApplet::~SimpleLauncherApplet() {
-  for (LaunchableItems::iterator it = myItems.begin(); it != myItems.end(); ++it) {
+  for (LauncherItems::iterator it = myItems.begin(); it != myItems.end(); ++it) {
     if (it->second != 0) {
       delete it->second;
       it->second = 0;
@@ -171,7 +171,7 @@ bool SimpleLauncherApplet::initWidget() {
 
   GtkToolbar *toolbar = GTK_TOOLBAR(gtk_toolbar_new());
 
-  for (LaunchableItems::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
+  for (LauncherItems::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
     GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf(it->second->getIcon(SL_APPLET_ICON_SIZE)), 0);
 
     gtk_object_set_user_data(GTK_OBJECT(button), it->second);
