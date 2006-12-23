@@ -57,7 +57,7 @@ inline std::string getLocaleStringWrapper(GKeyFile *keyFile, const gchar *group,
   return result;
 }
 
-LauncherItem::LauncherItem() {
+LauncherItem::LauncherItem(): myEnabled(false) {
 }
 
 LauncherItem::~LauncherItem() {
