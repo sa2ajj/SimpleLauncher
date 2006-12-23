@@ -27,6 +27,15 @@
 
 #include "sla-list.h"
 
+static GtkWidget *gtk_button_new_stock_image_only(const gchar *stock_id) {
+  GtkWidget *button = gtk_button_new();
+  GtkWidget *image = gtk_image_new_from_stock(stock_id, GTK_ICON_SIZE_BUTTON);
+
+  gtk_container_add(GTK_CONTAINER(button), image);
+
+  return button;
+}
+
 SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(0), myStore(0), myView(0), mySelection(0), myItems(items) {
   GtkTreeViewColumn *column;
   GtkCellRenderer *renderer;
@@ -72,8 +81,8 @@ SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(0), myStore(0), 
 
   gtk_widget_set_size_request(swindow, 500, 300);
 
-  GtkWidget *move_up = gtk_button_new_from_stock(GTK_STOCK_GO_UP),
-            *move_down = gtk_button_new_from_stock(GTK_STOCK_GO_DOWN);
+  GtkWidget *move_up = gtk_button_new_stock_image_only(GTK_STOCK_GO_UP),
+            *move_down = gtk_button_new_stock_image_only(GTK_STOCK_GO_DOWN);
   GtkTable *table = GTK_TABLE(gtk_table_new(4, 1, FALSE));
   gtk_table_attach(table, move_up, 0, 1, 1, 2, (GtkAttachOptions)(GTK_EXPAND|GTK_FILL), GTK_EXPAND, 0, 0);
   gtk_table_attach(table, move_down, 0, 1, 2, 3, (GtkAttachOptions)(GTK_EXPAND|GTK_FILL), GTK_EXPAND, 0, 0);
