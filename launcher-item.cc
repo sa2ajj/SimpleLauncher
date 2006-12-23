@@ -31,31 +31,58 @@ static const char *DESKTOP_ENTRY_GROUP = "Desktop Entry",
                   *DESKTOP_ENTRY_COMMENT_FIELD = "Comment",
                   *DESKTOP_ENTRY_SERVICE_FIELD = "X-Osso-Service";
 
-inline std::string getStringWrapper(GKeyFile *keyFile, const gchar *group, const gchar *itemName) {
-  gchar *tempo = g_key_file_get_string(keyFile, group, itemName, 0);
-  std::string result;
-
-  if (tempo != 0) {
-    result.assign(tempo);
-
-    g_free(tempo);
+class GKeyFileWrapper {
+public:
+  GKeyFileWrapper() {
+    myKeyFile = g_key_file_new();
   }
 
-  return result;
-}
-
-inline std::string getLocaleStringWrapper(GKeyFile *keyFile, const gchar *group, const gchar *itemName) {
-  gchar *tempo = g_key_file_get_locale_string(keyFile, group, itemName, 0, 0);
-  std::string result;
-
-  if (tempo != 0) {
-    result.assign(tempo);
-
-    g_free(tempo);
+ ~GKeyFileWrapper() {
+    if (myKeyFile != 0) {
+      g_key_file_free(myKeyFile);
+    }
   }
 
-  return result;
-}
+  bool load(const std::string& name) {
+    GError *error = 0;
+    bool result = g_key_file_load_from_file(myKeyFile, name.c_str(), G_KEY_FILE_NONE, &error);
+
+    if (error != 0) {
+      g_error_free(error);
+    }
+
+    return result;
+  }
+
+  std::string getString(const gchar *group, const gchar *itemName) {
+    gchar *tempo = g_key_file_get_string(myKeyFile, group, itemName, 0);
+    std::string result;
+
+    if (tempo != 0) {
+      result.assign(tempo);
+
+      g_free(tempo);
+    }
+
+    return result;
+  }
+
+  std::string getLocaleString(const gchar *group, const gchar *itemName) {
+    gchar *tempo = g_key_file_get_locale_string(myKeyFile, group, itemName, 0, 0);
+    std::string result;
+
+    if (tempo != 0) {
+      result.assign(tempo);
+
+      g_free(tempo);
+    }
+
+    return result;
+  }
+
+private:
+  GKeyFile *myKeyFile;
+};
 
 LauncherItem::LauncherItem(): myEnabled(false) {
 }
@@ -64,37 +91,23 @@ LauncherItem::~LauncherItem() {
 }
 
 bool LauncherItem::load(const std::string& filename) {
-  GKeyFile *key_file = 0;
-  GError *error = 0;
+  GKeyFileWrapper key_file;
 
   for (;;) {
-    if ((key_file = g_key_file_new()) == 0) {
+    if (!key_file.load(filename)) {
       break;
     }
 
-    if (!g_key_file_load_from_file(key_file, filename.c_str(), G_KEY_FILE_NONE, &error)) {
+    if (key_file.getString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_TYPE_FIELD) != "Application") {
       break;
     }
 
-    if (getStringWrapper(key_file, DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_TYPE_FIELD) != "Application") {
-      break;
-    }
-
-    myName = getStringWrapper(key_file, DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_NAME_FIELD);
-    myComment = getLocaleStringWrapper(key_file, DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_COMMENT_FIELD);
-    myIcon = getStringWrapper(key_file, DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_ICON_FIELD);
-    myService = getStringWrapper(key_file, DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_SERVICE_FIELD);
+    myName = key_file.getLocaleString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_NAME_FIELD);
+    myComment = key_file.getLocaleString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_COMMENT_FIELD);
+    myIcon = key_file.getString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_ICON_FIELD);
+    myService = key_file.getString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_SERVICE_FIELD);
 
     break;
-  }
-
-  if (error != 0) {
-    g_error_free(error);
-    error = 0;
-  }
-
-  if (key_file != 0) {
-    g_key_file_free(key_file);
   }
 
   return !(myName.empty() || myIcon.empty() || myService.empty());
