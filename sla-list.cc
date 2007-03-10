@@ -44,6 +44,7 @@ SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(0), myStore(0), 
 
   myView = GTK_TREE_VIEW(gtk_tree_view_new_with_model(GTK_TREE_MODEL(myStore)));
   gtk_tree_view_set_headers_visible(myView, FALSE);
+  g_object_set(myView, "allow-checkbox-mode", FALSE, NULL);
 
   mySelection = gtk_tree_view_get_selection(myView);
   gtk_tree_selection_set_mode(mySelection, GTK_SELECTION_SINGLE);
