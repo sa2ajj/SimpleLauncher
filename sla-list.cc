@@ -36,7 +36,7 @@ static GtkWidget *gtk_button_new_stock_image_only(const gchar *stock_id) {
   return button;
 }
 
-SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(0), myStore(0), myView(0), mySelection(0), myItems(items) {
+SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(NULL), myView(NULL), mySelection(NULL), myItems(items) {
   GtkTreeViewColumn *column;
   GtkCellRenderer *renderer;
 
@@ -50,32 +50,32 @@ SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(0), myStore(0), 
   gtk_tree_selection_set_mode(mySelection, GTK_SELECTION_SINGLE);
 
   renderer = gtk_cell_renderer_pixbuf_new();
-  g_object_set(renderer, "yalign", 0.0, 0);
+  g_object_set(renderer, "yalign", 0.0, NULL);
   gtk_cell_renderer_set_fixed_size(renderer, icon_size+4, -1);
-  column = GTK_TREE_VIEW_COLUMN(gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", 0, 0));
+  column = GTK_TREE_VIEW_COLUMN(gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", 0, NULL));
 
   gtk_tree_view_insert_column(myView, column, -1);
 
   renderer = gtk_cell_renderer_text_new();
-  g_object_set(renderer, "yalign", 0.0, 0);
+  g_object_set(renderer, "yalign", 0.0, NULL);
   column = gtk_tree_view_column_new();
   gtk_tree_view_column_pack_start(column, renderer, TRUE);
-  gtk_tree_view_column_set_cell_data_func(column, renderer, _renderText, this, 0);
+  gtk_tree_view_column_set_cell_data_func(column, renderer, _renderText, this, NULL);
   gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
   gtk_tree_view_column_set_expand(column, TRUE);
 
   gtk_tree_view_insert_column(myView, column, -1);
 
   renderer = gtk_cell_renderer_toggle_new();
-  g_object_set(renderer, "activatable", TRUE, 0);
+  g_object_set(renderer, "activatable", TRUE, NULL);
   g_signal_connect(renderer, "toggled", G_CALLBACK(_toggleBool), this);
   column = gtk_tree_view_column_new();
   gtk_tree_view_column_pack_start(column, renderer, TRUE);
-  gtk_tree_view_column_set_cell_data_func(column, renderer, _renderBool, this, 0);
+  gtk_tree_view_column_set_cell_data_func(column, renderer, _renderBool, this, NULL);
 
   gtk_tree_view_insert_column(myView, column, -1);
 
-  GtkWidget *swindow = gtk_scrolled_window_new(0, 0);
+  GtkWidget *swindow = gtk_scrolled_window_new(NULL, NULL);
 
   gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(swindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_container_add(GTK_CONTAINER(swindow), GTK_WIDGET(myView));
@@ -136,11 +136,11 @@ void SLAList::renderText(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeMode
 #if 1
   if (gtk_tree_selection_iter_is_selected(mySelection, iter)) {
     gchar *text = g_markup_printf_escaped("%s\n<small>%s</small>", myItems[index].second->getName().c_str(), myItems[index].second->getComment().c_str());
-    g_object_set(cell, "markup", text, 0);
+    g_object_set(cell, "markup", text, NULL);
     g_free(text);
   } else {
 #endif
-    g_object_set(cell, "text", myItems[index].second->getName().c_str(), 0);
+    g_object_set(cell, "text", myItems[index].second->getName().c_str(), NULL);
 #if 1
   }
 #endif
@@ -151,7 +151,7 @@ void SLAList::renderBool(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeMode
 
   gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, 1, &index, -1);
 
-  g_object_set(cell, "active", myItems[index].second->isEnabled(), 0);
+  g_object_set(cell, "active", myItems[index].second->isEnabled(), NULL);
 }
 
 void SLAList::toggleBool(GtkCellRendererToggle *renderer, const gchar *spath) {

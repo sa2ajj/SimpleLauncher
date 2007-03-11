@@ -18,7 +18,7 @@
 #include "launchable-item.h"
 
 bool LaunchableItem::activate(osso_context_t *context) {
-  return osso_application_top(context, getService().c_str(), 0) == OSSO_OK;
+  return osso_application_top(context, getService().c_str(), NULL) == OSSO_OK;
 }
 
 // vim:ts=2:sw=2:et

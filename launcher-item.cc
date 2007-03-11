@@ -22,7 +22,7 @@
 
 #include "launcher-item.h"
 
-GtkIconTheme *LauncherItem::ourTheme = 0;
+GtkIconTheme *LauncherItem::ourTheme = NULL;
 
 static const char *DESKTOP_ENTRY_GROUP = "Desktop Entry",
                   *DESKTOP_ENTRY_TYPE_FIELD = "Type",
@@ -38,16 +38,16 @@ public:
   }
 
  ~GKeyFileWrapper() {
-    if (myKeyFile != 0) {
+    if (myKeyFile != NULL) {
       g_key_file_free(myKeyFile);
     }
   }
 
   bool load(const std::string& name) {
-    GError *error = 0;
+    GError *error = NULL;
     bool result = g_key_file_load_from_file(myKeyFile, name.c_str(), G_KEY_FILE_NONE, &error);
 
-    if (error != 0) {
+    if (error != NULL) {
       g_error_free(error);
     }
 
@@ -55,10 +55,10 @@ public:
   }
 
   std::string getString(const gchar *group, const gchar *itemName) {
-    gchar *tempo = g_key_file_get_string(myKeyFile, group, itemName, 0);
+    gchar *tempo = g_key_file_get_string(myKeyFile, group, itemName, NULL);
     std::string result;
 
-    if (tempo != 0) {
+    if (tempo != NULL) {
       result.assign(tempo);
 
       g_free(tempo);
@@ -68,10 +68,10 @@ public:
   }
 
   std::string getLocaleString(const gchar *group, const gchar *itemName) {
-    gchar *tempo = g_key_file_get_locale_string(myKeyFile, group, itemName, 0, 0);
+    gchar *tempo = g_key_file_get_locale_string(myKeyFile, group, itemName, NULL, NULL);
     std::string result;
 
-    if (tempo != 0) {
+    if (tempo != NULL) {
       result.assign(tempo);
 
       g_free(tempo);
@@ -114,18 +114,18 @@ bool LauncherItem::load(const std::string& filename) {
 }
 
 GdkPixbuf *LauncherItem::getIcon(int icon_size) const {
-  GdkPixbuf *pixbuf = 0;
+  GdkPixbuf *pixbuf = NULL;
 
   if (!myIcon.empty()) {
-    if (ourTheme == 0) {
+    if (ourTheme == NULL) {
       ourTheme = gtk_icon_theme_get_default();
     }
 
-    GError *error = 0;
+    GError *error = NULL;
 
     pixbuf = gtk_icon_theme_load_icon(ourTheme, myIcon.c_str(), icon_size, GTK_ICON_LOOKUP_NO_SVG, &error);
 
-    if (error != 0) {
+    if (error != NULL) {
       g_error_free(error);
       error = NULL;
     }
