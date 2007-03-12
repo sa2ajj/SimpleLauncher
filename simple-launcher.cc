@@ -214,7 +214,7 @@ int SimpleLauncherApplet::saveState(void **state_data, int *state_size) {
   }
 
   if (state_size != NULL) {
-    *state_size = NULL;
+    *state_size = 0;
   }
 
   return 1;
