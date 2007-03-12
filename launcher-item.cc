@@ -94,6 +94,8 @@ bool LauncherItem::load(const std::string& filename) {
   GKeyFileWrapper key_file;
 
   for (;;) {
+    myFileName = filename;
+
     if (!key_file.load(filename)) {
       break;
     }
@@ -110,7 +112,7 @@ bool LauncherItem::load(const std::string& filename) {
     break;
   }
 
-  return !(myName.empty() || myIcon.empty() || myService.empty());
+  return (myEnabled = checkSanity());
 }
 
 GdkPixbuf *LauncherItem::getIcon(int icon_size) const {

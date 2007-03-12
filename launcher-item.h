@@ -33,18 +33,28 @@ public:
 
   GdkPixbuf *getIcon(int icon_size) const;
 
+  const std::string& getFileName() const { return myFileName; }
   const std::string& getName() const { return myName; }
   const std::string& getComment() const { return myComment; }
   const std::string& getService() const { return myService; }
 
   bool isEnabled(void) const { return myEnabled; }
 
-  void enable() { myEnabled = true; }
+  void enable() { myEnabled = checkSanity(); }
   void disable() { myEnabled = false; }
-  void toggle() { myEnabled = !myEnabled; }
+  void toggle() {
+    if (myEnabled) {
+      disable();
+    } else {
+      enable();
+    }
+  }
 
 private:
-  std::string myName, myComment, myIcon, myService;
+  bool checkSanity(void) { return !(myName.empty() || myIcon.empty() || myService.empty()); }
+
+private:
+  std::string myFileName, myName, myComment, myIcon, myService;
   bool myEnabled;
 
   static GtkIconTheme *ourTheme;
