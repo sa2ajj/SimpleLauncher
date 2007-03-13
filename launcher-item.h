@@ -19,6 +19,7 @@
 #define __LAUNCHER_ITEM_H__
 
 #include <vector>
+#include <map>
 #include <string>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -60,7 +61,44 @@ private:
   static GtkIconTheme *ourTheme;
 };
 
-typedef std::vector<std::pair<std::string, LauncherItem *> > LauncherItems;
+typedef struct {
+  typedef std::vector<std::string> Names;
+  typedef std::map<std::string, LauncherItem *> Items;
+
+  Names myNames;
+  Items myItems;
+
+  size_t size() { return myNames.size(); }
+
+  LauncherItem *operator[](int index) {
+    return myItems[myNames[index]];
+  }
+
+  std::string& name(int index) {
+    return myNames[index];
+  }
+
+  void add(std::string& name, LauncherItem *item) {
+    myNames.push_back(name);
+    myItems[name] = item;
+  }
+
+  void swap(size_t i1, size_t i2) {
+    std::swap(myNames[i1], myNames[i2]);
+  }
+
+  void clear() {
+    for (Items::iterator it = myItems.begin(); it != myItems.end(); ++it) {
+      if (it->second != NULL) {
+        delete it->second;
+        it->second = NULL;
+      }
+    }
+
+    myNames.resize(0);
+    myItems.clear();
+  }
+} LauncherItems;
 
 #endif
 

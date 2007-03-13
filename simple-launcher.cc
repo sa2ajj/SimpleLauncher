@@ -138,14 +138,7 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
 }
 
 SimpleLauncherApplet::~SimpleLauncherApplet() {
-  for (LauncherItems::iterator it = myItems.begin(); it != myItems.end(); ++it) {
-    if (it->second != NULL) {
-      delete it->second;
-      it->second = NULL;
-    }
-  }
-
-  myItems.resize(0);
+  myItems.clear();
 
   if (myWidget != NULL) {
     gtk_widget_destroy(myWidget);
@@ -179,8 +172,8 @@ void SimpleLauncherApplet::saveConfig() {
   std::ofstream config(configFileName);
 
   if (config) {
-    for (LauncherItems::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
-      config << it->first << ',' << it->second->isEnabled() << std::endl;
+    for (size_t i = 0 ; i < myItems.size() ; ++i) {
+      config << myItems.name(i) << ',' << myItems[i]->isEnabled() << std::endl;
     }
   }
 }
@@ -190,7 +183,6 @@ bool SimpleLauncherApplet::initWidget() {
 
   if (myWidget != NULL) {
     gtk_frame_set_shadow_type(GTK_FRAME(myWidget), GTK_SHADOW_ETCHED_IN);
-    gtk_widget_set_size_request(myWidget, button_no*(SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE), SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
 
     updateWidget();
   }
@@ -209,19 +201,24 @@ void SimpleLauncherApplet::updateWidget() {
   int button_no = 0;
   GtkToolbar *toolbar = GTK_TOOLBAR(gtk_toolbar_new());
 
-  for (LauncherItems::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
-    GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf(it->second->getIcon(SL_APPLET_ICON_SIZE)), NULL);
+  for (size_t i = 0 ; i < myItems.size() ; ++i) {
+    LauncherItem *item = myItems[i];
 
-    gtk_object_set_user_data(GTK_OBJECT(button), it->second);
-    g_signal_connect(button, "clicked", G_CALLBACK(_button_clicked), this);
+    if (item != NULL && item->isEnabled()) {
+      GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf(item->getIcon(SL_APPLET_ICON_SIZE)), NULL);
 
-    gtk_toolbar_insert(toolbar, button, -1);
+      gtk_object_set_user_data(GTK_OBJECT(button), item);
+      g_signal_connect(button, "clicked", G_CALLBACK(_button_clicked), this);
 
-    ++button_no;
+      gtk_toolbar_insert(toolbar, button, -1);
+
+      ++button_no;
+    }
   }
 
   if (button_no) {
     gtk_container_add(GTK_CONTAINER(myWidget), GTK_WIDGET(toolbar));
+    gtk_widget_set_size_request(myWidget, button_no*(SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE), SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
   } else {
     gtk_widget_destroy(GTK_WIDGET(toolbar));
   }

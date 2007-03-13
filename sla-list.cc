@@ -97,11 +97,12 @@ SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(N
 
   gtk_widget_show_all(myWidget);
 
-  for (LauncherItems::const_iterator item = myItems.begin(); item != myItems.end(); ++item) {
+  for (LauncherItems::Names::const_iterator it = myItems.myNames.begin(); it != myItems.myNames.end(); ++it) {
+    LauncherItem *item = myItems.myItems[*it];
     GtkTreeIter iter;
 
     gtk_list_store_append(myStore, &iter);
-    gtk_list_store_set(myStore, &iter, 0, item->second->getIcon(icon_size), 1, item-myItems.begin(), -1);
+    gtk_list_store_set(myStore, &iter, 0, item->getIcon(icon_size), 1, it-myItems.myNames.begin(), -1);
   }
 }
 
@@ -133,14 +134,16 @@ void SLAList::renderText(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeMode
   int index;
 
   gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, 1, &index, -1);
+
+  LauncherItem *item = myItems[index];
 #if 1
   if (gtk_tree_selection_iter_is_selected(mySelection, iter)) {
-    gchar *text = g_markup_printf_escaped("%s\n<small>%s</small>", myItems[index].second->getName().c_str(), myItems[index].second->getComment().c_str());
+    gchar *text = g_markup_printf_escaped("%s\n<small>%s</small>", item->getName().c_str(), item->getComment().c_str());
     g_object_set(cell, "markup", text, NULL);
     g_free(text);
   } else {
 #endif
-    g_object_set(cell, "text", myItems[index].second->getName().c_str(), NULL);
+    g_object_set(cell, "text", item->getName().c_str(), NULL);
 #if 1
   }
 #endif
@@ -151,7 +154,7 @@ void SLAList::renderBool(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeMode
 
   gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, 1, &index, -1);
 
-  g_object_set(cell, "active", myItems[index].second->isEnabled(), NULL);
+  g_object_set(cell, "active", myItems[index]->isEnabled(), NULL);
 }
 
 void SLAList::toggleBool(GtkCellRendererToggle *renderer, const gchar *spath) {
@@ -161,7 +164,7 @@ void SLAList::toggleBool(GtkCellRendererToggle *renderer, const gchar *spath) {
     int index;
 
     gtk_tree_model_get(GTK_TREE_MODEL(myStore), &iter, 1, &index, -1);
-    myItems[index].second->toggle();
+    myItems[index]->toggle();
   }
 }
 
@@ -210,7 +213,7 @@ void SLAList::swap(GtkTreeIter& a, GtkTreeIter& b) {
   gtk_tree_model_get(GTK_TREE_MODEL(myStore), &a, 1, &i1, -1);
   gtk_tree_model_get(GTK_TREE_MODEL(myStore), &b, 1, &i2, -1);
 
-  std::swap(myItems[i1], myItems[i2]);
+  myItems.swap(i1, i2);
 
   gtk_list_store_set(myStore, &a, 1, i2, -1);
   gtk_list_store_set(myStore, &b, 1, i1, -1);
