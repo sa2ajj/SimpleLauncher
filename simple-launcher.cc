@@ -17,6 +17,7 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 
 #include <gtk/gtk.h>
 
@@ -48,6 +49,9 @@ public:
   GtkWidget *getWidget() { return myWidget; }
 
 private:
+  void loadConfig();
+  void saveConfig();
+
   bool initWidget();
 
   void buttonClicked(GtkToolButton *);
@@ -63,7 +67,7 @@ private:
 
   LauncherItems myItems;
 
-  static char *ourFiles[];
+  static char *ourDirs[];
 };
 
 // Hildon home applet interface functions
@@ -107,13 +111,8 @@ int hildon_home_applet_lib_save_state (void *applet_data, void **state_data, int
 
 // SimpleLauncherApplet implementation
 
-char *SimpleLauncherApplet::ourFiles[] = {
-  "/usr/share/applications/hildon/FBReader.desktop",
-  "/usr/share/applications/hildon/mp_ui.desktop",
-  "/usr/share/applications/hildon/osso-xterm.desktop",
-  "/usr/share/applications/hildon/filemanager.desktop",
-  "/usr/share/applications/hildon/osso-application-installer.desktop",
-  "/usr/share/applications/hildon/hildon-control-panel.desktop",
+char *SimpleLauncherApplet::ourDirs[] = {
+  "/usr/share/applications/hildon",
   NULL
 };
 
@@ -126,15 +125,7 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
     return false;
   }
 
-  for (int i = 0 ; ourFiles[i] != NULL ; ++i) {
-    LaunchableItem *item = new LaunchableItem();
-
-    if (item->load(ourFiles[i])) {
-      myItems.push_back(std::pair<std::string, LauncherItem *>(ourFiles[i], item));
-    } else {
-      delete item;
-    }
-  }
+  loadConfig();
 
   if (!initWidget()) {
     return false;
@@ -163,6 +154,33 @@ SimpleLauncherApplet::~SimpleLauncherApplet() {
   if (myContext != NULL) {
     osso_deinitialize(myContext);
     myContext = NULL;
+  }
+}
+
+static char *configFileName="/home/user/.slarc";
+
+void SimpleLauncherApplet::loadConfig() {
+#if 0
+  for (int i = 0 ; ourFiles[i] != NULL ; ++i) {
+    LaunchableItem *item = new LaunchableItem();
+
+    if (item->load(ourFiles[i])) {
+      myItems.push_back(std::pair<std::string, LauncherItem *>(ourFiles[i], item));
+    } else {
+      delete item;
+    }
+  }
+#endif
+}
+
+void SimpleLauncherApplet::saveConfig() {
+  // TODO: make saving config an atomic operation
+  std::ofstream config(configFileName);
+
+  if (config) {
+    for (LauncherItems::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
+      config << it->first << ',' << it->second->isEnabled() << std::endl;
+    }
   }
 }
 
