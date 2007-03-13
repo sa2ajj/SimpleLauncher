@@ -53,6 +53,7 @@ private:
   void saveConfig();
 
   bool initWidget();
+  void updateWidget();
 
   void buttonClicked(GtkToolButton *);
   void runDialog();
@@ -185,8 +186,27 @@ void SimpleLauncherApplet::saveConfig() {
 }
 
 bool SimpleLauncherApplet::initWidget() {
-  int button_no = 0;
+  myWidget = gtk_frame_new(NULL);
 
+  if (myWidget != NULL) {
+    gtk_frame_set_shadow_type(GTK_FRAME(myWidget), GTK_SHADOW_ETCHED_IN);
+    gtk_widget_set_size_request(myWidget, button_no*(SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE), SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
+
+    updateWidget();
+  }
+
+  return myWidget != NULL;
+}
+
+void SimpleLauncherApplet::updateWidget() {
+  GtkWidget *child = gtk_bin_get_child(GTK_BIN(myWidget));
+
+  if (child != NULL) {
+    gtk_container_remove(GTK_CONTAINER(myWidget), child);
+    gtk_widget_destroy(child);
+  }
+
+  int button_no = 0;
   GtkToolbar *toolbar = GTK_TOOLBAR(gtk_toolbar_new());
 
   for (LauncherItems::const_iterator it = myItems.begin(); it != myItems.end(); ++it) {
@@ -201,15 +221,10 @@ bool SimpleLauncherApplet::initWidget() {
   }
 
   if (button_no) {
-    myWidget = gtk_frame_new(NULL);
-    gtk_frame_set_shadow_type(GTK_FRAME(myWidget), GTK_SHADOW_ETCHED_IN);
-    gtk_widget_set_size_request(myWidget, button_no*(SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE), SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
     gtk_container_add(GTK_CONTAINER(myWidget), GTK_WIDGET(toolbar));
   } else {
     gtk_widget_destroy(GTK_WIDGET(toolbar));
   }
-
-  return myWidget != NULL;
 }
 
 void SimpleLauncherApplet::_button_clicked(GtkToolButton *button, void *self) {
