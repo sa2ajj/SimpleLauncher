@@ -21,6 +21,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <algorithm>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtkicontheme.h>
@@ -69,7 +70,7 @@ typedef struct {
   Items myItems;
 
   bool exists(const std::string& name) {
-    return myNames.find(name) != myNames.end();
+    return std::find(myNames.begin(), myNames.end(), name) != myNames.end();
   }
 
   size_t size() { return myNames.size(); }
