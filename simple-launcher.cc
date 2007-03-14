@@ -49,6 +49,8 @@ public:
   GtkWidget *getWidget() { return myWidget; }
 
 private:
+  void addItem(const std::string&, bool);
+
   void loadConfig();
   void saveConfig();
 
@@ -151,6 +153,22 @@ SimpleLauncherApplet::~SimpleLauncherApplet() {
   }
 }
 
+void SimpleLauncherApplet::addItem(const std::string& name, bool enabled) {
+  if (!myItems.exists(name)) {
+    LaunchableItem *item = new LaunchableItem();
+
+    item->load(name);
+
+    if (enabled) {
+      item->enable();
+    } else {
+      item->disable();
+    }
+
+    myItems.add(name, item);
+  }
+}
+
 static char *configFileName="/home/user/.slarc";
 
 void SimpleLauncherApplet::loadConfig() {
@@ -166,22 +184,12 @@ void SimpleLauncherApplet::loadConfig() {
         *p++ = '\0';
       }
 
-      LaunchableItem *item = new LaunchableItem();
+      addItem(buffer, (p != NULL && (*p == '1' || *p == 'y' || *p == 'Y')));
 
-      item->load(buffer);
-
-      if (p != NULL && (*p == '1' || *p == 'y' || *p == 'Y')) {
-        item->enable();
-      } else {
-        item->disable();
-      }
-
-      myItems.add(buffer, item);
     }
 
     delete buffer;
   }
-
 #if 0
   for (int i = 0 ; ourFiles[i] != NULL ; ++i) {
     LaunchableItem *item = new LaunchableItem();
