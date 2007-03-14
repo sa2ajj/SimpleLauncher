@@ -154,6 +154,34 @@ SimpleLauncherApplet::~SimpleLauncherApplet() {
 static char *configFileName="/home/user/.slarc";
 
 void SimpleLauncherApplet::loadConfig() {
+  std::ifstream config(configFileName);
+
+  if (config) {
+    char *buffer = new char [1024];
+
+    while (config.getline(buffer, 1024)) {
+      char *p = strchr(buffer, ',');
+
+      if (p != NULL) {
+        *p++ = '\0';
+      }
+
+      LaunchableItem *item = new LaunchableItem();
+
+      item->load(buffer);
+
+      if (p != NULL && (*p == '1' || *p == 'y' || *p == 'Y')) {
+        item->enable();
+      } else {
+        item->disable();
+      }
+
+      myItems.add(buffer, item);
+    }
+
+    delete buffer;
+  }
+
 #if 0
   for (int i = 0 ; ourFiles[i] != NULL ; ++i) {
     LaunchableItem *item = new LaunchableItem();
