@@ -68,6 +68,10 @@ typedef struct {
   Names myNames;
   Items myItems;
 
+  bool exists(const std::string& name) {
+    return myNames.find(name) != myNames.end();
+  }
+
   size_t size() { return myNames.size(); }
 
   LauncherItem *operator[](int index) {
