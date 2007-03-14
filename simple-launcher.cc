@@ -19,6 +19,8 @@
 #include <vector>
 #include <fstream>
 
+#include <dirent.h>
+
 #include <gtk/gtk.h>
 
 #include <hildon-home-plugin/hildon-home-plugin-interface.h>
@@ -210,6 +212,27 @@ void SimpleLauncherApplet::saveConfig() {
 }
 
 void SimpleLauncherApplet::processDirectory(const std::string& dirname) {
+  DIR *dir = opendir(dirname.c_str());
+
+  if (dir != NULL) {
+    const std::string namePrefix = dirname + "/";
+    std::string shortName;
+    std::string desktopExtension = ".desktop";
+    const dirent *file;
+
+    while ((file = readdir(dir)) != 0) {
+      shortName = file->d_name;
+      if ((shortName == ".") || (shortName == "..")) {
+        continue;
+      }
+
+      if ((shortName.length() >= desktopExtension.length()) && (shortName.compare(shortName.length() - desktopExtension.length(), desktopExtension.length(), desktopExtension) == 0)) {
+        addItem(namePrefix+shortName, false);
+      }
+    }
+
+    closedir(dir);
+  }
 }
 
 bool SimpleLauncherApplet::initWidget() {
