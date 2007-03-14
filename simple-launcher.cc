@@ -54,6 +54,8 @@ private:
   void loadConfig();
   void saveConfig();
 
+  void processDirectory(const std::string&);
+
   bool initWidget();
   void updateWidget();
 
@@ -130,6 +132,10 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
 
   loadConfig();
 
+  for (int i = 0 ; ourDirs[i] != NULL ; ++i) {
+    processDirectory(ourDirs[i]);
+  }
+
   if (!initWidget()) {
     return false;
   }
@@ -190,17 +196,6 @@ void SimpleLauncherApplet::loadConfig() {
 
     delete buffer;
   }
-#if 0
-  for (int i = 0 ; ourFiles[i] != NULL ; ++i) {
-    LaunchableItem *item = new LaunchableItem();
-
-    if (item->load(ourFiles[i])) {
-      myItems.push_back(std::pair<std::string, LauncherItem *>(ourFiles[i], item));
-    } else {
-      delete item;
-    }
-  }
-#endif
 }
 
 void SimpleLauncherApplet::saveConfig() {
@@ -212,6 +207,9 @@ void SimpleLauncherApplet::saveConfig() {
       config << myItems.name(i) << ',' << myItems[i]->isEnabled() << std::endl;
     }
   }
+}
+
+void SimpleLauncherApplet::processDirectory(const std::string& dirname) {
 }
 
 bool SimpleLauncherApplet::initWidget() {
