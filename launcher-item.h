@@ -78,7 +78,7 @@ typedef struct {
     return myNames[index];
   }
 
-  void add(std::string& name, LauncherItem *item) {
+  void add(const std::string& name, LauncherItem *item) {
     myNames.push_back(name);
     myItems[name] = item;
   }
