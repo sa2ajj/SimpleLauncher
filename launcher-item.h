@@ -62,7 +62,7 @@ private:
   static GtkIconTheme *ourTheme;
 };
 
-typedef struct {
+typedef struct LauncherItems {
   typedef std::vector<std::string> Names;
   typedef std::map<std::string, LauncherItem *> Items;
 
@@ -103,7 +103,14 @@ typedef struct {
     myNames.resize(0);
     myItems.clear();
   }
-} LauncherItems;
+
+  LauncherItems& operator=(const LauncherItems& that) {
+    myNames = that.myNames;
+    myItems = that.myItems;
+
+    return *this;
+  }
+};
 
 #endif
 
