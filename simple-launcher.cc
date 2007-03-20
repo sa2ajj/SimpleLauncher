@@ -326,7 +326,9 @@ void SimpleLauncherApplet::_run_dialog(GtkMenuItem *, void *self) {
 }
 
 void SimpleLauncherApplet::runDialog() {
-  SLAList list(SL_APPLET_ICON_SIZE, myItems);
+  LauncherItems newItems = myItems;
+
+  SLAList list(SL_APPLET_ICON_SIZE, newItems);
 
   GtkDialog *dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Launcher Settings", myParent, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), "OK", GTK_RESPONSE_OK, "Cancel", GTK_RESPONSE_CANCEL, NULL));
 
@@ -340,6 +342,9 @@ void SimpleLauncherApplet::runDialog() {
 
   switch (response) {
     case GTK_RESPONSE_OK:
+      myItems = newItems;
+      updateWidget();
+      saveConfig();
       break;
 
     case GTK_RESPONSE_CANCEL:
