@@ -51,12 +51,13 @@ public:
   GtkWidget *getWidget() { return myWidget; }
 
 private:
-  void addItem(const std::string&, bool);
+  static void addItem(LauncherItems&, const std::string&, bool);
 
   void loadConfig();
   void saveConfig();
 
-  void processDirectory(const std::string&);
+  static void updateItems(LauncherItems&);
+  static void processDirectory(LauncherItems&, const std::string&);
 
   bool initWidget();
   void updateWidget();
@@ -134,10 +135,6 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
 
   loadConfig();
 
-  for (int i = 0 ; ourDirs[i] != NULL ; ++i) {
-    processDirectory(ourDirs[i]);
-  }
-
   if (!initWidget()) {
     return false;
   }
@@ -161,8 +158,8 @@ SimpleLauncherApplet::~SimpleLauncherApplet() {
   }
 }
 
-void SimpleLauncherApplet::addItem(const std::string& name, bool enabled) {
-  if (!myItems.exists(name)) {
+void SimpleLauncherApplet::addItem(LauncherItems& items, const std::string& name, bool enabled) {
+  if (!items.exists(name)) {
     LaunchableItem *item = new LaunchableItem();
 
     item->load(name);
@@ -173,7 +170,7 @@ void SimpleLauncherApplet::addItem(const std::string& name, bool enabled) {
       item->disable();
     }
 
-    myItems.add(name, item);
+    items.add(name, item);
   }
 }
 
@@ -192,7 +189,7 @@ void SimpleLauncherApplet::loadConfig() {
         *p++ = '\0';
       }
 
-      addItem(buffer, (p != NULL && (*p == '1' || *p == 'y' || *p == 'Y')));
+      addItem(myItems, buffer, (p != NULL && (*p == '1' || *p == 'y' || *p == 'Y')));
 
     }
 
@@ -211,7 +208,13 @@ void SimpleLauncherApplet::saveConfig() {
   }
 }
 
-void SimpleLauncherApplet::processDirectory(const std::string& dirname) {
+void SimpleLauncherApplet::updateItems(LauncherItems& items) {
+  for (int i = 0 ; ourDirs[i] != NULL ; ++i) {
+    processDirectory(items, ourDirs[i]);
+  }
+}
+
+void SimpleLauncherApplet::processDirectory(LauncherItems& items, const std::string& dirname) {
   DIR *dir = opendir(dirname.c_str());
 
   if (dir != NULL) {
@@ -227,7 +230,7 @@ void SimpleLauncherApplet::processDirectory(const std::string& dirname) {
       }
 
       if ((shortName.length() >= desktopExtension.length()) && (shortName.compare(shortName.length() - desktopExtension.length(), desktopExtension.length(), desktopExtension) == 0)) {
-        addItem(namePrefix+shortName, false);
+        addItem(items, namePrefix+shortName, false);
       }
     }
 
@@ -328,6 +331,8 @@ void SimpleLauncherApplet::_run_dialog(GtkMenuItem *, void *self) {
 void SimpleLauncherApplet::runDialog() {
   LauncherItems newItems = myItems;
 
+  updateItems(newItems);  // User requested 'settings', let's give her the latest stuff :)
+
   SLAList list(SL_APPLET_ICON_SIZE, newItems);
 
   GtkDialog *dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Launcher Settings", myParent, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), "OK", GTK_RESPONSE_OK, "Cancel", GTK_RESPONSE_CANCEL, NULL));
@@ -343,8 +348,8 @@ void SimpleLauncherApplet::runDialog() {
   switch (response) {
     case GTK_RESPONSE_OK:
       myItems = newItems;
+      saveConfig();   // save it immediately!
       updateWidget();
-      saveConfig();
       break;
 
     case GTK_RESPONSE_CANCEL:
