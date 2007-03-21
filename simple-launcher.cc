@@ -276,7 +276,11 @@ void SimpleLauncherApplet::updateWidget() {
 
   if (button_no) {
     gtk_container_add(GTK_CONTAINER(myWidget), GTK_WIDGET(toolbar));
-    gtk_widget_set_size_request(myWidget, button_no*(SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE), SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
+    if (button_no == 0) {
+      gtk_widget_set_size_request(myWidget, SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE, SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
+    } else {
+      gtk_widget_set_size_request(myWidget, button_no*(SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE), SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
+    }
   } else {
     gtk_widget_destroy(GTK_WIDGET(toolbar));
   }
