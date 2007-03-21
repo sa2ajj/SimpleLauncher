@@ -139,8 +139,6 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
     return false;
   }
 
-  gtk_widget_show_all(myWidget);
-
   return true;
 }
 
@@ -282,6 +280,8 @@ void SimpleLauncherApplet::updateWidget() {
   } else {
     gtk_widget_destroy(GTK_WIDGET(toolbar));
   }
+
+  gtk_widget_show_all(myWidget);
 }
 
 void SimpleLauncherApplet::_button_clicked(GtkToolButton *button, void *self) {
