@@ -136,17 +136,14 @@ void SLAList::renderText(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeMode
   gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, 1, &index, -1);
 
   LauncherItem *item = myItems[index];
-#if 1
+
   if (gtk_tree_selection_iter_is_selected(mySelection, iter)) {
     gchar *text = g_markup_printf_escaped("%s\n<small>%s</small>", item->getName().c_str(), item->getComment().c_str());
     g_object_set(cell, "markup", text, NULL);
     g_free(text);
   } else {
-#endif
     g_object_set(cell, "text", item->getName().c_str(), NULL);
-#if 1
   }
-#endif
 }
 
 void SLAList::renderBool(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter) {
