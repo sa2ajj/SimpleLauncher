@@ -1,18 +1,15 @@
-simple-launcher (0.8.1) unstable; urgency=low
+simple-launcher (0.9) unstable; urgency=low
 
+  * preparing the release :)
+  * define minimal window size
   * show toolbar content as soon as it's available
-
- -- Mikhail Sobolev <mss@mawhrin.net>  Wed, 21 Mar 2007 19:05:22 +0200
-
-simple-launcher (0.8) unstable; urgency=low
-
   * updated copyright year
   * fixed the toggle (thanks, Kad)
   * implemented config save/load
   * check for newly available applications
   * replaced 0 with NULL where appropriate (get rid of compiler warnings)
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Tue, 20 Mar 2007 09:41:56 +0200
+ -- Mikhail Sobolev <mss@mawhrin.net>  Wed, 21 Mar 2007 21:55:24 +0200
 
 simple-launcher (0.7.1) unstable; urgency=low
 
