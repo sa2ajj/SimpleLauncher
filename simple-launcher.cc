@@ -172,6 +172,7 @@ void SimpleLauncherApplet::addItem(LauncherItems& items, const std::string& name
   }
 }
 
+// FIXME: this probably should be done somehow differently
 static char *configFileName="/home/user/.slarc";
 
 void SimpleLauncherApplet::loadConfig() {
