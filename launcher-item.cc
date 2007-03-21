@@ -17,6 +17,8 @@
 
 #include <string>
 
+#include <libintl.h>
+
 #include <glib/gmem.h>
 #include <glib/gkeyfile.h>
 
@@ -29,7 +31,10 @@ static const char *DESKTOP_ENTRY_GROUP = "Desktop Entry",
                   *DESKTOP_ENTRY_ICON_FIELD = "Icon",
                   *DESKTOP_ENTRY_NAME_FIELD = "Name",
                   *DESKTOP_ENTRY_COMMENT_FIELD = "Comment",
-                  *DESKTOP_ENTRY_SERVICE_FIELD = "X-Osso-Service";
+                  *DESKTOP_ENTRY_SERVICE_FIELD = "X-Osso-Service",
+                  *DESKTOP_ENTRY_TEXT_DOMAIN = "X-Text-Domain";
+
+static const char *DEFAULT_TEXT_DOMAIN = "osso-applet-tasknavigator";
 
 class GKeyFileWrapper {
 public:
@@ -90,6 +95,14 @@ LauncherItem::LauncherItem(): myEnabled(false) {
 LauncherItem::~LauncherItem() {
 }
 
+std::string LauncherItem::translateString(const std::string& what) const {
+  if (what.empty()) {
+    return what;
+  } else {
+    return dgettext(myTextDomain.empty() ? DEFAULT_TEXT_DOMAIN : myTextDomain.c_str(), what.c_str());
+  }
+}
+
 bool LauncherItem::load(const std::string& filename) {
   GKeyFileWrapper key_file;
 
@@ -108,6 +121,7 @@ bool LauncherItem::load(const std::string& filename) {
     myComment = key_file.getLocaleString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_COMMENT_FIELD);
     myIcon = key_file.getString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_ICON_FIELD);
     myService = key_file.getString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_SERVICE_FIELD);
+    myTextDomain = key_file.getString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_TEXT_DOMAIN);
 
     break;
   }

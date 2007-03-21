@@ -36,8 +36,8 @@ public:
   GdkPixbuf *getIcon(int icon_size) const;
 
   const std::string& getFileName() const { return myFileName; }
-  const std::string& getName() const { return myName; }
-  const std::string& getComment() const { return myComment; }
+  std::string getName(bool translate = true) const { return translate ? translateString(myName) : myName; }
+  std::string getComment(bool translate = true) const { return translate ? translateString(myComment) : myComment; }
   const std::string& getService() const { return myService; }
 
   bool isEnabled(void) const { return myEnabled; }
@@ -53,10 +53,12 @@ public:
   }
 
 private:
+  std::string translateString(const std::string& what) const;
+
   bool checkSanity(void) { return !(myName.empty() || myIcon.empty() || myService.empty()); }
 
 private:
-  std::string myFileName, myName, myComment, myIcon, myService;
+  std::string myFileName, myName, myComment, myIcon, myService, myTextDomain;
   bool myEnabled;
 
   static GtkIconTheme *ourTheme;
