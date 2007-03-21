@@ -1,1 +1,3 @@
  * review the code and make it less hackish
+ * show a note in postinst about activating the applet
+		* must only be done if a fresh installation is performed
