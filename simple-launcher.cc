@@ -189,7 +189,6 @@ void SimpleLauncherApplet::loadConfig() {
       }
 
       addItem(myItems, buffer, (p != NULL && (*p == '1' || *p == 'y' || *p == 'Y')));
-
     }
 
     delete buffer;
