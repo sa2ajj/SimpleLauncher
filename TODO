@@ -1,3 +1,4 @@
  * review the code and make it less hackish
  * show a note in postinst about activating the applet
 		* must only be done if a fresh installation is performed
+ * if this is a first start, then populate the toolbar with existing pre-defined applications
