@@ -8,8 +8,9 @@ simple-launcher (0.9) unstable; urgency=low
   * implemented config save/load
   * check for newly available applications
   * replaced 0 with NULL where appropriate (get rid of compiler warnings)
+  * locale application name and its comment
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Wed, 21 Mar 2007 21:55:24 +0200
+ -- Mikhail Sobolev <mss@mawhrin.net>  Wed, 21 Mar 2007 22:19:19 +0200
 
 simple-launcher (0.7.1) unstable; urgency=low
 
