@@ -315,10 +315,6 @@ int SimpleLauncherApplet::saveState(void **state_data, int *state_size) {
 }
 
 GtkWidget *SimpleLauncherApplet::settings(GtkWindow *parent) {
-  // TODO: in case we want SimpleLauncherApplet to be configurable, this method
-  // should return a gtk_menu_item that would be included in home settings
-  // menu.  Method should make sure that when we activate that item, a
-  // corresponding dialog appears.
   myParent = parent;  // FIXME: Ugly piece of code :(
 
   GtkWidget *menuItem = gtk_menu_item_new_with_label("Launcher settings...");
