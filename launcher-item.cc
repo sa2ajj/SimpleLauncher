@@ -34,7 +34,7 @@ static const char *DESKTOP_ENTRY_GROUP = "Desktop Entry",
                   *DESKTOP_ENTRY_SERVICE_FIELD = "X-Osso-Service",
                   *DESKTOP_ENTRY_TEXT_DOMAIN = "X-Text-Domain";
 
-static const char *DEFAULT_TEXT_DOMAIN = "osso-applet-tasknavigator";
+static const char *DEFAULT_TEXT_DOMAIN = "maemo-af-desktop";
 
 class GKeyFileWrapper {
 public:
