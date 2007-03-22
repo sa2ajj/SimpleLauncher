@@ -33,6 +33,11 @@ public:
   GtkWidget *getWidget() { return myWidget; }
 
 private:
+  static void _selectionChanged(GtkTreeSelection *, gpointer);
+
+         void selectionChanged(GtkTreeSelection *);
+         void kickIt(GtkTreeIter *);
+
   static void _renderText(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter, gpointer self);
   static void _renderBool(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter, gpointer self);
   static void _moveUp(GtkButton *, void *);
@@ -52,6 +57,8 @@ private:
   GtkListStore *myStore;
   GtkTreeView *myView;
   GtkTreeSelection *mySelection;
+
+  GtkTreeIter *myLastSelection;
 
   LauncherItems& myItems;
 };

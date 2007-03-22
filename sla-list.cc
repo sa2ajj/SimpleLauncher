@@ -36,7 +36,7 @@ static GtkWidget *gtk_button_new_stock_image_only(const gchar *stock_id) {
   return button;
 }
 
-SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(NULL), myView(NULL), mySelection(NULL), myItems(items) {
+SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(NULL), myView(NULL), mySelection(NULL), myLastSelection(NULL), myItems(items) {
   GtkTreeViewColumn *column;
   GtkCellRenderer *renderer;
 
@@ -48,6 +48,8 @@ SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(N
 
   mySelection = gtk_tree_view_get_selection(myView);
   gtk_tree_selection_set_mode(mySelection, GTK_SELECTION_SINGLE);
+
+  g_signal_connect(G_OBJECT(mySelection), "changed", G_CALLBACK(_selectionChanged), this);
 
   renderer = gtk_cell_renderer_pixbuf_new();
   g_object_set(renderer, "yalign", 0.0, NULL);
@@ -108,6 +110,35 @@ SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(N
 
 SLAList::~SLAList() {
   // FIXME: do something! :)
+}
+
+void SLAList::_selectionChanged(GtkTreeSelection *selection, void *self) {
+  ((SLAList *)self)->selectionChanged(selection);
+}
+
+void SLAList::selectionChanged(GtkTreeSelection *) {
+  if (myLastSelection != NULL) {
+    kickIt(myLastSelection);
+    gtk_tree_iter_free(myLastSelection);
+    myLastSelection = NULL;
+  }
+
+  GtkTreeIter iter;
+  GtkTreeModel *dummy;
+
+  if (gtk_tree_selection_get_selected(mySelection, &dummy, &iter)) {
+    kickIt(&iter);
+    myLastSelection = gtk_tree_iter_copy(&iter);
+  }
+}
+
+void SLAList::kickIt(GtkTreeIter *iter) {
+  GtkTreePath *path = gtk_tree_model_get_path(GTK_TREE_MODEL(myStore), iter);
+
+  if (path != NULL) {
+    g_signal_emit_by_name(myStore, "row-changed", path, iter);
+    gtk_tree_path_free(path);
+  }
 }
 
 void SLAList::_renderText(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter, gpointer self) {
