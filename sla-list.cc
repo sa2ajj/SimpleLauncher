@@ -27,6 +27,12 @@
 
 #include "sla-list.h"
 
+enum {
+  SLA_LIST_COLUMN_ICON = 0,
+  SLA_LIST_COLUMN_INDEX,
+  SLA_LIST_COLUMN_LAST
+};
+
 static GtkWidget *gtk_button_new_stock_image_only(const gchar *stock_id) {
   GtkWidget *button = gtk_button_new();
   GtkWidget *image = gtk_image_new_from_stock(stock_id, GTK_ICON_SIZE_BUTTON);
@@ -164,7 +170,7 @@ void SLAList::_moveDown(GtkButton *button, void *self) {
 void SLAList::renderText(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter) {
   int index;
 
-  gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, 1, &index, -1);
+  gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, SLA_LIST_COLUMN_INDEX, &index, -1);
 
   LauncherItem *item = myItems[index];
 
@@ -180,7 +186,7 @@ void SLAList::renderText(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeMode
 void SLAList::renderBool(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter) {
   int index;
 
-  gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, 1, &index, -1);
+  gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, SLA_LIST_COLUMN_INDEX, &index, -1);
 
   g_object_set(cell, "active", myItems[index]->isEnabled(), NULL);
 }
@@ -191,7 +197,7 @@ void SLAList::toggleBool(GtkCellRendererToggle *renderer, const gchar *spath) {
   if (gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(myStore), &iter, spath)) {
     int index;
 
-    gtk_tree_model_get(GTK_TREE_MODEL(myStore), &iter, 1, &index, -1);
+    gtk_tree_model_get(GTK_TREE_MODEL(myStore), &iter, SLA_LIST_COLUMN_INDEX, &index, -1);
     myItems[index]->toggle();
   }
 }
@@ -238,13 +244,13 @@ void SLAList::moveDown(GtkButton *) {
 void SLAList::swap(GtkTreeIter& a, GtkTreeIter& b) {
   int i1, i2;
 
-  gtk_tree_model_get(GTK_TREE_MODEL(myStore), &a, 1, &i1, -1);
-  gtk_tree_model_get(GTK_TREE_MODEL(myStore), &b, 1, &i2, -1);
+  gtk_tree_model_get(GTK_TREE_MODEL(myStore), &a, SLA_LIST_COLUMN_INDEX, &i1, -1);
+  gtk_tree_model_get(GTK_TREE_MODEL(myStore), &b, SLA_LIST_COLUMN_INDEX, &i2, -1);
 
   myItems.swap(i1, i2);
 
-  gtk_list_store_set(myStore, &a, 1, i2, -1);
-  gtk_list_store_set(myStore, &b, 1, i1, -1);
+  gtk_list_store_set(myStore, &a, SLA_LIST_COLUMN_INDEX, i2, -1);
+  gtk_list_store_set(myStore, &b, SLA_LIST_COLUMN_INDEX, i1, -1);
 
   gtk_list_store_swap(myStore, &a, &b);
 }
