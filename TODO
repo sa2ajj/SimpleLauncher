@@ -2,3 +2,6 @@
  * show a note in postinst about activating the applet
 		* must only be done if a fresh installation is performed
  * during first start populate the toolbar with existing pre-defined applications
+ * bookmarks as items
+ * at the start we should have at least one button: that activates configuration dialog
+ * size of the buttons should be configurable
