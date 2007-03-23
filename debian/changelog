@@ -1,3 +1,9 @@
+simple-launcher (0.9.1) unstable; urgency=low
+
+  * fixed the minimum size problem
+
+ -- Mikhail Sobolev <mss@mawhrin.net>  Fri, 23 Mar 2007 16:43:05 +0200
+
 simple-launcher (0.9) unstable; urgency=low
 
   * preparing the release :)
