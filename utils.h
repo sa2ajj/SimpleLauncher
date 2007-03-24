@@ -15,18 +15,11 @@
 // this program; if not, write to the Free Software Foundation, Inc., 51
 // Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#include "launchable-item.h"
-#include "utils.h"
+#ifndef __UTILS_H__
+#define __UTILS_H__
 
-bool LaunchableItem::activate(osso_context_t *context) {
-  bool result = false;
+#include <string>
 
-  if (getService().empty() || !(result = osso_application_top(context, getService().c_str(), NULL) == OSSO_OK)) {
-    runApplication(getExec());
-    return true;
-  } else {
-    return result;
-  }
-}
+  void runApplication(const std::string& whatToRun);
 
-// vim:ts=2:sw=2:et
+#endif

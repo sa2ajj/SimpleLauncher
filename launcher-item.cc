@@ -31,6 +31,7 @@ static const char *DESKTOP_ENTRY_GROUP = "Desktop Entry",
                   *DESKTOP_ENTRY_ICON_FIELD = "Icon",
                   *DESKTOP_ENTRY_NAME_FIELD = "Name",
                   *DESKTOP_ENTRY_COMMENT_FIELD = "Comment",
+                  *DESKTOP_ENTRY_EXEC_FIELD = "Exec",
                   *DESKTOP_ENTRY_SERVICE_FIELD = "X-Osso-Service",
                   *DESKTOP_ENTRY_TEXT_DOMAIN = "X-Text-Domain";
 
@@ -122,6 +123,7 @@ bool LauncherItem::load(const std::string& filename) {
     myComment = key_file.getLocaleString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_COMMENT_FIELD);
     myIcon = key_file.getString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_ICON_FIELD);
     myService = key_file.getString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_SERVICE_FIELD);
+    myExec = key_file.getString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_EXEC_FIELD);
     myTextDomain = key_file.getString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_TEXT_DOMAIN);
 
     break;

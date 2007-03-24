@@ -39,6 +39,7 @@ public:
   std::string getName(bool translate = true) const { return translate ? translateString(myName) : myName; }
   std::string getComment(bool translate = true) const { return translate ? translateString(myComment) : myComment; }
   const std::string& getService() const { return myService; }
+  const std::string& getExec() const { return myExec; }
 
   bool isEnabled(void) const { return myEnabled; }
 
@@ -55,10 +56,10 @@ public:
 private:
   std::string translateString(const std::string& what) const;
 
-  bool checkSanity(void) { return !(myName.empty() || myService.empty()); }
+  bool checkSanity(void) { return !myName.empty() && (!myService.empty() || !myExec.empty()); }
 
 private:
-  std::string myFileName, myName, myComment, myIcon, myService, myTextDomain;
+  std::string myFileName, myName, myComment, myIcon, myService, myExec, myTextDomain;
   bool myEnabled;
 
   static GtkIconTheme *ourTheme;

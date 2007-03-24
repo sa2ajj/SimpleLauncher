@@ -17,7 +17,7 @@ all: $(TARGET)
 
 tests: test test1
 
-$(TARGET): simple-launcher.o launchable-item.o launcher-item.o sla-list.o
+$(TARGET): simple-launcher.o launchable-item.o launcher-item.o sla-list.o utils.o
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 test: test.o launcher-item.o
