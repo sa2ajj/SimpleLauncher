@@ -1,3 +1,12 @@
+simple-launcher (0.9.2) unstable; urgency=low
+
+  * minimum size in .desktop file is changed as well (so 1 icon only is now
+    possible)
+  * if application does not have an icon, or the icon cannot be loaded, the
+    default one will be used
+
+ -- Mikhail Sobolev <mss@mawhrin.net>  Sat, 24 Mar 2007 12:05:59 +0200
+
 simple-launcher (0.9.1) unstable; urgency=low
 
   * fixed the minimum size problem
