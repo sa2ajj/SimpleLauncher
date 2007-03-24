@@ -4,3 +4,4 @@
  * during first start populate the toolbar with existing pre-defined applications
  * bookmarks as items
  * at the start we should have at least one button: that activates configuration dialog
+ * add possibility to start CLI apps
