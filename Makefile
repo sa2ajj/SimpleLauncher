@@ -10,6 +10,8 @@ LDFLAGS = -shared
 LIBS = -lstdc++
 
 TARGET=simple-launcher.so
+DESKTOP_FILE=simple-launcher.desktop
+BACKUP_CONF=simple-launcher.backup
 
 all: $(TARGET)
 
@@ -29,8 +31,9 @@ clean:
 
 install: $(TARGET)
 	install -d $(DESTDIR)/usr/share/applications/hildon-home
-	install -m 0644 simple-launcher.desktop $(DESTDIR)/usr/share/applications/hildon-home
+	install -m 0644 $(DESKTOP_FILE) $(DESTDIR)/usr/share/applications/hildon-home
 	install -d $(DESTDIR)/usr/lib/hildon-home
 	install -m 0644 $(TARGET) $(DESTDIR)/usr/lib/hildon-home
+	@install -m 0644 $(BACKUP_CONF) $(DESTDIR)/etc/osso-backup/applications/simple-launcher.conf
 
 -include *.d
