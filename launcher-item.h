@@ -55,7 +55,7 @@ public:
 private:
   std::string translateString(const std::string& what) const;
 
-  bool checkSanity(void) { return !(myName.empty() || myIcon.empty() || myService.empty()); }
+  bool checkSanity(void) { return !(myName.empty() || myService.empty()); }
 
 private:
   std::string myFileName, myName, myComment, myIcon, myService, myTextDomain;

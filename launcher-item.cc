@@ -35,6 +35,7 @@ static const char *DESKTOP_ENTRY_GROUP = "Desktop Entry",
                   *DESKTOP_ENTRY_TEXT_DOMAIN = "X-Text-Domain";
 
 static const char *DEFAULT_TEXT_DOMAIN = "maemo-af-desktop";
+static const char *DEFAULT_APP_ICON = "qgn_list_gene_default_app";
 
 class GKeyFileWrapper {
 public:
@@ -130,16 +131,24 @@ bool LauncherItem::load(const std::string& filename) {
 }
 
 GdkPixbuf *LauncherItem::getIcon(int icon_size) const {
+  if (ourTheme == NULL) {
+    ourTheme = gtk_icon_theme_get_default();
+  }
+
   GdkPixbuf *pixbuf = NULL;
+  GError *error = NULL;
 
   if (!myIcon.empty()) {
-    if (ourTheme == NULL) {
-      ourTheme = gtk_icon_theme_get_default();
-    }
-
-    GError *error = NULL;
-
     pixbuf = gtk_icon_theme_load_icon(ourTheme, myIcon.c_str(), icon_size, GTK_ICON_LOOKUP_NO_SVG, &error);
+
+    if (error != NULL) {
+      g_error_free(error);
+      error = NULL;
+    }
+  }
+
+  if (pixbuf == NULL) {
+    pixbuf = gtk_icon_theme_load_icon(ourTheme, DEFAULT_APP_ICON, icon_size, GTK_ICON_LOOKUP_NO_SVG, &error);
 
     if (error != NULL) {
       g_error_free(error);
