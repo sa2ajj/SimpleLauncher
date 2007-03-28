@@ -34,6 +34,7 @@ install: $(TARGET)
 	install -m 0644 $(DESKTOP_FILE) $(DESTDIR)/usr/share/applications/hildon-home
 	install -d $(DESTDIR)/usr/lib/hildon-home
 	install -m 0644 $(TARGET) $(DESTDIR)/usr/lib/hildon-home
-	@install -m 0644 $(BACKUP_CONF) $(DESTDIR)/etc/osso-backup/applications/simple-launcher.conf
+	install -d $(DESTDIR)/etc/osso-backup/applications
+	install -m 0644 $(BACKUP_CONF) $(DESTDIR)/etc/osso-backup/applications/simple-launcher.conf
 
 -include *.d
