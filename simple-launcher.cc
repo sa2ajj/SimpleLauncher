@@ -326,9 +326,11 @@ void SimpleLauncherApplet::_run_dialog(GtkMenuItem *, void *self) {
 }
 
 void SimpleLauncherApplet::runDialog() {
-  LauncherItems newItems = myItems;
+  // We update the items before using them to avoid a small memory leak
+  // FIXME: deal with the situation in a better way (figure it out first :))
+  updateItems(myItems);       // User requested 'settings', let's give her the latest stuff :)
 
-  updateItems(newItems);  // User requested 'settings', let's give her the latest stuff :)
+  LauncherItems newItems = myItems;
 
   SLAList list(SL_APPLET_ICON_SIZE, newItems);
 
