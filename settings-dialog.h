@@ -18,4 +18,22 @@
 #ifndef __SETTINGS_DIALOG_H_
 #define __SETTINGS_DIALOG_H_
 
+#include <gtk/gtkdialog.h>
+
+#include "sla-list.h"
+#include "launcher-item.h"
+
+class SettingsDialog {
+public:
+	SettingsDialog(GtkWindow *, int, LauncherItems&);
+ ~SettingsDialog();
+
+ 	gint run();
+
+private:
+  SLAList myList;
+
+	GtkDialog *myDialog;
+};
+
 #endif

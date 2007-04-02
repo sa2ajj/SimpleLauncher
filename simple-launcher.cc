@@ -29,6 +29,7 @@
 #include "launcher-item.h"
 #include "sla-list.h"
 #include "launchable-item.h"
+#include "settings-dialog.h"
 
 #define SL_APPLET_DBUS_NAME  "simple-launcher"
 #define SL_APPLET_VERSION    "0.0"
@@ -332,19 +333,9 @@ void SimpleLauncherApplet::runDialog() {
 
   LauncherItems newItems = myItems;
 
-  SLAList list(SL_APPLET_ICON_SIZE, newItems);
+  SettingsDialog dialog(myParent, SL_APPLET_ICON_SIZE, newItems);
 
-  GtkDialog *dialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Launcher Settings", myParent, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), "OK", GTK_RESPONSE_OK, "Cancel", GTK_RESPONSE_CANCEL, NULL));
-
-  gtk_container_add(GTK_CONTAINER(dialog->vbox), list.getWidget());
-
-  gtk_widget_set_size_request(GTK_WIDGET(dialog), 540, 257);
-
-  int response = gtk_dialog_run(dialog);
-
-  gtk_widget_destroy(GTK_WIDGET(dialog));
-
-  switch (response) {
+  switch (dialog.run()) {
     case GTK_RESPONSE_OK:
       myItems = newItems;
       saveConfig();   // save it immediately!
