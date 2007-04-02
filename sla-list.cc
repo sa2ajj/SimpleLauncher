@@ -110,7 +110,7 @@ SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(N
     GtkTreeIter iter;
 
     gtk_list_store_append(myStore, &iter);
-    gtk_list_store_set(myStore, &iter, 0, item->getIcon(icon_size), 1, it-myItems.myNames.begin(), -1);
+    gtk_list_store_set(myStore, &iter, SLA_STORE_COLUMN_ICON, item->getIcon(icon_size), SLA_STORE_COLUMN_INDEX, it-myItems.myNames.begin(), -1);
   }
 }
 
