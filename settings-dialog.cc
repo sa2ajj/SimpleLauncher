@@ -73,5 +73,7 @@ SettingsDialog::~SettingsDialog() {
 }
 
 gint SettingsDialog::run() {
+  gtk_widget_show_all(GTK_WIDGET(myDialog));
+
   return gtk_dialog_run(myDialog);
 }
