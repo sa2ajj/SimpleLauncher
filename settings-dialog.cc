@@ -15,15 +15,44 @@
 // this program; if not, write to the Free Software Foundation, Inc., 51
 // Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+#include <gtk/gtkvbox.h>
+#include <gtk/gtkhbox.h>
+#include <gtk/gtksizegroup.h>
 #include <gtk/gtknotebook.h>
 #include <gtk/gtklabel.h>
 
 #include "settings-dialog.h"
 
+// FIXME: UGLY!!!!
+
 inline void addPage(GtkNotebook *notebook, const std::string& name, GtkWidget *widget) {
   GtkWidget *label = gtk_label_new(name.c_str());
 
   gtk_notebook_append_page(notebook, widget, label);
+}
+
+inline GtkWidget *packItTogether(GtkSizeGroup *group, const std::string& name, GtkWidget *content) {
+	GtkWidget *box = gtk_hbox_new(false, 0);
+	GtkWidget *label = gtk_label_new(name.c_str());
+
+	gtk_size_group_add_widget(group, label);
+  gtk_box_pack_start(GTK_BOX(box), label, true, true, 0);
+  gtk_box_pack_start(GTK_BOX(box), content, true, true, 0);
+
+	return box;
+}
+
+inline GtkWidget *createUIPage() {
+	GtkSizeGroup *group = gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL);
+	GtkWidget *vbox = gtk_vbox_new(true, 0);
+
+	// packItTogether(group, "Button Size:", <small/big>);
+	// packItTogether(group, "Button Size:", [ ]);
+	// packItTogether(group, "Button Size:", [ ]);
+
+	g_object_unref(G_OBJECT(group));
+
+	return vbox;
 }
 
 SettingsDialog::SettingsDialog(GtkWindow *parent, int size, LauncherItems& items) : myList(size, items) {
@@ -33,7 +62,7 @@ SettingsDialog::SettingsDialog(GtkWindow *parent, int size, LauncherItems& items
 
   gtk_container_add(GTK_CONTAINER(myDialog->vbox), GTK_WIDGET(notebook));
 
-  // addPage(notebook, "UI", ...);
+  addPage(notebook, "UI", createUIPage());
   addPage(notebook, "Items", myList.getWidget());
 
   gtk_widget_set_size_request(GTK_WIDGET(myDialog), 540, 257);
