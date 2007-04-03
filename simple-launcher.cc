@@ -258,24 +258,26 @@ void SimpleLauncherApplet::updateWidget() {
   }
 
   int button_no = 0;
-  GtkToolbar *toolbar = GTK_TOOLBAR(gtk_toolbar_new());
+  GtkBox *box = GTK_BOX(gtk_hbox_new(true, 1));
 
   for (size_t i = 0 ; i < myItems.size() ; ++i) {
     LauncherItem *item = myItems[i];
 
     if (item != NULL && item->isEnabled()) {
-      GtkToolItem *button = gtk_tool_button_new(gtk_image_new_from_pixbuf(item->getIcon(SL_APPLET_ICON_SIZE)), NULL);
+      GtkWidget *button = gtk_button_new();
+
+      gtk_container_add(GTK_CONTAINER(button), gtk_image_new_from_pixbuf(item->getIcon(SL_APPLET_ICON_SIZE)));
 
       gtk_object_set_user_data(GTK_OBJECT(button), item);
       g_signal_connect(button, "clicked", G_CALLBACK(_button_clicked), this);
 
-      gtk_toolbar_insert(toolbar, button, -1);
+      gtk_box_pack_start(box, GTK_WIDGET(button), false, false, 0);
 
       ++button_no;
     }
   }
 
-  gtk_container_add(GTK_CONTAINER(myWidget), GTK_WIDGET(toolbar));
+  gtk_container_add(GTK_CONTAINER(myWidget), GTK_WIDGET(box));
 
   if (button_no == 0) {
     gtk_widget_set_size_request(myWidget, SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE, SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
