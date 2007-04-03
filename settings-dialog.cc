@@ -32,27 +32,27 @@ inline void addPage(GtkNotebook *notebook, const std::string& name, GtkWidget *w
 }
 
 inline GtkWidget *packItTogether(GtkSizeGroup *group, const std::string& name, GtkWidget *content) {
-	GtkWidget *box = gtk_hbox_new(false, 0);
-	GtkWidget *label = gtk_label_new(name.c_str());
+  GtkWidget *box = gtk_hbox_new(false, 0);
+  GtkWidget *label = gtk_label_new(name.c_str());
 
-	gtk_size_group_add_widget(group, label);
+  gtk_size_group_add_widget(group, label);
   gtk_box_pack_start(GTK_BOX(box), label, true, true, 0);
   gtk_box_pack_start(GTK_BOX(box), content, true, true, 0);
 
-	return box;
+  return box;
 }
 
 inline GtkWidget *createUIPage() {
-	GtkSizeGroup *group = gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL);
-	GtkWidget *vbox = gtk_vbox_new(true, 0);
+  GtkSizeGroup *group = gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL);
+  GtkWidget *vbox = gtk_vbox_new(true, 0);
 
-	// packItTogether(group, "Button Size:", <small/big>);
-	// packItTogether(group, "Button Size:", [ ]);
-	// packItTogether(group, "Button Size:", [ ]);
+  // packItTogether(group, "Button Size:", <small/big>);
+  // packItTogether(group, "Button Size:", [ ]);
+  // packItTogether(group, "Button Size:", [ ]);
 
-	g_object_unref(G_OBJECT(group));
+  g_object_unref(G_OBJECT(group));
 
-	return vbox;
+  return vbox;
 }
 
 SettingsDialog::SettingsDialog(GtkWindow *parent, int size, LauncherItems& items) : myList(size, items) {
@@ -77,3 +77,5 @@ gint SettingsDialog::run() {
 
   return gtk_dialog_run(myDialog);
 }
+
+// vim:ts=2:sw=2:et

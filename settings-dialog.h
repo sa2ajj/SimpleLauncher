@@ -25,15 +25,17 @@
 
 class SettingsDialog {
 public:
-	SettingsDialog(GtkWindow *, int, LauncherItems&);
+  SettingsDialog(GtkWindow *, int, LauncherItems&);
  ~SettingsDialog();
 
- 	gint run();
+  gint run();
 
 private:
   SLAList myList;
 
-	GtkDialog *myDialog;
+  GtkDialog *myDialog;
 };
 
 #endif
+
+// vim:ts=2:sw=2:et

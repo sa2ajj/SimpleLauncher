@@ -6,7 +6,7 @@ Before 1.0
 After 1.0
  * review the code and make it less hackish
  * re-factor the items
-	* see BasicItem somewhere on my hard disk :)
+  * see BasicItem somewhere on my hard disk :)
   * re-implement hildon applications for that
  * at the start we should have at least one button: that activates configuration dialog
  * add possibility to start CLI apps
@@ -16,7 +16,7 @@ After 1.0
 
 Non-planned
  * show a note in postinst about activating the applet
-		* must only be done if a fresh installation is performed
+    * must only be done if a fresh installation is performed
  * during first start populate the toolbar with existing pre-defined applications
 
-# vim:si:ai
+# vim:si:ai:ts=2:et
