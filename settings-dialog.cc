@@ -15,12 +15,26 @@
 // this program; if not, write to the Free Software Foundation, Inc., 51
 // Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+#include <gtk/gtknotebook.h>
+#include <gtk/gtklabel.h>
+
 #include "settings-dialog.h"
+
+inline void addPage(GtkNotebook *notebook, const std::string& name, GtkWidget *widget) {
+  GtkWidget *label = gtk_label_new(name.c_str());
+
+  gtk_notebook_append_page(notebook, widget, label);
+}
 
 SettingsDialog::SettingsDialog(GtkWindow *parent, int size, LauncherItems& items) : myList(size, items) {
   myDialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Launcher Settings", parent, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), "OK", GTK_RESPONSE_OK, "Cancel", GTK_RESPONSE_CANCEL, NULL));
 
-  gtk_container_add(GTK_CONTAINER(myDialog->vbox), myList.getWidget());
+  GtkNotebook *notebook = GTK_NOTEBOOK(gtk_notebook_new());
+
+  gtk_container_add(GTK_CONTAINER(myDialog->vbox), GTK_WIDGET(notebook));
+
+  // addPage(notebook, "UI", ...);
+  addPage(notebook, "Items", myList.getWidget());
 
   gtk_widget_set_size_request(GTK_WIDGET(myDialog), 540, 257);
 }
