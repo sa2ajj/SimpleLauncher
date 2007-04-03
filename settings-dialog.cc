@@ -62,7 +62,7 @@ SettingsDialog::SettingsDialog(GtkWindow *parent, int size, LauncherItems& items
 
   gtk_container_add(GTK_CONTAINER(myDialog->vbox), GTK_WIDGET(notebook));
 
-  addPage(notebook, "UI", createUIPage());
+  // addPage(notebook, "UI", createUIPage());
   addPage(notebook, "Items", myList.getWidget());
 
   gtk_widget_set_size_request(GTK_WIDGET(myDialog), 540, 257);
