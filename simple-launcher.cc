@@ -34,8 +34,6 @@
 #define SL_APPLET_DBUS_NAME  "simple-launcher"
 #define SL_APPLET_VERSION    "0.0"
 #define SL_APPLET_ICON_SIZE  26
-#define SL_APPLET_BORDER_SIZE  14
-#define SL_APPLET_CANVAS_SIZE  (SL_APPLET_BORDER_SIZE+SL_APPLET_BORDER_SIZE)
 
 class SimpleLauncherApplet {
 public:
@@ -63,10 +61,10 @@ private:
   bool initWidget();
   void updateWidget();
 
-  void buttonClicked(GtkToolButton *);
+  void buttonPressed(GtkWidget *button, GdkEventButton *event);
   void runDialog();
 
-  static void _button_clicked(GtkToolButton *, void *);
+  static void _button_pressed(GtkWidget *button, GdkEventButton *event, void *self);
   static void _run_dialog(GtkMenuItem *, void *);
 
 private:
@@ -250,21 +248,27 @@ bool SimpleLauncherApplet::initWidget() {
 void SimpleLauncherApplet::updateWidget() {
   gtk_container_foreach(GTK_CONTAINER(myWidget), (GtkCallback)gtk_widget_destroy, NULL);
 
+  GtkSizeGroup *group = gtk_size_group_new(GTK_SIZE_GROUP_BOTH);
+
   int button_no = 0;
 
   for (size_t i = 0 ; i < myItems.size() ; ++i) {
     LauncherItem *item = myItems[i];
 
     if (item != NULL && item->isEnabled()) {
-      GtkWidget *button = gtk_button_new();
+      GtkWidget *button = gtk_event_box_new();
 
+      gtk_widget_set_events(button, GDK_BUTTON_PRESS_MASK);
+      g_signal_connect(button, "button-press-event", G_CALLBACK(_button_pressed), this);
+
+      gtk_event_box_set_visible_window(GTK_EVENT_BOX(button), false);
       // gtk_button_set_relief(GTK_BUTTON(button),GTK_RELIEF_NONE);
-      gtk_button_set_focus_on_click(GTK_BUTTON(button),FALSE);
 
       gtk_container_add(GTK_CONTAINER(button), gtk_image_new_from_pixbuf(item->getIcon(SL_APPLET_ICON_SIZE)));
 
       gtk_object_set_user_data(GTK_OBJECT(button), item);
-      g_signal_connect(button, "clicked", G_CALLBACK(_button_clicked), this);
+
+      gtk_size_group_add_widget(group, button);
 
       gtk_box_pack_start(GTK_BOX(myWidget), GTK_WIDGET(button), false, false, 0);
 
@@ -272,21 +276,23 @@ void SimpleLauncherApplet::updateWidget() {
     }
   }
 
+  g_object_unref(G_OBJECT(group));
+
   if (button_no == 0) {
-    gtk_widget_set_size_request(myWidget, SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE, SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
+    gtk_widget_set_size_request(myWidget, SL_APPLET_ICON_SIZE, SL_APPLET_ICON_SIZE);
   } else {
-    gtk_widget_set_size_request(myWidget, button_no*(SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE), SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
+    gtk_widget_set_size_request(myWidget, button_no*SL_APPLET_ICON_SIZE, SL_APPLET_ICON_SIZE);
   }
 
   gtk_widget_show_all(myWidget);
 }
 
-void SimpleLauncherApplet::_button_clicked(GtkToolButton *button, void *self) {
-  ((SimpleLauncherApplet *)self)->buttonClicked(button);
+void SimpleLauncherApplet::_button_pressed(GtkWidget *button, GdkEventButton *event, void *self) {
+  ((SimpleLauncherApplet *)self)->buttonPressed(button, event);
 }
 
-void SimpleLauncherApplet::buttonClicked(GtkToolButton *button) {
-  if (button != NULL) {
+void SimpleLauncherApplet::buttonPressed(GtkWidget *button, GdkEventButton *event) {
+  if (button != NULL && event->button == 1) {
     LaunchableItem *item = (LaunchableItem *)gtk_object_get_user_data(GTK_OBJECT(button));
 
     if (item != NULL) {

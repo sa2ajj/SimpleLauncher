@@ -1,10 +1,18 @@
-simple-launcher (0.9.4~3) unstable; urgency=low
+simple-launcher (0.9.4~6) unstable; urgency=low
 
+  * NOT RELEASED YET
+  * settings dialog is moved into a separate class
+  * added one tab with 'Items'
+  * fixed a small memory leak
   * trying different options for gtk buttons
   * removed top-level GtkFrame
   * enabled relief for buttons: let's see what happens
+  * removed extra space around buttons
+  * request all buttons to be of the same size
+  * replace buttons with eventboxes
+  * added proper signal handling for eventboxes
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Tue,  3 Apr 2007 20:15:11 +0300
+ -- Mikhail Sobolev <mss@mawhrin.net>  Wed,  4 Apr 2007 10:33:19 +0300
 
 simple-launcher (0.9.3) unstable; urgency=low
 
