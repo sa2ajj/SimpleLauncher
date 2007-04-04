@@ -47,8 +47,8 @@ inline GtkWidget *createUIPage() {
   GtkWidget *vbox = gtk_vbox_new(true, 0);
 
   // packItTogether(group, "Button Size:", <small/big>);
-  // packItTogether(group, "Button Size:", [ ]);
-  // packItTogether(group, "Button Size:", [ ]);
+  // packItTogether(group, "Transparent background:", [ ]);
+  // packItTogether(group, "Show Infobanner:", [ ]);
 
   g_object_unref(G_OBJECT(group));
 
