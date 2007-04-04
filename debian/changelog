@@ -1,3 +1,11 @@
+simple-launcher (0.9.4~3) unstable; urgency=low
+
+  * trying different options for gtk buttons
+  * removed top-level GtkFrame
+  * enabled relief for buttons: let's see what happens
+
+ -- Mikhail Sobolev <mss@mawhrin.net>  Tue,  3 Apr 2007 20:15:11 +0300
+
 simple-launcher (0.9.3) unstable; urgency=low
 
   * the config file can now be backed up
