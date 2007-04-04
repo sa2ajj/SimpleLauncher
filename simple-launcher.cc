@@ -238,11 +238,9 @@ void SimpleLauncherApplet::processDirectory(LauncherItems& items, const std::str
 }
 
 bool SimpleLauncherApplet::initWidget() {
-  myWidget = gtk_frame_new(NULL);
+  myWidget = gtk_hbox_new(false, 0);
 
   if (myWidget != NULL) {
-    gtk_frame_set_shadow_type(GTK_FRAME(myWidget), GTK_SHADOW_ETCHED_IN);
-
     updateWidget();
   }
 
@@ -250,15 +248,9 @@ bool SimpleLauncherApplet::initWidget() {
 }
 
 void SimpleLauncherApplet::updateWidget() {
-  GtkWidget *child = gtk_bin_get_child(GTK_BIN(myWidget));
-
-  if (child != NULL) {
-    gtk_container_remove(GTK_CONTAINER(myWidget), child);
-    gtk_widget_destroy(child);
-  }
+  gtk_container_foreach(GTK_CONTAINER(myWidget), (GtkCallback)gtk_widget_destroy, NULL);
 
   int button_no = 0;
-  GtkBox *box = GTK_BOX(gtk_hbox_new(true, 1));
 
   for (size_t i = 0 ; i < myItems.size() ; ++i) {
     LauncherItem *item = myItems[i];
@@ -266,18 +258,19 @@ void SimpleLauncherApplet::updateWidget() {
     if (item != NULL && item->isEnabled()) {
       GtkWidget *button = gtk_button_new();
 
+      // gtk_button_set_relief(GTK_BUTTON(button),GTK_RELIEF_NONE);
+      gtk_button_set_focus_on_click(GTK_BUTTON(button),FALSE);
+
       gtk_container_add(GTK_CONTAINER(button), gtk_image_new_from_pixbuf(item->getIcon(SL_APPLET_ICON_SIZE)));
 
       gtk_object_set_user_data(GTK_OBJECT(button), item);
       g_signal_connect(button, "clicked", G_CALLBACK(_button_clicked), this);
 
-      gtk_box_pack_start(box, GTK_WIDGET(button), false, false, 0);
+      gtk_box_pack_start(GTK_BOX(myWidget), GTK_WIDGET(button), false, false, 0);
 
       ++button_no;
     }
   }
-
-  gtk_container_add(GTK_CONTAINER(myWidget), GTK_WIDGET(box));
 
   if (button_no == 0) {
     gtk_widget_set_size_request(myWidget, SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE, SL_APPLET_ICON_SIZE+SL_APPLET_CANVAS_SIZE);
