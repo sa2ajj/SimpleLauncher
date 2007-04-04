@@ -20,16 +20,50 @@
 
 #include <string>
 
-class GConfWrapper {
-public:
-  GConfWrapper(const std::string&);
- ~GConfWrapper();
+#include <gconf/gconf-client.h>
 
+class GConfClientWrapper {
+  friend class GConfKey;
+
+public:
+  GConfClientWrapper();
+ ~GConfClientWrapper();
+
+  GConfKey getKey(const std::string&);
+
+protected:
   bool getBool(const std::string& name);
   void setBool(const std::string& name, bool);
 
   int getInt(const std::string& name);
   void setInt(const std::string& name, int);
+
+private:
+  GConfClient *myClient;
+};
+
+class GConfKey {
+public:
+  GConfKey(GConfClientWrapper&, const std::string&);
+  GConfKey(const GConfKey& what) : myWrapper(what.myWrapper), myPath(what.myPath) { }
+ ~GConfKey();
+
+  GConfKey& operator = (const GConfKey& what) {
+    myWrapper = what.myWrapper;
+    myPath = what.myPath;
+
+    return *this;
+  }
+
+  bool getBool(const std::string& name, bool defvalue = false);
+  void setBool(const std::string& name, bool value);
+
+  int getInt(const std::string& name, int defvalue = 0);
+  void setInt(const std::string& name, int value);
+
+private:
+  GConfClientWrapper& myWrapper;
+  std::string myPath;
 };
 
 #endif

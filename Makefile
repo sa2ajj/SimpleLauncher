@@ -1,10 +1,13 @@
 GTKCFLAGS := $(shell pkg-config gtk+-2.0 --cflags)
 GTKLIBS := $(shell pkg-config gtk+-2.0 --libs)
 
+GCONFCFLAGS := $(shell pkg-config gconf-2.0 --cflags)
+GCONFLIBS := $(shell pkg-config gconf-2.0 --libs)
+
 DBUSCFLAGS := $(shell pkg-config dbus-1 --cflags)
 DBUSLIBS := $(shell pkg-config dbus-1 --libs)
 
-CXXFLAGS=-Wall -g -MMD $(GTKCFLAGS) $(DBUSCFLAGS)
+CXXFLAGS=-Wall -g -MMD $(GTKCFLAGS) $(DBUSCFLAGS) $(GCONFCFLAGS)
 #LDFLAGS = -module -avoid-version
 LDFLAGS = -shared
 LIBS = -lstdc++

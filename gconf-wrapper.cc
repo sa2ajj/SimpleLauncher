@@ -16,3 +16,18 @@
 // Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "gconf-wrapper.h"
+
+GConfClientWrapper::GConfClientWrapper() {
+	myClient = gconf_client_get_default();
+}
+
+GConfClientWrapper::~GConfClientWrapper() {
+}
+
+GConfKey GConfClientWrapper::getKey(const std::string& path) {
+	// FIXME: check if path points to a good place :)
+	return GConfKey(*this, path);
+}
+
+GConfKey::GConfKey(GConfClientWrapper& wrapper, const std::string& path) : myWrapper(wrapper), myPath(path) {
+}
