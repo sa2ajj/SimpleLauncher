@@ -30,11 +30,10 @@
 #include "sla-list.h"
 #include "launchable-item.h"
 #include "settings-dialog.h"
-#include "gconf-wrapper.h"
 
 #define SL_APPLET_DBUS_NAME  "simple-launcher"
 #define SL_APPLET_VERSION    "0.0"
-#define SL_APPLET_ICON_SIZE  26
+#define SL_APPLET_ICON_SIZE  48
 
 #define SL_APPLET_GCONF_PATH  "/apps/simple-launcher"
 
@@ -71,8 +70,8 @@ private:
   static void _run_dialog(GtkMenuItem *, void *);
 
 private:
-  GConfClientWrapper myClient;
-  GConfKey myMainSettings;
+  // GConfClientWrapper myClient;
+  // GConfKey myMainSettings;
 
   osso_context_t *myContext;
 
@@ -130,7 +129,8 @@ char *SimpleLauncherApplet::ourDirs[] = {
   NULL
 };
 
-SimpleLauncherApplet::SimpleLauncherApplet(): myMainSettings(myClient.getKey(SL_APPLET_GCONF_PATH)), myContext(NULL), myWidget(NULL), myParent(NULL) {
+// SimpleLauncherApplet::SimpleLauncherApplet() : myMainSettings(myClient.getKey(SL_APPLET_GCONF_PATH)), myContext(NULL), myWidget(NULL), myParent(NULL) {
+SimpleLauncherApplet::SimpleLauncherApplet() : myContext(NULL), myWidget(NULL), myParent(NULL) {
 }
 
 bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
