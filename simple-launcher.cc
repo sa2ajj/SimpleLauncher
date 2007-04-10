@@ -33,7 +33,6 @@
 
 #define SL_APPLET_DBUS_NAME  "simple-launcher"
 #define SL_APPLET_VERSION    "0.0"
-#define SL_APPLET_ICON_SIZE  48
 
 #define SL_APPLET_GCONF_PATH  "/apps/simple-launcher"
 
@@ -82,6 +81,7 @@ private:
 
   bool myTransparent;
   // bool myShowInfobanner; // FIXME: to implement
+  int myIconSize;
 
   static char *ourDirs[];
 };
@@ -133,7 +133,7 @@ char *SimpleLauncherApplet::ourDirs[] = {
 };
 
 // SimpleLauncherApplet::SimpleLauncherApplet() : myMainSettings(myClient.getKey(SL_APPLET_GCONF_PATH)), myContext(NULL), myWidget(NULL), myParent(NULL) {
-SimpleLauncherApplet::SimpleLauncherApplet() : myContext(NULL), myWidget(NULL), myParent(NULL), myTransparent(false) {
+SimpleLauncherApplet::SimpleLauncherApplet() : myContext(NULL), myWidget(NULL), myParent(NULL), myTransparent(false), myIconSize(48) {
 }
 
 bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
@@ -273,7 +273,7 @@ void SimpleLauncherApplet::updateWidget() {
 
       gtk_event_box_set_visible_window(GTK_EVENT_BOX(button), !myTransparent);
 
-      gtk_container_add(GTK_CONTAINER(button), gtk_image_new_from_pixbuf(item->getIcon(SL_APPLET_ICON_SIZE)));
+      gtk_container_add(GTK_CONTAINER(button), gtk_image_new_from_pixbuf(item->getIcon(myIconSize)));
 
       gtk_object_set_user_data(GTK_OBJECT(button), item);
 
@@ -288,9 +288,9 @@ void SimpleLauncherApplet::updateWidget() {
   g_object_unref(G_OBJECT(group));
 
   if (button_no == 0) {
-    gtk_widget_set_size_request(myWidget, SL_APPLET_ICON_SIZE, SL_APPLET_ICON_SIZE);
+    gtk_widget_set_size_request(myWidget, myIconSize, myIconSize);
   } else {
-    gtk_widget_set_size_request(myWidget, button_no*SL_APPLET_ICON_SIZE, SL_APPLET_ICON_SIZE);
+    gtk_widget_set_size_request(myWidget, button_no*myIconSize, myIconSize);
   }
 
   gtk_widget_show_all(myWidget);
@@ -343,7 +343,7 @@ void SimpleLauncherApplet::runDialog() {
 
   LauncherItems newItems = myItems;
 
-  SettingsDialog dialog(myParent, SL_APPLET_ICON_SIZE, newItems);
+  SettingsDialog dialog(myParent, newItems);
 
   switch (dialog.run()) {
     case GTK_RESPONSE_OK:

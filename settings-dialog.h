@@ -25,7 +25,7 @@
 
 class SettingsDialog {
 public:
-  SettingsDialog(GtkWindow *, int, LauncherItems&);
+  SettingsDialog(GtkWindow *parent, LauncherItems& items);
  ~SettingsDialog();
 
   gint run();

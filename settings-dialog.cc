@@ -23,6 +23,8 @@
 
 #include "settings-dialog.h"
 
+#define SL_APPLET_SETTINGS_ICON_SIZE  26
+
 // FIXME: UGLY!!!!
 
 inline void addPage(GtkNotebook *notebook, const std::string& name, GtkWidget *widget) {
@@ -55,7 +57,7 @@ inline GtkWidget *createUIPage() {
   return vbox;
 }
 
-SettingsDialog::SettingsDialog(GtkWindow *parent, int size, LauncherItems& items) : myList(size, items) {
+SettingsDialog::SettingsDialog(GtkWindow *parent, LauncherItems& items) : myList(SL_APPLET_SETTINGS_ICON_SIZE, items) {
   myDialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Launcher Settings", parent, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), "OK", GTK_RESPONSE_OK, "Cancel", GTK_RESPONSE_CANCEL, NULL));
 
   GtkNotebook *notebook = GTK_NOTEBOOK(gtk_notebook_new());
