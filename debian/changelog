@@ -1,4 +1,4 @@
-simple-launcher (0.9.4~8) unstable; urgency=low
+simple-launcher (0.9.4~10) unstable; urgency=low
 
   * NOT RELEASED YET
   * settings dialog is moved into a separate class
@@ -13,8 +13,9 @@ simple-launcher (0.9.4~8) unstable; urgency=low
   * added proper signal handling for eventboxes
   * trying big size :)
   * disabled gconf stuff in the launcher
+  * make transparency code a bit more explicit
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Wed,  4 Apr 2007 20:32:08 +0300
+ -- Mikhail Sobolev <mss@mawhrin.net>  Tue, 10 Apr 2007 14:46:36 +0300
 
 simple-launcher (0.9.3) unstable; urgency=low
 

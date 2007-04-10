@@ -80,6 +80,9 @@ private:
 
   LauncherItems myItems;
 
+  bool myTransparent;
+  // bool myShowInfobanner; // FIXME: to implement
+
   static char *ourDirs[];
 };
 
@@ -130,7 +133,7 @@ char *SimpleLauncherApplet::ourDirs[] = {
 };
 
 // SimpleLauncherApplet::SimpleLauncherApplet() : myMainSettings(myClient.getKey(SL_APPLET_GCONF_PATH)), myContext(NULL), myWidget(NULL), myParent(NULL) {
-SimpleLauncherApplet::SimpleLauncherApplet() : myContext(NULL), myWidget(NULL), myParent(NULL) {
+SimpleLauncherApplet::SimpleLauncherApplet() : myContext(NULL), myWidget(NULL), myParent(NULL), myTransparent(false) {
 }
 
 bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
@@ -268,8 +271,7 @@ void SimpleLauncherApplet::updateWidget() {
       gtk_widget_set_events(button, GDK_BUTTON_PRESS_MASK);
       g_signal_connect(button, "button-press-event", G_CALLBACK(_button_pressed), this);
 
-      gtk_event_box_set_visible_window(GTK_EVENT_BOX(button), false);
-      // gtk_button_set_relief(GTK_BUTTON(button),GTK_RELIEF_NONE);
+      gtk_event_box_set_visible_window(GTK_EVENT_BOX(button), !myTransparent);
 
       gtk_container_add(GTK_CONTAINER(button), gtk_image_new_from_pixbuf(item->getIcon(SL_APPLET_ICON_SIZE)));
 
