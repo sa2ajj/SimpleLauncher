@@ -70,7 +70,7 @@ SettingsDialog::SettingsDialog(GtkWindow *parent, LauncherItems& items) : myList
   addPage(notebook, "UI", createUIPage());
   addPage(notebook, "Items", myList.getWidget());
 
-  gtk_widget_set_size_request(GTK_WIDGET(myDialog), 540, 257);
+  gtk_widget_set_size_request(GTK_WIDGET(myDialog), 540, 324);
 
   gtk_notebook_set_current_page(notebook, 0);
 }
