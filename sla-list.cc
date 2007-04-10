@@ -110,7 +110,11 @@ SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(N
     GtkTreeIter iter;
 
     gtk_list_store_append(myStore, &iter);
-    gtk_list_store_set(myStore, &iter, SLA_STORE_COLUMN_ICON, item->getIcon(icon_size), SLA_STORE_COLUMN_INDEX, it-myItems.myNames.begin(), -1);
+    {
+      GdkPixbuf *icon = item->getIcon(icon_size);
+      gtk_list_store_set(myStore, &iter, SLA_STORE_COLUMN_ICON, icon, SLA_STORE_COLUMN_INDEX, it-myItems.myNames.begin(), -1);
+      g_object_unref(G_OBJECT(icon));
+    }
   }
 }
 

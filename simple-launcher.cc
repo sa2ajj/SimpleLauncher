@@ -273,7 +273,11 @@ void SimpleLauncherApplet::updateWidget() {
 
       gtk_event_box_set_visible_window(GTK_EVENT_BOX(button), !myTransparent);
 
-      gtk_container_add(GTK_CONTAINER(button), gtk_image_new_from_pixbuf(item->getIcon(myIconSize)));
+      {
+        GdkPixbuf *pixbuf = item->getIcon(myIconSize);
+        gtk_container_add(GTK_CONTAINER(button), gtk_image_new_from_pixbuf(pixbuf));
+        g_object_unref(G_OBJECT(pixbuf));
+      }
 
       gtk_object_set_user_data(GTK_OBJECT(button), item);
 
