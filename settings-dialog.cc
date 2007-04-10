@@ -72,6 +72,7 @@ SettingsDialog::SettingsDialog(GtkWindow *parent, LauncherItems& items) : myList
 
   gtk_widget_set_size_request(GTK_WIDGET(myDialog), 540, 324);
 
+  gtk_widget_show_all(GTK_WIDGET(notebook));
   gtk_notebook_set_current_page(notebook, 0);
 }
 
