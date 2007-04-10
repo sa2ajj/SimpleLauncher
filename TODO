@@ -1,6 +1,8 @@
 Before 1.0
  * make button size configurable (small/big)
  * transparency
+    * seems to be done
+    * requires configuration
  * make optional info banner
 
 After 1.0
