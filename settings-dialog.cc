@@ -20,6 +20,7 @@
 #include <gtk/gtksizegroup.h>
 #include <gtk/gtknotebook.h>
 #include <gtk/gtklabel.h>
+#include <gtk/gtkcheckbutton.h>
 
 #include "settings-dialog.h"
 
@@ -33,13 +34,15 @@ inline void addPage(GtkNotebook *notebook, const std::string& name, GtkWidget *w
   gtk_notebook_append_page(notebook, widget, label);
 }
 
-inline GtkWidget *packItTogether(GtkSizeGroup *group, const std::string& name, GtkWidget *content) {
+inline GtkWidget *packItTogether(GtkBox *parent, GtkSizeGroup *group, const std::string& name, GtkWidget *content) {
   GtkWidget *box = gtk_hbox_new(false, 0);
   GtkWidget *label = gtk_label_new(name.c_str());
 
   gtk_size_group_add_widget(group, label);
   gtk_box_pack_start(GTK_BOX(box), label, true, true, 0);
   gtk_box_pack_start(GTK_BOX(box), content, true, true, 0);
+
+  gtk_box_pack_start(parent, box, false, false, 0);
 
   return box;
 }
@@ -49,8 +52,8 @@ inline GtkWidget *createUIPage() {
   GtkWidget *vbox = gtk_vbox_new(true, 0);
 
   // packItTogether(group, "Button Size:", <small/big>);
-  // packItTogether(group, "Transparent background:", [ ]);
-  // packItTogether(group, "Show Infobanner:", [ ]);
+  packItTogether(GTK_BOX(vbox), group, "Transparent background:", gtk_check_button_new());
+  packItTogether(GTK_BOX(vbox), group, "Show Infobanner:", gtk_check_button_new());
 
   g_object_unref(G_OBJECT(group));
 
@@ -64,10 +67,12 @@ SettingsDialog::SettingsDialog(GtkWindow *parent, LauncherItems& items) : myList
 
   gtk_container_add(GTK_CONTAINER(myDialog->vbox), GTK_WIDGET(notebook));
 
-  // addPage(notebook, "UI", createUIPage());
+  addPage(notebook, "UI", createUIPage());
   addPage(notebook, "Items", myList.getWidget());
 
   gtk_widget_set_size_request(GTK_WIDGET(myDialog), 540, 257);
+
+  gtk_notebook_set_current_page(notebook, 0);
 }
 
 SettingsDialog::~SettingsDialog() {

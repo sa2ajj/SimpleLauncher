@@ -1,4 +1,4 @@
-simple-launcher (0.9.4~11) unstable; urgency=low
+simple-launcher (0.9.4~12) unstable; urgency=low
 
   * NOT RELEASED YET
   * settings dialog is moved into a separate class
@@ -15,8 +15,9 @@ simple-launcher (0.9.4~11) unstable; urgency=low
   * disabled gconf stuff in the launcher
   * make transparency code a bit more explicit
   * separate icon size used in the applet and the settings dialog
+  * added dummy checkboxes and UI settings page
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Tue, 10 Apr 2007 18:05:27 +0300
+ -- Mikhail Sobolev <mss@mawhrin.net>  Tue, 10 Apr 2007 20:09:10 +0300
 
 simple-launcher (0.9.3) unstable; urgency=low
 
