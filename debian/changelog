@@ -1,4 +1,4 @@
-simple-launcher (0.9.4~12) unstable; urgency=low
+simple-launcher (0.9.4~13) unstable; urgency=low
 
   * NOT RELEASED YET
   * settings dialog is moved into a separate class
@@ -16,8 +16,9 @@ simple-launcher (0.9.4~12) unstable; urgency=low
   * make transparency code a bit more explicit
   * separate icon size used in the applet and the settings dialog
   * added dummy checkboxes and UI settings page
+  * added a configurable canvas around button icons
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Tue, 10 Apr 2007 20:09:10 +0300
+ -- Mikhail Sobolev <mss@mawhrin.net>  Wed, 11 Apr 2007 19:43:11 +0300
 
 simple-launcher (0.9.3) unstable; urgency=low
 

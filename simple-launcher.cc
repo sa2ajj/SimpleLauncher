@@ -82,6 +82,7 @@ private:
   bool myTransparent;
   // bool myShowInfobanner; // FIXME: to implement
   int myIconSize;
+  int myCanvasSize;
 
   static char *ourDirs[];
 };
@@ -133,7 +134,7 @@ char *SimpleLauncherApplet::ourDirs[] = {
 };
 
 // SimpleLauncherApplet::SimpleLauncherApplet() : myMainSettings(myClient.getKey(SL_APPLET_GCONF_PATH)), myContext(NULL), myWidget(NULL), myParent(NULL) {
-SimpleLauncherApplet::SimpleLauncherApplet() : myContext(NULL), myWidget(NULL), myParent(NULL), myTransparent(true), myIconSize(48) {
+SimpleLauncherApplet::SimpleLauncherApplet() : myContext(NULL), myWidget(NULL), myParent(NULL), myTransparent(true), myIconSize(48), myCanvasSize(1) {
 }
 
 bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
@@ -272,6 +273,7 @@ void SimpleLauncherApplet::updateWidget() {
       g_signal_connect(button, "button-press-event", G_CALLBACK(_button_pressed), this);
 
       gtk_event_box_set_visible_window(GTK_EVENT_BOX(button), !myTransparent);
+      gtk_container_set_border_width(GTK_CONTAINER(button), myCanvasSize);
 
       {
         GdkPixbuf *pixbuf = item->getIcon(myIconSize);
@@ -292,9 +294,9 @@ void SimpleLauncherApplet::updateWidget() {
   g_object_unref(G_OBJECT(group));
 
   if (button_no == 0) {
-    gtk_widget_set_size_request(myWidget, myIconSize, myIconSize);
+    gtk_widget_set_size_request(myWidget, myIconSize+myCanvasSize+myCanvasSize, myIconSize+myCanvasSize+myCanvasSize);
   } else {
-    gtk_widget_set_size_request(myWidget, button_no*myIconSize, myIconSize);
+    gtk_widget_set_size_request(myWidget, button_no*(myIconSize+myCanvasSize+myCanvasSize), myIconSize+myCanvasSize+myCanvasSize);
   }
 
   gtk_widget_show_all(myWidget);
