@@ -25,7 +25,7 @@ public:
 	virtual ~SettingsDialogEntry() {}
 
 protected:
-	SettingsDialogEntry(GConfOption& option, const std::string& name);
+	SettingsDialogEntry(GConfOption& option, const std::string& name): myOption(option), myName(name) {}
 
   const std::string& name() const { return myName; }
 
@@ -47,14 +47,14 @@ class SettingsDialogBooleanEntry : public SettingsDialogEntry {
 public:
   SettingsDialogBooleanEntry(GConfBooleanOption& option, const std::string& name): SettingsDialogEntry(option, name) {}
 
-  void updateValue();
+  void updateValue() {}
 };
 
 class SettingsDialogIntegerEntry : public SettingsDialogEntry {
 public:
   SettingsDialogIntegerEntry(GConfIntegerOption& option, const std::string& name): SettingsDialogEntry(option, name) {}
 
-  void updateValue();
+  void updateValue() {}
 };
 
 #endif
