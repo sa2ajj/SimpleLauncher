@@ -66,40 +66,40 @@ protected:
   const std::string myPath;
 };
 
-class GConfStringValue : public GConfOption {
+class GConfStringOption : public GConfOption {
 public:
-  GConfStringValue(const GConfKey&, const std::string&, const std::string& = "");
+  GConfStringOption(const GConfKey&, const std::string&, const std::string& = "");
 
   const std::string& value() const;
   const std::string& setValue(const std::string& newValue);
 
 private:
   mutable std::string myValue;
-  std::string myDefaultValue;
+  const std::string myDefaultValue;
 };
 
-class GConfBooleanValue : public GConfOption {
+class GConfBooleanOption : public GConfOption {
 public:
-  GConfBooleanValue(const GConfKey&, const std::string&, bool = false);
+  GConfBooleanOption(const GConfKey&, const std::string&, bool = false);
 
   bool value() const;
   bool setValue(bool newValue);
 
 private:
   mutable bool myValue;
-  bool myDefaultValue;
+  const bool myDefaultValue;
 };
 
-class GConfIntegerValue : public GConfOption {
+class GConfIntegerOption : public GConfOption {
 public:
-  GConfIntegerValue(const GConfKey&, const std::string&, int = false);
+  GConfIntegerOption(const GConfKey&, const std::string&, int = false);
 
   int value() const;
   int setValue(int newValue);
 
 private:
   mutable int myValue;
-  int myDefaultValue;
+  const int myDefaultValue;
 };
 
 #endif

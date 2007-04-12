@@ -94,12 +94,12 @@ void GConfOption::unsetGConfValue() {
   }
 }
 
-GConfStringValue::GConfStringValue(const GConfKey& key, const std::string& name, const std::string& defaultValue):
+GConfStringOption::GConfStringOption(const GConfKey& key, const std::string& name, const std::string& defaultValue):
   GConfOption(GCONF_VALUE_STRING, key, name),
   myDefaultValue(defaultValue) {
 }
 
-const std::string& GConfStringValue::value() const {
+const std::string& GConfStringOption::value() const {
   if (!myIsSynchronized) {
     GConfValue *value = getGConfValue();
 
@@ -117,7 +117,7 @@ const std::string& GConfStringValue::value() const {
   return myValue;
 }
 
-const std::string& GConfStringValue::setValue(const std::string& newValue) {
+const std::string& GConfStringOption::setValue(const std::string& newValue) {
   if (!myIsSynchronized || (myValue != newValue)) {
     myValue = newValue;
 
@@ -139,12 +139,12 @@ const std::string& GConfStringValue::setValue(const std::string& newValue) {
   return myValue;
 }
 
-GConfBooleanValue::GConfBooleanValue(const GConfKey& key, const std::string& name, bool defaultValue):
+GConfBooleanOption::GConfBooleanOption(const GConfKey& key, const std::string& name, bool defaultValue):
   GConfOption(GCONF_VALUE_BOOL, key, name),
   myDefaultValue(defaultValue) {
 }
 
-bool GConfBooleanValue::value() const {
+bool GConfBooleanOption::value() const {
   if (!myIsSynchronized) {
     GConfValue *value = getGConfValue();
 
@@ -162,7 +162,7 @@ bool GConfBooleanValue::value() const {
   return myValue;
 }
 
-bool GConfBooleanValue::setValue(bool newValue) {
+bool GConfBooleanOption::setValue(bool newValue) {
   if (!myIsSynchronized || (myValue != newValue)) {
     myValue = newValue;
 
@@ -184,12 +184,12 @@ bool GConfBooleanValue::setValue(bool newValue) {
   return myValue;
 }
 
-GConfIntegerValue::GConfIntegerValue(const GConfKey& key, const std::string& name, int defaultValue):
+GConfIntegerOption::GConfIntegerOption(const GConfKey& key, const std::string& name, int defaultValue):
   GConfOption(GCONF_VALUE_INT, key, name),
   myDefaultValue(defaultValue) {
 }
 
-int GConfIntegerValue::value() const {
+int GConfIntegerOption::value() const {
   if (!myIsSynchronized) {
     GConfValue *value = getGConfValue();
 
@@ -207,7 +207,7 @@ int GConfIntegerValue::value() const {
   return myValue;
 }
 
-int GConfIntegerValue::setValue(int newValue) {
+int GConfIntegerOption::setValue(int newValue) {
   if (!myIsSynchronized || (myValue != newValue)) {
     myValue = newValue;
 
