@@ -52,15 +52,18 @@ private:
 
 class GConfOption : public GConfItem {
 protected:
-  GConfOption(const GConfKey& key, const std::string& path): myIsSynchronized(false), myPath(key.merge(path)) { }
+  GConfOption(GConfValueType kind, const GConfKey& key, const std::string& path): myKind(kind), myIsSynchronized(false), myPath(key.merge(path)) { }
+
+  GConfValueType kind() const { return myKind; }
 
   void setGConfValue(const GConfValue *);
-  GConfValue *getGConfValue(GConfValueType) const;
+  GConfValue *getGConfValue() const;
   void unsetGConfValue();
 
 protected:
+  const GConfValueType myKind;
   mutable bool myIsSynchronized;
-  std::string myPath;
+  const std::string myPath;
 };
 
 class GConfStringValue : public GConfOption {

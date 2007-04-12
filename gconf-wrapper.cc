@@ -47,14 +47,61 @@ std::string GConfKey::merge(const std::string& path) const {
   return result;
 }
 
+void GConfOption::setGConfValue(const GConfValue *value) {
+  GError *error = NULL;
+
+  gconf_client_set(ourClient, myPath.c_str(), value, &error);
+
+  if (error != NULL) {
+    g_error_free(error);
+  }
+}
+
+GConfValue *GConfOption::getGConfValue() const {
+  GConfValue *result = NULL;
+  GError *error = NULL;
+
+  result = gconf_client_get_without_default(ourClient, myPath.c_str(), &error);
+
+  if (error != NULL) {
+    g_error_free(error);
+
+    if (result != NULL) {
+      gconf_value_free(result);
+      result = NULL;
+    }
+  }
+
+  if (result != NULL) {
+    if (result->type != kind()) {
+      gconf_value_free(result);
+
+      result = 0;
+    }
+  }
+
+  return result;
+}
+
+void GConfOption::unsetGConfValue() {
+  GError *error = NULL;
+
+  // TODO: should I be picky about errors?
+  gconf_client_unset(ourClient, myPath.c_str(), &error);
+
+  if (error != NULL) {
+    g_error_free(error);
+  }
+}
+
 GConfStringValue::GConfStringValue(const GConfKey& key, const std::string& name, const std::string& defaultValue):
-  GConfOption(key, name),
+  GConfOption(GCONF_VALUE_STRING, key, name),
   myDefaultValue(defaultValue) {
 }
 
 const std::string& GConfStringValue::value() const {
   if (!myIsSynchronized) {
-    GConfValue *value = getGConfValue(GCONF_VALUE_STRING);
+    GConfValue *value = getGConfValue();
 
     if (value == NULL) {
       myValue = myDefaultValue;
@@ -93,13 +140,13 @@ const std::string& GConfStringValue::setValue(const std::string& newValue) {
 }
 
 GConfBooleanValue::GConfBooleanValue(const GConfKey& key, const std::string& name, bool defaultValue):
-  GConfOption(key, name),
+  GConfOption(GCONF_VALUE_BOOL, key, name),
   myDefaultValue(defaultValue) {
 }
 
 bool GConfBooleanValue::value() const {
   if (!myIsSynchronized) {
-    GConfValue *value = getGConfValue(GCONF_VALUE_BOOL);
+    GConfValue *value = getGConfValue();
 
     if (value == NULL) {
       myValue = myDefaultValue;
@@ -138,13 +185,13 @@ bool GConfBooleanValue::setValue(bool newValue) {
 }
 
 GConfIntegerValue::GConfIntegerValue(const GConfKey& key, const std::string& name, int defaultValue):
-  GConfOption(key, name),
+  GConfOption(GCONF_VALUE_INT, key, name),
   myDefaultValue(defaultValue) {
 }
 
 int GConfIntegerValue::value() const {
   if (!myIsSynchronized) {
-    GConfValue *value = getGConfValue(GCONF_VALUE_INT);
+    GConfValue *value = getGConfValue();
 
     if (value == NULL) {
       myValue = myDefaultValue;
