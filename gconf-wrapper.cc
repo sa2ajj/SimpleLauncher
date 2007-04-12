@@ -32,6 +32,21 @@ void GConfItem::allocateClient() {
 GConfKey::GConfKey(const std::string& path): myKeyPath(path) {
 }
 
+std::string GConfKey::merge(const std::string& path) const {
+  std::string result = myKeyPath;
+
+  if (path.empty()) {
+    // this is actually a bad situation, what to do??
+  } else if (path[0] == '/') {
+    result.append(path);
+  } else {
+    result.append("/");
+    result.append(path);
+  }
+
+  return result;
+}
+
 GConfStringValue::GConfStringValue(const GConfKey& key, const std::string& name, const std::string& defaultValue):
   GConfOption(key, name),
   myDefaultValue(defaultValue) {

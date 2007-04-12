@@ -44,15 +44,15 @@ public:
 
   const std::string& path() const { return myKeyPath; }
 
-  static std::string mergePath(const std::string&, const std::string);
+  std::string merge(const std::string&) const;
 
 private:
-  std::string myKeyPath;
+  const std::string myKeyPath;
 };
 
 class GConfOption : public GConfItem {
 protected:
-  GConfOption(const GConfKey& key, const std::string& path): myIsSynchronized(false), myPath(GConfKey::mergePath(key.path(), path)) { }
+  GConfOption(const GConfKey& key, const std::string& path): myIsSynchronized(false), myPath(key.merge(path)) { }
 
   void setGConfValue(const GConfValue *);
   GConfValue *getGConfValue(GConfValueType) const;
