@@ -20,10 +20,10 @@
 GConfClient *GConfItem::ourClient = NULL;
 
 GConfItem::GConfItem() {
-  validateClient();
+  allocateClient();
 }
 
-void GConfItem::validateClient() {
+void GConfItem::allocateClient() {
   if (ourClient == NULL) {
     ourClient = gconf_client_get_default();
   }

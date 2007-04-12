@@ -29,7 +29,7 @@ public:
 protected:
   GConfItem();  // I do not want to create instances of this class
 
-  static void validateClient();
+  static void allocateClient();
 
 protected:
   static GConfClient *ourClient;
