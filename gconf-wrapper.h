@@ -22,48 +22,83 @@
 
 #include <gconf/gconf-client.h>
 
-class GConfClientWrapper {
-  friend class GConfKey;
-
+class GConfItem {
 public:
-  GConfClientWrapper();
- ~GConfClientWrapper();
-
-  GConfKey getKey(const std::string&);
+  virtual ~GConfItem() {}
 
 protected:
-  bool getBool(const std::string& name);
-  void setBool(const std::string& name, bool);
+  GConfItem();  // I do not want to create instances of this class
 
-  int getInt(const std::string& name);
-  void setInt(const std::string& name, int);
+  static void validateClient();
 
-private:
-  GConfClient *myClient;
+protected:
+  static GConfClient *ourClient;
 };
 
-class GConfKey {
+class GConfKey : public GConfItem {
 public:
-  GConfKey(GConfClientWrapper&, const std::string&);
-  GConfKey(const GConfKey& what) : myWrapper(what.myWrapper), myPath(what.myPath) { }
- ~GConfKey();
+  GConfKey(const std::string&);
+  GConfKey(const GConfKey&, const std::string&);
+ ~GConfKey() { }
 
-  GConfKey& operator = (const GConfKey& what) {
-    myWrapper = what.myWrapper;
-    myPath = what.myPath;
+  const std::string& path() const { return myKeyPath; }
 
-    return *this;
-  }
-
-  bool getBool(const std::string& name, bool defvalue = false);
-  void setBool(const std::string& name, bool value);
-
-  int getInt(const std::string& name, int defvalue = 0);
-  void setInt(const std::string& name, int value);
+  static std::string mergePath(const std::string&, const std::string);
 
 private:
-  GConfClientWrapper& myWrapper;
+  std::string myKeyPath;
+};
+
+class GConfOption : public GConfItem {
+protected:
+  GConfOption(const GConfKey& key, const std::string& path): myIsSynchronized(false), myPath(GConfKey::mergePath(key.path(), path)) { }
+
+  void setGConfValue(const GConfValue *);
+  GConfValue *getGConfValue(GConfValueType) const;
+  void unsetGConfValue();
+
+protected:
+  mutable bool myIsSynchronized;
   std::string myPath;
+};
+
+class GConfStringValue : public GConfOption {
+public:
+  GConfStringValue(const GConfKey&, const std::string&, const std::string& = "");
+ ~GConfStringValue();
+
+  const std::string& value() const;
+  const std::string& setValue(const std::string& newValue);
+
+private:
+  mutable std::string myValue;
+  std::string myDefaultValue;
+};
+
+class GConfBooleanValue : public GConfOption {
+public:
+  GConfBooleanValue(const GConfKey&, const std::string&, bool = false);
+ ~GConfBooleanValue();
+
+  bool value() const;
+  bool setValue(bool newValue);
+
+private:
+  mutable bool myValue;
+  bool myDefaultValue;
+};
+
+class GConfIntegerValue : public GConfOption {
+public:
+  GConfIntegerValue(const GConfKey&, const std::string&, int = false);
+ ~GConfIntegerValue();
+
+  int value() const;
+  int setValue(int newValue);
+
+private:
+  mutable int myValue;
+  int myDefaultValue;
 };
 
 #endif

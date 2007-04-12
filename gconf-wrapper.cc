@@ -17,17 +17,154 @@
 
 #include "gconf-wrapper.h"
 
-GConfClientWrapper::GConfClientWrapper() {
-	myClient = gconf_client_get_default();
+GConfClient *GConfItem::ourClient = NULL;
+
+GConfItem::GConfItem() {
+  validateClient();
 }
 
-GConfClientWrapper::~GConfClientWrapper() {
+void GConfItem::validateClient() {
+  if (ourClient == NULL) {
+    ourClient = gconf_client_get_default();
+  }
 }
 
-GConfKey GConfClientWrapper::getKey(const std::string& path) {
-	// FIXME: check if path points to a good place :)
-	return GConfKey(*this, path);
+GConfKey::GConfKey(const std::string& path): myKeyPath(path) {
 }
 
-GConfKey::GConfKey(GConfClientWrapper& wrapper, const std::string& path) : myWrapper(wrapper), myPath(path) {
+GConfStringValue::GConfStringValue(const GConfKey& key, const std::string& name, const std::string& defaultValue):
+  GConfOption(key, name),
+  myDefaultValue(defaultValue) {
 }
+
+const std::string& GConfStringValue::value() const {
+  if (!myIsSynchronized) {
+    GConfValue *value = getGConfValue(GCONF_VALUE_STRING);
+
+    if (value == NULL) {
+      myValue = myDefaultValue;
+    } else {
+      myValue = gconf_value_get_string(value);
+
+      gconf_value_free(value);
+    }
+
+    myIsSynchronized = true;
+  }
+
+  return myValue;
+}
+
+const std::string& GConfStringValue::setValue(const std::string& newValue) {
+  if (!myIsSynchronized || (myValue != newValue)) {
+    myValue = newValue;
+
+    if (myValue == myDefaultValue) {
+      unsetGConfValue();
+    } else {
+      GConfValue *value = gconf_value_new(GCONF_VALUE_STRING);
+
+      gconf_value_set_string(value, myValue.c_str());
+
+      setGConfValue(value);
+
+      gconf_value_free(value);
+    }
+
+    myIsSynchronized = true;
+  }
+
+  return myValue;
+}
+
+GConfBooleanValue::GConfBooleanValue(const GConfKey& key, const std::string& name, bool defaultValue):
+  GConfOption(key, name),
+  myDefaultValue(defaultValue) {
+}
+
+bool GConfBooleanValue::value() const {
+  if (!myIsSynchronized) {
+    GConfValue *value = getGConfValue(GCONF_VALUE_BOOL);
+
+    if (value == NULL) {
+      myValue = myDefaultValue;
+    } else {
+      myValue = gconf_value_get_bool(value);
+
+      gconf_value_free(value);
+    }
+
+    myIsSynchronized = true;
+  }
+
+  return myValue;
+}
+
+bool GConfBooleanValue::setValue(bool newValue) {
+  if (!myIsSynchronized || (myValue != newValue)) {
+    myValue = newValue;
+
+    if (myValue == myDefaultValue) {
+      unsetGConfValue();
+    } else {
+      GConfValue *value = gconf_value_new(GCONF_VALUE_BOOL);
+
+      gconf_value_set_bool(value, myValue);
+
+      setGConfValue(value);
+
+      gconf_value_free(value);
+    }
+
+    myIsSynchronized = true;
+  }
+
+  return myValue;
+}
+
+GConfIntegerValue::GConfIntegerValue(const GConfKey& key, const std::string& name, int defaultValue):
+  GConfOption(key, name),
+  myDefaultValue(defaultValue) {
+}
+
+int GConfIntegerValue::value() const {
+  if (!myIsSynchronized) {
+    GConfValue *value = getGConfValue(GCONF_VALUE_INT);
+
+    if (value == NULL) {
+      myValue = myDefaultValue;
+    } else {
+      myValue = gconf_value_get_int(value);
+
+      gconf_value_free(value);
+    }
+
+    myIsSynchronized = true;
+  }
+
+  return myValue;
+}
+
+int GConfIntegerValue::setValue(int newValue) {
+  if (!myIsSynchronized || (myValue != newValue)) {
+    myValue = newValue;
+
+    if (myValue == myDefaultValue) {
+      unsetGConfValue();
+    } else {
+      GConfValue *value = gconf_value_new(GCONF_VALUE_INT);
+
+      gconf_value_set_int(value, myValue);
+
+      setGConfValue(value);
+
+      gconf_value_free(value);
+    }
+
+    myIsSynchronized = true;
+  }
+
+  return myValue;
+}
+
+// vim:ts=2:sw=2:et
