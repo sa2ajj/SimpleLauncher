@@ -354,11 +354,14 @@ void SimpleLauncherApplet::runDialog() {
 
   LauncherItems newItems = myItems;
 
-  SettingsDialog dialog(myParent, newItems);
+  // TODO: make it nicer... this code is ugly :(
+  SettingsDialog dialog(myParent, newItems, myTransparent, myIconSize, myCanvasSize);
 
   switch (dialog.run()) {
     case GTK_RESPONSE_OK:
       myItems = newItems;
+      dialog.updateValues();  // FIXME: hackish :( make it better
+
       saveConfig();   // save it immediately!
       updateWidget();
       break;

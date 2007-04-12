@@ -20,20 +20,28 @@
 
 #include <gtk/gtkdialog.h>
 
+#include "gconf-wrapper.h"
 #include "sla-list.h"
 #include "launcher-item.h"
+#include "dialog-entry.h"
 
 class SettingsDialog {
 public:
-  SettingsDialog(GtkWindow *parent, LauncherItems& items);
+  SettingsDialog(GtkWindow *parent, LauncherItems& items, GConfBooleanOption& transparent, GConfIntegerOption& icon_size, GConfIntegerOption& canvas_size);
  ~SettingsDialog();
 
   gint run();
+
+  void updateValues();
 
 private:
   SLAList myList;
 
   GtkDialog *myDialog;
+
+  SettingsDialogBooleanEntry myTransparent;
+  SettingsDialogIntegerEntry myIconSize;
+  SettingsDialogIntegerEntry myCanvasSize;
 };
 
 #endif

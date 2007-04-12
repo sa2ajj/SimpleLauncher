@@ -60,7 +60,9 @@ inline GtkWidget *createUIPage() {
   return vbox;
 }
 
-SettingsDialog::SettingsDialog(GtkWindow *parent, LauncherItems& items) : myList(SL_APPLET_SETTINGS_ICON_SIZE, items) {
+SettingsDialog::SettingsDialog(GtkWindow *parent, LauncherItems& items, GConfBooleanOption& transparent, GConfIntegerOption& icon_size, GConfIntegerOption& canvas_size):
+  myList(SL_APPLET_SETTINGS_ICON_SIZE, items),
+  myTransparent(transparent, "Transparent background:"), myIconSize(icon_size, "Icon Size:"), myCanvasSize(canvas_size, "Canvas Size:") {
   myDialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Launcher Settings", parent, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), "OK", GTK_RESPONSE_OK, "Cancel", GTK_RESPONSE_CANCEL, NULL));
 
   GtkNotebook *notebook = GTK_NOTEBOOK(gtk_notebook_new());
@@ -84,6 +86,12 @@ gint SettingsDialog::run() {
   gtk_widget_show_all(GTK_WIDGET(myDialog));
 
   return gtk_dialog_run(myDialog);
+}
+
+void SettingsDialog::updateValues() {
+  myTransparent.updateValue();
+  myIconSize.updateValue();
+  myCanvasSize.updateValue();
 }
 
 // vim:ts=2:sw=2:et
