@@ -16,9 +16,9 @@ TARGET=simple-launcher.so
 DESKTOP_FILE=simple-launcher.desktop
 BACKUP_CONF=simple-launcher.backup
 
-all: $(TARGET)
+all: test2 $(TARGET)
 
-tests: test test1
+tests: test test1 test2
 
 $(TARGET): simple-launcher.o launchable-item.o launcher-item.o sla-list.o utils.o settings-dialog.o gconf-wrapper.o
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
@@ -29,8 +29,11 @@ test: test.o launcher-item.o
 test1: test1.o sla-list.o launcher-item.o
 	g++ -g -o $@ $^ $(GTKLIBS) $(DBUSLIBS) $(LIBS)
 
+test2: test2.o gconf-wrapper.o
+	g++ -g -o $@ $^ $(GCONFLIBS)
+
 clean:
-	rm -f *.d *.o $(TARGET) test test1
+	rm -f *.d *.o $(TARGET) test test1 test2
 
 install: $(TARGET)
 	install -d $(DESTDIR)/usr/share/applications/hildon-home
