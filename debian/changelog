@@ -12,13 +12,13 @@ simple-launcher (0.9.4~13) unstable; urgency=low
   * replace buttons with eventboxes
   * added proper signal handling for eventboxes
   * trying big size :)
-  * disabled gconf stuff in the launcher
   * make transparency code a bit more explicit
   * separate icon size used in the applet and the settings dialog
   * added dummy checkboxes and UI settings page
   * added a configurable canvas around button icons
+  * added GConf*Options to SimpleLauncher
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Wed, 11 Apr 2007 19:43:11 +0300
+ -- Mikhail Sobolev <mss@mawhrin.net>  Thu, 12 Apr 2007 15:54:04 +0300
 
 simple-launcher (0.9.3) unstable; urgency=low
 
