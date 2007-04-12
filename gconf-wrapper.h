@@ -68,7 +68,7 @@ protected:
 
 class GConfStringOption : public GConfOption {
 public:
-  GConfStringOption(const GConfKey&, const std::string&, const std::string& = "");
+  GConfStringOption(const GConfKey&, const std::string&, const std::string&);
 
   const std::string& value() const;
   const std::string& setValue(const std::string& newValue);
@@ -80,7 +80,7 @@ private:
 
 class GConfBooleanOption : public GConfOption {
 public:
-  GConfBooleanOption(const GConfKey&, const std::string&, bool = false);
+  GConfBooleanOption(const GConfKey&, const std::string&, bool);
 
   bool value() const;
   bool setValue(bool newValue);
@@ -92,7 +92,7 @@ private:
 
 class GConfIntegerOption : public GConfOption {
 public:
-  GConfIntegerOption(const GConfKey&, const std::string&, int = false);
+  GConfIntegerOption(const GConfKey&, const std::string&, int);
 
   int value() const;
   int setValue(int newValue);
