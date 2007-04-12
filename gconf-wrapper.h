@@ -52,16 +52,15 @@ private:
 
 class GConfOption : public GConfItem {
 protected:
-  GConfOption(GConfValueType kind, const GConfKey& key, const std::string& path): myKind(kind), myIsSynchronized(false), myPath(key.merge(path)) { }
+  GConfOption(const GConfKey& key, const std::string& path): myIsSynchronized(false), myPath(key.merge(path)) { }
 
-  GConfValueType kind() const { return myKind; }
+  virtual GConfValueType kind() const = 0;
 
   void setGConfValue(const GConfValue *);
   GConfValue *getGConfValue() const;
   void unsetGConfValue();
 
 protected:
-  const GConfValueType myKind;
   mutable bool myIsSynchronized;
   const std::string myPath;
 };
@@ -69,6 +68,8 @@ protected:
 class GConfStringOption : public GConfOption {
 public:
   GConfStringOption(const GConfKey&, const std::string&, const std::string&);
+
+  virtual GConfValueType kind() const { return GCONF_VALUE_STRING; }
 
   const std::string& value() const;
   const std::string& setValue(const std::string& newValue);
@@ -82,6 +83,8 @@ class GConfBooleanOption : public GConfOption {
 public:
   GConfBooleanOption(const GConfKey&, const std::string&, bool);
 
+  virtual GConfValueType kind() const { return GCONF_VALUE_BOOL; }
+
   bool value() const;
   bool setValue(bool newValue);
 
@@ -93,6 +96,8 @@ private:
 class GConfIntegerOption : public GConfOption {
 public:
   GConfIntegerOption(const GConfKey&, const std::string&, int);
+
+  virtual GConfValueType kind() const { return GCONF_VALUE_INT; }
 
   int value() const;
   int setValue(int newValue);
