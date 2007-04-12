@@ -32,6 +32,7 @@ protected:
   static void allocateClient();
 
 protected:
+  // TODO: should I count the references and unref the client when the last user is gone??
   static GConfClient *ourClient;
 };
 
