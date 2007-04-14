@@ -15,38 +15,16 @@
 // this program; if not, write to the Free Software Foundation, Inc., 51
 // Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef __SETTINGS_DIALOG_H_
-#define __SETTINGS_DIALOG_H_
+#ifndef _SETTINGS_PAGE_H_
+#define _SETTINGS_PAGE_H_
 
-#include <vector>
+#include <gtk/gtkwidget.h>
 
-#include <gtk/gtkdialog.h>
-
-#include "gconf-wrapper.h"
-#include "sla-list.h"
-#include "launcher-item.h"
-#include "dialog-entry.h"
-#include "settings-page.h"
-
-class SettingsDialog {
+class SettingsPage {
 public:
-  SettingsDialog(GtkWindow *parent, LauncherItems& items, GConfBooleanOption& transparent, GConfIntegerOption& icon_size);
- ~SettingsDialog();
+  virtual ~SettingsPage() {}
 
-  gint run();
-
-  void updateValues();
-
-  void addPage(const std::string&, SettingsPage *);
-
-private:
-  std::vector<SettingsPage *> myPages;
-
-  GtkDialog *myDialog;
-  GtkNotebook *myNotebook;
-
-  SettingsDialogBooleanEntry myTransparent;
-  SettingsDialogIntegerEntry myIconSize;
+  virtual GtkWidget *getWidget() const = 0;
 };
 
 #endif

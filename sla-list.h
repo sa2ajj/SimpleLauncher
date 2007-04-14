@@ -24,13 +24,16 @@
 #include <gtk/gtkcellrenderertoggle.h>
 
 #include "launcher-item.h"
+#include "settings-page.h"
 
-class SLAList {
+class SettingsPageWithItems : public SettingsPage {
 public:
-  SLAList(int, LauncherItems&);
- ~SLAList();
+  SettingsPageWithItems(int, LauncherItems&);
+ ~SettingsPageWithItems();
 
-  GtkWidget *getWidget() { return myWidget; }
+  GtkWidget *getWidget() const { return myWidget; }
+
+  void updateValues();
 
 private:
   static void _selectionChanged(GtkTreeSelection *, gpointer);

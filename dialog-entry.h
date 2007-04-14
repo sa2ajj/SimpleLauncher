@@ -18,18 +18,23 @@
 #ifndef _DIALOG_ENTRY_H_
 #define _DIALOG_ENTRY_H_
 
+#include <gtk/gtkwidget.h>
+
+#include <hildon-widgets/hildon-number-editor.h>
+
 #include "gconf-wrapper.h"
 
 class SettingsDialogEntry {
 public:
 	virtual ~SettingsDialogEntry() {}
 
-protected:
-	SettingsDialogEntry(GConfOption& option, const std::string& name): myOption(option), myName(name) {}
-
   const std::string& name() const { return myName; }
+  virtual GtkWidget *getWidget() const = 0;
 
   virtual void updateValue() = 0;
+
+protected:
+	SettingsDialogEntry(GConfOption& option, const std::string& name): myOption(option), myName(name) {}
 
 protected:
 	GConfOption& myOption;
@@ -41,20 +46,29 @@ public:
   SettingsDialogStringEntry(GConfStringOption& option, const std::string& name): SettingsDialogEntry(option, name) {}
 
   void updateValue();
+  GtkWidget *getWidget() const;
 };
 
 class SettingsDialogBooleanEntry : public SettingsDialogEntry {
 public:
-  SettingsDialogBooleanEntry(GConfBooleanOption& option, const std::string& name): SettingsDialogEntry(option, name) {}
+  SettingsDialogBooleanEntry(GConfBooleanOption& option, const std::string& name);
 
-  void updateValue() {}
+  void updateValue();
+  GtkWidget *getWidget() const { return myWidget; }
+
+private:
+  GtkWidget *myWidget;
 };
 
 class SettingsDialogIntegerEntry : public SettingsDialogEntry {
 public:
-  SettingsDialogIntegerEntry(GConfIntegerOption& option, const std::string& name): SettingsDialogEntry(option, name) {}
+  SettingsDialogIntegerEntry(GConfIntegerOption& option, const std::string& name, int minValue, int maxValue);
 
-  void updateValue() {}
+  void updateValue();
+  GtkWidget *getWidget() const { return GTK_WIDGET(mySpinBox); }
+
+private:
+  HildonNumberEditor *mySpinBox;
 };
 
 #endif

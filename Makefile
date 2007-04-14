@@ -20,7 +20,7 @@ all: $(TARGET)
 
 tests: test test1 test2
 
-$(TARGET): simple-launcher.o launchable-item.o launcher-item.o sla-list.o utils.o settings-dialog.o gconf-wrapper.o dialog-entry.o
+$(TARGET): simple-launcher.o launchable-item.o launcher-item.o sla-list.o utils.o settings-dialog.o gconf-wrapper.o dialog-entry.o settings-page-entries.o
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 test: test.o launcher-item.o

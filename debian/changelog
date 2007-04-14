@@ -1,4 +1,4 @@
-simple-launcher (0.9.4~14) unstable; urgency=low
+simple-launcher (0.9.4~15) unstable; urgency=low
 
   * NOT RELEASED YET
   * settings dialog is moved into a separate class
@@ -17,8 +17,10 @@ simple-launcher (0.9.4~14) unstable; urgency=low
   * added dummy checkboxes and UI settings page
   * added a configurable canvas around button icons
   * added GConf*Options to SimpleLauncherApplet
+  * major refactoring of the settings dialog
+  * SLAList class is renamed to SettingsPageWithItems (file names will follow)
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Thu, 12 Apr 2007 15:54:04 +0300
+ -- Mikhail Sobolev <mss@mawhrin.net>  Sat, 14 Apr 2007 20:05:45 +0300
 
 simple-launcher (0.9.3) unstable; urgency=low
 

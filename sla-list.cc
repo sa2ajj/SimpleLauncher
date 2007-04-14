@@ -42,7 +42,7 @@ static GtkWidget *gtk_button_new_stock_image_only(const gchar *stock_id) {
   return button;
 }
 
-SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(NULL), myView(NULL), mySelection(NULL), myLastSelection(NULL), myItems(items) {
+SettingsPageWithItems::SettingsPageWithItems(int icon_size, LauncherItems& items): myWidget(NULL), myStore(NULL), myView(NULL), mySelection(NULL), myLastSelection(NULL), myItems(items) {
   GtkTreeViewColumn *column;
   GtkCellRenderer *renderer;
 
@@ -116,15 +116,15 @@ SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(N
   }
 }
 
-SLAList::~SLAList() {
+SettingsPageWithItems::~SettingsPageWithItems() {
   // FIXME: do something! :)
 }
 
-void SLAList::_selectionChanged(GtkTreeSelection *selection, void *self) {
-  ((SLAList *)self)->selectionChanged(selection);
+void SettingsPageWithItems::_selectionChanged(GtkTreeSelection *selection, void *self) {
+  ((SettingsPageWithItems *)self)->selectionChanged(selection);
 }
 
-void SLAList::selectionChanged(GtkTreeSelection *) {
+void SettingsPageWithItems::selectionChanged(GtkTreeSelection *) {
   if (myLastSelection != NULL) {
     kickIt(myLastSelection);
     gtk_tree_iter_free(myLastSelection);
@@ -140,7 +140,7 @@ void SLAList::selectionChanged(GtkTreeSelection *) {
   }
 }
 
-void SLAList::kickIt(GtkTreeIter *iter) {
+void SettingsPageWithItems::kickIt(GtkTreeIter *iter) {
   GtkTreePath *path = gtk_tree_model_get_path(GTK_TREE_MODEL(myStore), iter);
 
   if (path != NULL) {
@@ -149,27 +149,27 @@ void SLAList::kickIt(GtkTreeIter *iter) {
   }
 }
 
-void SLAList::_renderText(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter, gpointer self) {
-  ((SLAList *)self)->renderText(column, cell, model, iter);
+void SettingsPageWithItems::_renderText(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter, gpointer self) {
+  ((SettingsPageWithItems *)self)->renderText(column, cell, model, iter);
 }
 
-void SLAList::_renderBool(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter, gpointer self) {
-  ((SLAList *)self)->renderBool(column, cell, model, iter);
+void SettingsPageWithItems::_renderBool(GtkTreeViewColumn *column, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter, gpointer self) {
+  ((SettingsPageWithItems *)self)->renderBool(column, cell, model, iter);
 }
 
-void SLAList::_toggleBool(GtkCellRendererToggle *renderer, const gchar *path, void *self) {
-  ((SLAList *)self)->toggleBool(renderer, path);
+void SettingsPageWithItems::_toggleBool(GtkCellRendererToggle *renderer, const gchar *path, void *self) {
+  ((SettingsPageWithItems *)self)->toggleBool(renderer, path);
 }
 
-void SLAList::_moveUp(GtkButton *button, void *self) {
-  ((SLAList *)self)->moveUp(button);
+void SettingsPageWithItems::_moveUp(GtkButton *button, void *self) {
+  ((SettingsPageWithItems *)self)->moveUp(button);
 }
 
-void SLAList::_moveDown(GtkButton *button, void *self) {
-  ((SLAList *)self)->moveDown(button);
+void SettingsPageWithItems::_moveDown(GtkButton *button, void *self) {
+  ((SettingsPageWithItems *)self)->moveDown(button);
 }
 
-void SLAList::renderText(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter) {
+void SettingsPageWithItems::renderText(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter) {
   int index;
 
   gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, SLA_STORE_COLUMN_INDEX, &index, -1);
@@ -185,7 +185,7 @@ void SLAList::renderText(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeMode
   }
 }
 
-void SLAList::renderBool(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter) {
+void SettingsPageWithItems::renderBool(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeModel *model, GtkTreeIter *iter) {
   int index;
 
   gtk_tree_model_get(GTK_TREE_MODEL(myStore), iter, SLA_STORE_COLUMN_INDEX, &index, -1);
@@ -193,7 +193,7 @@ void SLAList::renderBool(GtkTreeViewColumn *, GtkCellRenderer *cell, GtkTreeMode
   g_object_set(cell, "active", myItems[index]->isEnabled(), NULL);
 }
 
-void SLAList::toggleBool(GtkCellRendererToggle *renderer, const gchar *spath) {
+void SettingsPageWithItems::toggleBool(GtkCellRendererToggle *renderer, const gchar *spath) {
   GtkTreeIter iter;
 
   if (gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(myStore), &iter, spath)) {
@@ -204,7 +204,7 @@ void SLAList::toggleBool(GtkCellRendererToggle *renderer, const gchar *spath) {
   }
 }
 
-void SLAList::moveUp(GtkButton *) {
+void SettingsPageWithItems::moveUp(GtkButton *) {
   GtkTreeModel *dummy;
   GtkTreeIter current;
 
@@ -224,7 +224,7 @@ void SLAList::moveUp(GtkButton *) {
   }
 }
 
-void SLAList::moveDown(GtkButton *) {
+void SettingsPageWithItems::moveDown(GtkButton *) {
   GtkTreeModel *dummy;
   GtkTreeIter current;
 
@@ -243,7 +243,7 @@ void SLAList::moveDown(GtkButton *) {
   }
 }
 
-void SLAList::swap(GtkTreeIter& a, GtkTreeIter& b) {
+void SettingsPageWithItems::swap(GtkTreeIter& a, GtkTreeIter& b) {
   int i1, i2;
 
   gtk_tree_model_get(GTK_TREE_MODEL(myStore), &a, SLA_STORE_COLUMN_INDEX, &i1, -1);
