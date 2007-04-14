@@ -91,7 +91,7 @@ private:
   GKeyFile *myKeyFile;
 };
 
-LauncherItem::LauncherItem(): myEnabled(false) {
+LauncherItem::LauncherItem(): myIsGood(false), myEnabled(false) {
 }
 
 LauncherItem::~LauncherItem() {
@@ -108,6 +108,8 @@ std::string LauncherItem::translateString(const std::string& what) const {
 bool LauncherItem::load(const std::string& filename) {
   GKeyFileWrapper key_file;
 
+  myIsGood = false;
+
   for (;;) {
     myFileName = filename;
 
@@ -118,6 +120,8 @@ bool LauncherItem::load(const std::string& filename) {
     if (key_file.getString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_TYPE_FIELD) != "Application") {
       break;
     }
+
+    myIsGood = true;
 
     myName = key_file.getLocaleString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_NAME_FIELD);
     myComment = key_file.getLocaleString(DESKTOP_ENTRY_GROUP, DESKTOP_ENTRY_COMMENT_FIELD);

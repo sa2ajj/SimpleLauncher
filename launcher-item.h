@@ -33,6 +33,8 @@ public:
 
   bool load(const std::string&);
 
+  bool valid() const { return myIsGood; }
+
   GdkPixbuf *getIcon(int icon_size) const;
 
   const std::string& getFileName() const { return myFileName; }
@@ -43,7 +45,7 @@ public:
 
   bool isEnabled(void) const { return myEnabled; }
 
-  void enable() { myEnabled = checkSanity(); }
+  void enable() { myEnabled = valid() && checkSanity(); }
   void disable() { myEnabled = false; }
   void toggle() {
     if (myEnabled) {
@@ -59,6 +61,8 @@ private:
   bool checkSanity(void) { return !myName.empty() && (!myService.empty() || !myExec.empty()); }
 
 private:
+  bool myIsGood;
+
   std::string myFileName, myName, myComment, myIcon, myService, myExec, myTextDomain;
   bool myEnabled;
 

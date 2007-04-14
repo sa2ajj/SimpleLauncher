@@ -105,13 +105,16 @@ SettingsPageWithItems::SettingsPageWithItems(int icon_size, LauncherItems& items
 
   for (LauncherItems::Names::const_iterator it = myItems.myNames.begin(); it != myItems.myNames.end(); ++it) {
     LauncherItem *item = myItems.myItems[*it];
-    GtkTreeIter iter;
 
-    gtk_list_store_append(myStore, &iter);
-    {
-      GdkPixbuf *icon = item->getIcon(icon_size);
-      gtk_list_store_set(myStore, &iter, SLA_STORE_COLUMN_ICON, icon, SLA_STORE_COLUMN_INDEX, it-myItems.myNames.begin(), -1);
-      g_object_unref(G_OBJECT(icon));
+    if (item->valid()) {
+      GtkTreeIter iter;
+
+      gtk_list_store_append(myStore, &iter);
+      {
+        GdkPixbuf *icon = item->getIcon(icon_size);
+        gtk_list_store_set(myStore, &iter, SLA_STORE_COLUMN_ICON, icon, SLA_STORE_COLUMN_INDEX, it-myItems.myNames.begin(), -1);
+        g_object_unref(G_OBJECT(icon));
+      }
     }
   }
 }
