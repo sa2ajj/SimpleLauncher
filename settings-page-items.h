@@ -15,8 +15,8 @@
 // this program; if not, write to the Free Software Foundation, Inc., 51
 // Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef __SLA_LIST_H__
-#define __SLA_LIST_H__
+#ifndef __SETTINGS_PAGE_ITEMS_H_
+#define __SETTINGS_PAGE_ITEMS_H_
 
 #include <gtk/gtkliststore.h>
 #include <gtk/gtktreeview.h>

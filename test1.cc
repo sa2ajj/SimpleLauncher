@@ -8,7 +8,7 @@
 #include <gtk/gtkdialog.h>
 #include <gtk/gtkstock.h>
 
-#include "sla-list.h"
+#include "settings-page-items.h"
 #include "launcher-item.h"
 
 static std::string appdir = "/usr/share/applications";

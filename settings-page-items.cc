@@ -25,7 +25,7 @@
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkstock.h>
 
-#include "sla-list.h"
+#include "settings-page-items.h"
 
 enum {
   SLA_STORE_COLUMN_ICON = 0,

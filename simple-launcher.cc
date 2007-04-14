@@ -27,7 +27,6 @@
 #include <libosso.h>
 
 #include "launcher-item.h"
-#include "sla-list.h"
 #include "launchable-item.h"
 #include "settings-dialog.h"
 #include "gconf-wrapper.h"

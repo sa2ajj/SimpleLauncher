@@ -20,6 +20,7 @@
 
 #include "settings-dialog.h"
 #include "settings-page-entries.h"
+#include "settings-page-items.h"
 
 #define SL_APPLET_SETTINGS_ICON_SIZE  26
 

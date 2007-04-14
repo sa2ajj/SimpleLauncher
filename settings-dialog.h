@@ -23,7 +23,6 @@
 #include <gtk/gtkdialog.h>
 
 #include "gconf-wrapper.h"
-#include "sla-list.h"
 #include "launcher-item.h"
 #include "dialog-entry.h"
 #include "settings-page.h"
