@@ -27,7 +27,7 @@
 
 class SettingsDialog {
 public:
-  SettingsDialog(GtkWindow *parent, LauncherItems& items, GConfBooleanOption& transparent, GConfIntegerOption& icon_size, GConfIntegerOption& canvas_size);
+  SettingsDialog(GtkWindow *parent, LauncherItems& items, GConfBooleanOption& transparent, GConfIntegerOption& icon_size);
  ~SettingsDialog();
 
   gint run();
@@ -41,7 +41,6 @@ private:
 
   SettingsDialogBooleanEntry myTransparent;
   SettingsDialogIntegerEntry myIconSize;
-  SettingsDialogIntegerEntry myCanvasSize;
 };
 
 #endif

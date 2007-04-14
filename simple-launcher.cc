@@ -83,7 +83,6 @@ private:
   GConfBooleanOption myTransparent;
   // bool myShowInfobanner; // FIXME: to implement
   GConfIntegerOption myIconSize;
-  GConfIntegerOption myCanvasSize;
 
   static char *ourDirs[];
 };
@@ -137,7 +136,7 @@ char *SimpleLauncherApplet::ourDirs[] = {
 };
 
 // SimpleLauncherApplet::SimpleLauncherApplet() : myMainSettings(myClient.getKey(SL_APPLET_GCONF_PATH)), myContext(NULL), myWidget(NULL), myParent(NULL) {
-SimpleLauncherApplet::SimpleLauncherApplet(const GConfKey& base) : myContext(NULL), myWidget(NULL), myParent(NULL), myTransparent(base, "transparent", true), myIconSize(base, "icon_size", 48), myCanvasSize(base, "canvas_size", 1) {
+SimpleLauncherApplet::SimpleLauncherApplet(const GConfKey& base) : myContext(NULL), myWidget(NULL), myParent(NULL), myTransparent(base, "transparent", true), myIconSize(base, "icon_size", 48) {
 }
 
 bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
@@ -276,7 +275,6 @@ void SimpleLauncherApplet::updateWidget() {
       g_signal_connect(button, "button-press-event", G_CALLBACK(_button_pressed), this);
 
       gtk_event_box_set_visible_window(GTK_EVENT_BOX(button), !myTransparent.value());
-      gtk_container_set_border_width(GTK_CONTAINER(button), myCanvasSize.value());
 
       {
         GdkPixbuf *pixbuf = item->getIcon(myIconSize.value());
@@ -296,7 +294,7 @@ void SimpleLauncherApplet::updateWidget() {
 
   g_object_unref(G_OBJECT(group));
 
-  int totalSize = myIconSize.value()+2*myCanvasSize.value();
+  int totalSize = myIconSize.value();
 
   if (button_no == 0) {
     gtk_widget_set_size_request(myWidget, totalSize, totalSize);
@@ -355,7 +353,7 @@ void SimpleLauncherApplet::runDialog() {
   LauncherItems newItems = myItems;
 
   // TODO: make it nicer... this code is ugly :(
-  SettingsDialog dialog(myParent, newItems, myTransparent, myIconSize, myCanvasSize);
+  SettingsDialog dialog(myParent, newItems, myTransparent, myIconSize);
 
   switch (dialog.run()) {
     case GTK_RESPONSE_OK:
