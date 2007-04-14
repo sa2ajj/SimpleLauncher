@@ -88,8 +88,6 @@ SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(N
   gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(swindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_container_add(GTK_CONTAINER(swindow), GTK_WIDGET(myView));
 
-  gtk_widget_set_size_request(swindow, 500, 300);
-
   GtkWidget *move_up = gtk_button_new_stock_image_only(GTK_STOCK_GO_UP),
             *move_down = gtk_button_new_stock_image_only(GTK_STOCK_GO_DOWN);
   GtkTable *table = GTK_TABLE(gtk_table_new(4, 1, FALSE));
@@ -100,7 +98,7 @@ SLAList::SLAList(int icon_size, LauncherItems& items): myWidget(NULL), myStore(N
   g_signal_connect(move_down, "clicked", G_CALLBACK(_moveDown), this);
 
   myWidget = gtk_hbox_new(FALSE, 0);
-  gtk_box_pack_start(GTK_BOX(myWidget), swindow, FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX(myWidget), swindow, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(myWidget), GTK_WIDGET(table), FALSE, FALSE, 0);
 
   gtk_widget_show_all(myWidget);
