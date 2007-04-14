@@ -16,7 +16,7 @@ TARGET=simple-launcher.so
 DESKTOP_FILE=simple-launcher.desktop
 BACKUP_CONF=simple-launcher.backup
 
-all: test2 $(TARGET)
+all: $(TARGET)
 
 tests: test test1 test2
 
