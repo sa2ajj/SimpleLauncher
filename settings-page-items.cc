@@ -120,7 +120,12 @@ SettingsPageWithItems::SettingsPageWithItems(int icon_size, LauncherItems& items
 }
 
 SettingsPageWithItems::~SettingsPageWithItems() {
-  // FIXME: do something! :)
+  if (myLastSelection != NULL) {
+    gtk_tree_iter_free(myLastSelection);
+    myLastSelection = NULL;
+  }
+
+  g_object_unref(G_OBJECT(myStore));
 }
 
 void SettingsPageWithItems::_selectionChanged(GtkTreeSelection *selection, void *self) {

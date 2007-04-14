@@ -369,6 +369,8 @@ void SimpleLauncherApplet::runDialog() {
     default:
       ;     // FIXME: do I want to do anything in here?
   }
+
+  newItems.clear();
 }
 
 // vim:ts=2:sw=2:et
