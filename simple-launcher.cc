@@ -155,12 +155,13 @@ bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
 
 SimpleLauncherApplet::~SimpleLauncherApplet() {
   myItems.clear();
-
+#if 0
+  // This does not seem to be necessary
   if (myWidget != NULL) {
     gtk_widget_destroy(myWidget);
     myWidget = NULL;
   }
-
+#endif
   if (myContext != NULL) {
     osso_deinitialize(myContext);
     myContext = NULL;
