@@ -162,6 +162,14 @@ GdkPixbuf *LauncherItem::getIcon(int icon_size) const {
     }
   }
 
+  if (pixbuf != NULL) {
+    GdkPixbuf *tempo = gdk_pixbuf_copy(pixbuf);
+
+    g_object_unref(pixbuf);
+
+    pifxbuf = tempo;
+  }
+
   return pixbuf;
 }
 
