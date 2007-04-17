@@ -1,4 +1,4 @@
-simple-launcher (0.9.4~15) unstable; urgency=low
+simple-launcher (0.9.4~16) unstable; urgency=low
 
   * NOT RELEASED YET
   * settings dialog is moved into a separate class
@@ -20,8 +20,13 @@ simple-launcher (0.9.4~15) unstable; urgency=low
   * major refactoring of the settings dialog
   * SLAList class is renamed to SettingsPageWithItems (file names will follow)
   * renamed sla-list files to settings-page-items
+  * do not allow 'insane' items to be selected in the settings dialog
+  * fixed wrongdoings:
+ 	 * do not destroy applet's widget
+   * delete array when it was allocated as array
+  * make a private copy of icons obtained through GtkIconTheme
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Sat, 14 Apr 2007 20:13:08 +0300
+ -- Mikhail Sobolev <mss@mawhrin.net>  Tue, 17 Apr 2007 10:50:52 +0300
 
 simple-launcher (0.9.3) unstable; urgency=low
 
