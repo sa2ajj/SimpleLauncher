@@ -163,7 +163,7 @@ GdkPixbuf *LauncherItem::getIcon(int icon_size) const {
 
     g_object_unref(pixbuf);
 
-    pifxbuf = tempo;
+    pixbuf = tempo;
   }
 
   return pixbuf;
