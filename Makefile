@@ -43,4 +43,10 @@ install: $(TARGET)
 	install -d $(DESTDIR)/etc/osso-backup/applications
 	install -m 0644 $(BACKUP_CONF) $(DESTDIR)/etc/osso-backup/applications/simple-launcher.conf
 
+pclean:
+	fakeroot debian/rules clean
+
+package:
+	dpkg-buildpackage -rfakeroot -uc -b
+
 -include *.d
