@@ -106,7 +106,7 @@ SettingsPageWithItems::SettingsPageWithItems(int icon_size, LauncherItems& items
   for (LauncherItems::Names::const_iterator it = myItems.myNames.begin(); it != myItems.myNames.end(); ++it) {
     LauncherItem *item = myItems.myItems[*it];
 
-    if (item->valid()) {
+    if (item->checkSanity()) {
       GtkTreeIter iter;
 
       gtk_list_store_append(myStore, &iter);
