@@ -39,7 +39,7 @@ void runApplication(const std::string& whatToRun) {
     {
       gchar *fullPath = g_find_program_in_path(app.c_str());
 
-      app = std::string(fullPath);
+      app.assign(fullPath);
 
       g_free(fullPath);
     }
