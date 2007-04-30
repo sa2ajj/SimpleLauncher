@@ -71,6 +71,29 @@ private:
   HildonNumberEditor *mySpinBox;
 };
 
+class SettingsDialogChoiceEntry : public SettingsDialogEntry {
+public:
+  SettingsDialogChoiceEntry(GConfIntegerOption& option, const std::string& name);
+
+  virtual const std::string& text(int index) const = 0;
+  virtual int numberOfChoices() const = 0;
+  virtual int initialValue() const = 0;
+
+  void updateValue();
+  GtkWidget *getWidget() const { return myWidget; }
+
+private:
+  GtkWidget *myWidget;
+};
+
+class SettingsDialogIconSizeEntry : public SettingsDialogChoiceEntry {
+  SettingsDialogIconSizeEntry(GConfIntegerOption& option, const std::string& name): SettingsDialogChoiceEntry(option, name) {}
+
+  const std::string& text(int index) const;
+  int numberOfChoices() const;
+  int initialValue() const;
+};
+
 #endif
 
 // vim:ts=2:sw=2:et

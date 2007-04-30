@@ -16,6 +16,7 @@
 // Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include <gtk/gtkcheckbutton.h>
+#include <gtk/gtkcombobox.h>
 
 #include "dialog-entry.h"
 
@@ -37,3 +38,22 @@ SettingsDialogIntegerEntry::SettingsDialogIntegerEntry(GConfIntegerOption& optio
 void SettingsDialogIntegerEntry::updateValue() {
 	((GConfIntegerOption&)myOption).setValue(hildon_number_editor_get_value(mySpinBox));
 }
+
+SettingsDialogChoiceEntry::SettingsDialogChoiceEntry(GConfIntegerOption& option, const std::string& name): SettingsDialogEntry(option, name) {
+	myWidget = gtk_combo_box_new_text();
+}
+
+///
+
+static struct {
+	int value;
+	const char *name;
+} IconSizes[] = {
+	{ 26, "Extra Small (26)" },
+	{ 32, "Small (32)" },
+	{ 48, "Medium (48)" },
+	{ 64, "Large (64)" },
+	{ -1, NULL }
+};
+
+///
