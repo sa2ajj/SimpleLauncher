@@ -22,7 +22,7 @@ $(TARGET): simple-launcher.o launchable-item.o launcher-item.o settings-page-ite
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 clean:
-	rm -f *.d *.o $(TARGET) test test1 test2
+	rm -f *.d *.o $(TARGET)
 
 install: $(TARGET)
 	install -d $(DESTDIR)/usr/share/applications/hildon-home
