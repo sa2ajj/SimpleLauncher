@@ -39,9 +39,11 @@ void SettingsDialogIntegerEntry::updateValue() {
 	((GConfIntegerOption&)myOption).setValue(hildon_number_editor_get_value(mySpinBox));
 }
 
+#if 0
 SettingsDialogChoiceEntry::SettingsDialogChoiceEntry(GConfIntegerOption& option, const std::string& name): SettingsDialogEntry(option, name) {
 	myWidget = gtk_combo_box_new_text();
 }
+#endif
 
 ///
 
@@ -49,11 +51,33 @@ static struct {
 	int value;
 	const char *name;
 } IconSizes[] = {
-	{ 26, "Extra Small (26)" },
-	{ 32, "Small (32)" },
-	{ 48, "Medium (48)" },
-	{ 64, "Large (64)" },
+	{ 26, "Small (26)" },
+	{ 32, "Medium (32)" },
+	{ 48, "Large (48)" },
+	{ 64, "Extra Large (64)" },
 	{ -1, NULL }
 };
+
+SettingsDialogIconSizeEntry::SettingsDialogIconSizeEntry(GConfIntegerOption& option, const std::string& name): SettingsDialogEntry(option, name) {
+	myWidget = gtk_combo_box_new_text();
+
+	int active = -1;
+
+	for (int i = 0; IconSizes[i].value != -1; ++i) {
+		gtk_combo_box_append_text(GTK_COMBO_BOX(myWidget), IconSizes[i].name);
+
+		if (IconSizes[i].value == option.value()) {
+			active = i;
+		}
+	}
+}
+
+void SettingsDialogIconSizeEntry::updateValue() {
+	gint index = gtk_combo_box_get_active(GTK_COMBO_BOX(myWidget));
+
+	if (index != -1) {
+		((GConfIntegerOption&)myOption).setValue(IconSizes[index].value);
+	}
+}
 
 ///

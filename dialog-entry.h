@@ -71,6 +71,7 @@ private:
   HildonNumberEditor *mySpinBox;
 };
 
+#if 0
 class SettingsDialogChoiceEntry : public SettingsDialogEntry {
 public:
   SettingsDialogChoiceEntry(GConfIntegerOption& option, const std::string& name);
@@ -86,12 +87,19 @@ private:
   GtkWidget *myWidget;
 };
 
-class SettingsDialogIconSizeEntry : public SettingsDialogChoiceEntry {
-  SettingsDialogIconSizeEntry(GConfIntegerOption& option, const std::string& name): SettingsDialogChoiceEntry(option, name) {}
+class SettingsDialogIconSizeEntry : public SettingsDialogChoiceEntry
+#endif
 
-  const std::string& text(int index) const;
-  int numberOfChoices() const;
-  int initialValue() const;
+class SettingsDialogIconSizeEntry : public SettingsDialogEntry {
+public:
+  SettingsDialogIconSizeEntry(GConfIntegerOption& option, const std::string& name);
+
+  void updateValue();
+
+  GtkWidget *getWidget() const { return myWidget; }
+
+private:
+  GtkWidget *myWidget;
 };
 
 #endif

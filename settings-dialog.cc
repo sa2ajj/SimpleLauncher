@@ -26,7 +26,7 @@
 
 SettingsDialog::SettingsDialog(GtkWindow *parent, LauncherItems& items, GConfBooleanOption& transparent, GConfIntegerOption& icon_size):
   myTransparent(transparent, "Transparent background:"),
-  myIconSize(icon_size, "Icon Size:", 26, 64) {
+  myIconSize(icon_size, "Icon Size:") {
   myDialog = GTK_DIALOG(gtk_dialog_new_with_buttons("Launcher Settings", parent, (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT), "OK", GTK_RESPONSE_OK, "Cancel", GTK_RESPONSE_CANCEL, NULL));
 
   myNotebook = GTK_NOTEBOOK(gtk_notebook_new());

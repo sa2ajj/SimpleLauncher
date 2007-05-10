@@ -45,7 +45,7 @@ private:
   GtkNotebook *myNotebook;
 
   SettingsDialogBooleanEntry myTransparent;
-  SettingsDialogIntegerEntry myIconSize;
+  SettingsDialogIconSizeEntry myIconSize;
 };
 
 #endif
