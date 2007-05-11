@@ -70,6 +70,10 @@ SettingsDialogIconSizeEntry::SettingsDialogIconSizeEntry(GConfIntegerOption& opt
 			active = i;
 		}
 	}
+
+	if (active != -1) {
+		gtk_combo_box_set_active(GTK_COMBO_BOX(myWidget), active);
+	}
 }
 
 void SettingsDialogIconSizeEntry::updateValue() {
