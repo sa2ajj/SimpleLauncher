@@ -18,6 +18,7 @@
 #include <string>
 
 #include <libintl.h>
+#include <math.h>
 
 #include <glib/gmem.h>
 #include <glib/gkeyfile.h>
@@ -132,6 +133,29 @@ bool LauncherItem::load(const std::string& filename) {
   return (myEnabled = checkSanity());
 }
 
+// The function below is taken verbatim from exo library -- xfce supporting library
+static GdkPixbuf *exo_gdk_pixbuf_scale_ratio(GdkPixbuf *source, gint dest_size) {
+  gdouble wratio, hratio;
+  gint    source_width, source_height;
+  gint    dest_width, dest_height;
+
+  source_width = gdk_pixbuf_get_width(source);
+  source_height = gdk_pixbuf_get_height(source);
+
+  wratio = (gdouble)source_width / (gdouble)dest_size;
+  hratio = (gdouble)source_height / (gdouble)dest_size;
+
+  if (hratio > wratio) {
+    dest_width = (gint)rint(source_width / hratio);
+    dest_height = dest_size;
+  } else {
+    dest_width = dest_size;
+    dest_height = (gint)rint(source_height / wratio);
+  }
+
+  return gdk_pixbuf_scale_simple(source, MAX(dest_width, 1), MAX(dest_height, 1), GDK_INTERP_BILINEAR);
+}
+
 GdkPixbuf *LauncherItem::getIcon(int icon_size) const {
   if (ourTheme == NULL) {
     ourTheme = gtk_icon_theme_get_default();
@@ -159,7 +183,13 @@ GdkPixbuf *LauncherItem::getIcon(int icon_size) const {
   }
 
   if (pixbuf != NULL) {
-    GdkPixbuf *tempo = gdk_pixbuf_copy(pixbuf);
+    GdkPixbuf *tempo;
+
+    if (gdk_pixbuf_get_width(pixbuf) > icon_size || gdk_pixbuf_get_height(pixbuf) > icon_size) {
+      tempo = exo_gdk_pixbuf_scale_ratio(pixbuf, icon_size);
+    } else {
+      tempo = gdk_pixbuf_copy(pixbuf);
+    }
 
     g_object_unref(pixbuf);
 
