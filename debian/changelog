@@ -1,4 +1,4 @@
-simple-launcher (0.9.4~17) unstable; urgency=low
+simple-launcher (0.9.4~18) unstable; urgency=low
 
   * NOT RELEASED YET
   * settings dialog is moved into a separate class
@@ -26,8 +26,9 @@ simple-launcher (0.9.4~17) unstable; urgency=low
    * delete array when it was allocated as array
   * make a private copy of icons obtained through GtkIconTheme
   * implemented a different widget for icon size selection
+  * set active item if found in the list
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Thu, 10 May 2007 17:53:50 +0300
+ -- Mikhail Sobolev <mss@mawhrin.net>  Fri, 11 May 2007 16:24:30 +0300
 
 simple-launcher (0.9.3) unstable; urgency=low
 
