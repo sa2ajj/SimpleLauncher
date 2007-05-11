@@ -1,4 +1,4 @@
-simple-launcher (0.9.4~19) unstable; urgency=low
+simple-launcher (0.9.4~20) unstable; urgency=low
 
   * NOT RELEASED YET
   * settings dialog is moved into a separate class
@@ -28,8 +28,9 @@ simple-launcher (0.9.4~19) unstable; urgency=low
   * implemented a different widget for icon size selection
   * set active item if found in the list
   * added icon scaling for icons that are bigger than requested
+  * increased spacing between icons
 
- -- Mikhail Sobolev <mss@mawhrin.net>  Fri, 11 May 2007 17:51:43 +0300
+ -- Mikhail Sobolev <mss@mawhrin.net>  Fri, 11 May 2007 18:17:24 +0300
 
 simple-launcher (0.9.3) unstable; urgency=low
 

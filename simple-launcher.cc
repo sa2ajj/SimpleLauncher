@@ -249,7 +249,7 @@ void SimpleLauncherApplet::processDirectory(LauncherItems& items, const std::str
 }
 
 bool SimpleLauncherApplet::initWidget() {
-  myWidget = gtk_hbox_new(false, 0);
+  myWidget = gtk_hbox_new(false, 2);
 
   if (myWidget != NULL) {
     updateWidget();
