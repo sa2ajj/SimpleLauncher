@@ -51,9 +51,10 @@ static struct {
 	int value;
 	const char *name;
 } IconSizes[] = {
-	{ 26, "Small (26)" },
-	{ 32, "Medium (32)" },
-	{ 48, "Large (48)" },
+	{ 26, "Extra Small (26)" },
+	{ 32, "Small (32)" },
+	{ 48, "Medium (48)" },
+	{ 54, "Large (54)" },
 	{ 64, "Extra Large (64)" },
 	{ -1, NULL }
 };
