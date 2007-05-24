@@ -21,7 +21,7 @@
 bool LaunchableItem::activate(osso_context_t *context) {
   bool result = false;
 
-  if (getService().empty() || !(result = osso_application_top(context, getService().c_str(), NULL) == OSSO_OK)) {
+  if (getService().empty() || !(result = osso_rpc_run_with_defaults(context, getService().c_str(), "top_application", NULL, DBUS_TYPE_INVALID) == OSSO_OK)) {
     runApplication(getExec());
     return true;
   } else {
