@@ -1,8 +1,4 @@
 Before 1.0
- * make button size configurable (small/big)
- * transparency
-    * seems to be done
-    * requires configuration
  * make optional info banner
 
 After 1.0
@@ -15,6 +11,10 @@ After 1.0
  * add possibility to start control panel applets
  * make icons configurable
  * bookmarks as items
+ * special applets:
+    * list of recently run applications (configurable list size?)
+    * device locking
+    * toggling offline mode
 
 Non-planned
  * show a note in postinst about activating the applet
