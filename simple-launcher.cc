@@ -184,11 +184,18 @@ void SimpleLauncherApplet::addItem(LauncherItems& items, const std::string& name
   }
 }
 
-// FIXME: this probably should be done somehow differently
-static char *configFileName="/home/user/.slarc";
+static const gchar *getConfigFileName() {
+  static gchar *configFileName = NULL;
+
+  if (configFileName == NULL) {
+    configFileName = g_build_filename(g_get_home_dir(), ".slarc", NULL);
+  }
+
+  return configFileName;
+}
 
 void SimpleLauncherApplet::loadConfig() {
-  std::ifstream config(configFileName);
+  std::ifstream config(getConfigFileName());
 
   if (config) {
     char *buffer = new char [1024];
