@@ -216,7 +216,7 @@ void SimpleLauncherApplet::loadConfig() {
 
 void SimpleLauncherApplet::saveConfig() {
   // TODO: make saving config an atomic operation
-  std::ofstream config(configFileName);
+  std::ofstream config(getConfigFileName());
 
   if (config) {
     for (size_t i = 0 ; i < myItems.size() ; ++i) {
