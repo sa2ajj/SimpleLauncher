@@ -1,5 +1,5 @@
 Source: simple-launcher
-Section: user/home-applet
+Section: user/accessories
 Priority: extra
 Maintainer: Mikhail Sobolev <mss@mawhrin.net>
 Build-Depends: debhelper (>= 4), hildon-home-dev, libosso-dev, libstdc++6-dev
