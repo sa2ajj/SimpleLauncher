@@ -65,7 +65,7 @@ private:
   static GtkIconTheme *ourTheme;
 };
 
-typedef struct LauncherItems {
+struct LauncherItems {
   typedef std::vector<std::string> Names;
   typedef std::map<std::string, LauncherItem *> Items;
 
