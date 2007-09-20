@@ -141,6 +141,7 @@ const std::string& GConfStringOption::setValue(const std::string& newValue) {
 
 GConfBooleanOption::GConfBooleanOption(const GConfKey& key, const std::string& name, bool defaultValue):
   GConfOption(key, name),
+  myValue(defaultValue),
   myDefaultValue(defaultValue) {
 }
 
@@ -186,6 +187,7 @@ bool GConfBooleanOption::setValue(bool newValue) {
 
 GConfIntegerOption::GConfIntegerOption(const GConfKey& key, const std::string& name, int defaultValue):
   GConfOption(key, name),
+  myValue(defaultValue),
   myDefaultValue(defaultValue) {
 }
 
