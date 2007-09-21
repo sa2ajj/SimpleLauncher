@@ -22,6 +22,8 @@
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
+#include <libosso.h>
+
 class BasicItem {
 protected:
   BasicItem(const std::string& type, const std::string& id) : myType(type), myID(id), myEnabled(false) {}
@@ -37,7 +39,7 @@ public:
   virtual std::string getComment() const = 0;
   virtual GdkPixbuf *getIcon(int iconSize) const = 0;
 
-  virtual void activate() = 0;
+  virtual void activate(osso_context_t *context) = 0;
 
   virtual bool isSane() const = 0;
 
