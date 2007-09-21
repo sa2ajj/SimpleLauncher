@@ -149,7 +149,7 @@ char *SimpleLauncherApplet::ourDirs[] = {
 };
 
 // SimpleLauncherApplet::SimpleLauncherApplet() : myMainSettings(myClient.getKey(SL_APPLET_GCONF_PATH)), myContext(NULL), myWidget(NULL), myParent(NULL) {
-SimpleLauncherApplet::SimpleLauncherApplet(const GConfKey& base) : myContext(NULL), myWidget(NULL), myParent(NULL), myTransparent(base, "transparent", true), myIconSize(base, "icon_size", 26) {
+SimpleLauncherApplet::SimpleLauncherApplet(const GConfKey& base) : myContext(NULL), myWidget(NULL), myParent(NULL), myTransparent(base, "transparent", false), myIconSize(base, "icon_size", 48) {
 }
 
 bool SimpleLauncherApplet::doInit(void *state_data, int *state_size) {
