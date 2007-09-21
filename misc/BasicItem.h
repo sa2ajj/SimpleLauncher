@@ -74,7 +74,7 @@ protected:
 	std::map<std::string, BasicItemFactory *> ourFactories;
 };
 
-typedef struct BasicItemCollection {
+struct BasicItemCollection {
   typedef std::vector<std::string> Names;
   typedef std::map<std::string, BasicItem *> Items;
 
