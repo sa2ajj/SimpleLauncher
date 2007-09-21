@@ -17,6 +17,8 @@
 
 #include "ApplicationItem.h"
 
+static ApplicationItemFactory factory;
+
 const std::string& ApplicationItemFactory::factoryName() const {
   const std::string& NAME = "ApplicationItem";
 
@@ -24,10 +26,12 @@ const std::string& ApplicationItemFactory::factoryName() const {
 }
 
 BasicItem *ApplicationItemFactory::createItem(const std::string& itemID) const {
+  ApplicationItem *tempo = new ApplicationItem(itemID);
+
   return NULL;
 }
 
-ApplicationItem::ApplicationItem() {
+ApplicationItem::ApplicationItem(const std::string& itemID): BasicItem(factory.factoryName(), itemID) {
 }
 
 ApplicationItem::~ApplicationItem() {

@@ -33,7 +33,7 @@ class ApplicationItem : public BasicItem {
   friend class ApplicationItemFactory;
 
 protected:
-  ApplicationItem();
+  ApplicationItem(const std::string& itemID);
  ~ApplicationItem();
 
   std::string getName() const;
