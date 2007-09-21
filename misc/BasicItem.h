@@ -62,16 +62,22 @@ class BasicItemFactory {
 private:
 	BasicItemFactory();
 
+	virtual ~BasicItemFactory();
+
+public:
+	static BasicItem *create(const std::string& factoryName, const std::string& itemID);
+
 public:
 	virtual const string::std& factoryName() const = 0;
 
+protected:
 	virtual BasicItem *createItem(const std::string&) const = 0;
 
-protected:
 	static void registerFactory(const std::string&, BasicItemFactory *);
+	static void deRegisterFactory(const std::string&, BasicItemFactory *);
 
 protected:
-	std::map<std::string, BasicItemFactory *> ourFactories;
+	static std::map<std::string, BasicItemFactory *> ourFactories;
 };
 
 struct BasicItemCollection {
