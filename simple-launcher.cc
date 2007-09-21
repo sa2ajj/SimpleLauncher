@@ -198,6 +198,7 @@ void SimpleLauncherApplet::addItem(LauncherItems& items, const std::string& name
   }
 }
 
+// {{{ Configuration file managment
 static const gchar *getConfigFileName() {
   static gchar *configFileName = NULL;
 
@@ -238,6 +239,8 @@ void SimpleLauncherApplet::saveConfig() {
     }
   }
 }
+
+// }}}
 
 void SimpleLauncherApplet::updateItems(LauncherItems& items) {
   for (int i = 0 ; ourDirs[i] != NULL ; ++i) {
