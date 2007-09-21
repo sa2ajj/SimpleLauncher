@@ -23,7 +23,6 @@
 
 #include <gtk/gtk.h>
 
-#include <hildon-home-plugin/hildon-home-plugin-interface.h>
 #include <libosso.h>
 
 #include "launcher-item.h"
@@ -35,6 +34,21 @@
 #define SL_APPLET_VERSION    "0.0"
 
 #define SL_APPLET_GCONF_PATH  "/apps/simple-launcher"
+
+// A copy of interface functions from hildon-home-plugin-interface (new hildon desktop does not have it) {{{
+
+extern "C" {
+
+  void *hildon_home_applet_lib_initialize(void *state_data, int *state_size, GtkWidget **widget);
+  int hildon_home_applet_lib_save_state(void *applet_data, void **state_data, int *state_size);
+  void hildon_home_applet_lib_background(void *applet_data);
+  void hildon_home_applet_lib_foreground(void *applet_data);
+  void hildon_home_applet_lib_deinitialize(void *applet_data);
+  GtkWidget *hildon_home_applet_lib_settings(void *applet_data, GtkWindow *parent);
+
+};
+
+// }}}
 
 class SimpleLauncherApplet {
 public:
