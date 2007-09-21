@@ -26,9 +26,7 @@ const std::string& ApplicationItemFactory::factoryName() const {
 }
 
 BasicItem *ApplicationItemFactory::createItem(const std::string& itemID) const {
-  ApplicationItem *tempo = new ApplicationItem(itemID);
-
-  return NULL;
+  return new ApplicationItem(itemID);
 }
 
 ApplicationItem::ApplicationItem(const std::string& itemID): BasicItem(factory.factoryName(), itemID) {
