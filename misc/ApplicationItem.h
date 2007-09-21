@@ -36,13 +36,17 @@ protected:
   ApplicationItem(const std::string& itemID);
  ~ApplicationItem();
 
+  bool load();
+
   std::string getName() const;
   std::string getComment() const;
   GdkPixbuf *getIcon(int iconSize) const;
 
-  void activate();
+  bool isSane() const { return !myID.empty() && (!myService.empty() || !myExec.empty()); }
 
-  bool isSane() const;
+  void activate(osso_context_t *);
+private:
+  std::string myService, myExec;
 };
 
 #endif
