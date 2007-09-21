@@ -31,6 +31,8 @@ public:
 	const std::string& getType() const { return myType; }
 	const std::string& getID() const { return myID; }
 
+  virtual bool load() = 0;
+
   virtual std::string getName() const = 0;
   virtual std::string getComment() const = 0;
   virtual GdkPixbuf *getIcon(int iconSize) const = 0;

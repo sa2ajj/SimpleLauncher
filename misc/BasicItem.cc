@@ -20,3 +20,22 @@
 BasicItemFactory::BasicItemFactory() {
   registerFactory(factoryName(), this);
 }
+
+BasicItem *BasicItemFactory::create(const std::string& factoryName, const std::string& itemID) {
+	BasicItemFactory *factory = ourFactories.find(factoryName);
+	BasicItem *result = NULL;
+
+	if (factory != NULL) {
+		result = factory->createItem(itemID);
+
+		if (result != NULL) {
+			if (!result->load()) {
+				delete result;
+
+				result = NULL;
+			}
+		}
+	}
+
+	return result;
+}
