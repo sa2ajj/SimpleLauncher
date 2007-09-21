@@ -17,10 +17,6 @@
 
 #include "ApplicationItem.h"
 
-ApplicationItemFactory::ApplicationItemFactory() {
-  registerFactory(factoryName(), this);
-}
-
 const std::string& ApplicationItemFactory::factoryName() const {
   const std::string& NAME = "ApplicationItem";
 
