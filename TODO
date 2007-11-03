@@ -15,6 +15,7 @@ After 1.0
     * list of recently run applications (configurable list size?)
     * device locking
     * toggling offline mode
+    * establish connection to the specified IAP
 
 Non-planned
  * show a note in postinst about activating the applet
