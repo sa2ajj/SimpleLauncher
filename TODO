@@ -1,5 +1,5 @@
 Before 1.0
- * make optional info banner
+ * make optional info banner (this seems to work)
 
 After 1.0
  * review the code and make it less hackish
